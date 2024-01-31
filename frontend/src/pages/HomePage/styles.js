@@ -1,7 +1,10 @@
-import backgroundImage from './DashboardImage.jpg'; 
+import 
+  {DashboardImage}
+ from '../../assets/images/index';
+
 export const styles = {
     backgroundStyle: {
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: `url(${DashboardImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         height: '100vh',
