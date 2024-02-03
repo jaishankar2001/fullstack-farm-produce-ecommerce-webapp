@@ -1,15 +1,20 @@
 package com.example.backend.entities;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.List;
-import java.util.Collection;
+import java.util.*;
 
 @Data
+@Getter
+@Setter
 @Entity
 @Table(name = "user")
 public class User implements UserDetails{
@@ -28,6 +33,15 @@ public class User implements UserDetails{
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JsonManagedReference
+    // private List<Farms> farms;
+
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JsonManagedReference
+    // @JoinColumn(name="user_id")
+    // private UserMeta userMeta;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,4 +77,5 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
 }
