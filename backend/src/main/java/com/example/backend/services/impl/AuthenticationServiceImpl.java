@@ -1,5 +1,6 @@
 package com.example.backend.services.impl;
 
+<<<<<<< HEAD
 import com.example.backend.dto.request.RefreshTokenRequest;
 import com.example.backend.dto.request.SignInRequest;
 import com.example.backend.dto.request.SignUpRequest;
@@ -35,6 +36,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User signUp(SignUpRequest signUpRequest){
         
+=======
+import com.example.backend.dto.request.SignUpRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import com.example.backend.services.AuthenticationService;
+import com.example.backend.entities.User;
+import com.example.backend.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationServiceImpl implements AuthenticationService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+
+    @Override
+    public User signUp(SignUpRequest signUpRequest) {
+>>>>>>> 54a6bb6c909c10a24cc66aa4cc064847a90b8442
         User user = new User();
         user.setEmail(signUpRequest.getEmail());
         user.setFirstname(signUpRequest.getFirstName());
@@ -43,6 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         userRepository.save(user);
 
+<<<<<<< HEAD
         UserMeta userMeta = new UserMeta();
         userMeta.setUser(user);
         userMetaRepository.save(userMeta);
@@ -89,5 +111,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         return null;
     }
+=======
+        return user;
+    }
+
+>>>>>>> 54a6bb6c909c10a24cc66aa4cc064847a90b8442
 }
 

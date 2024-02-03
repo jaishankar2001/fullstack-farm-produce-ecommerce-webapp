@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+<<<<<<< HEAD
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,4 +42,23 @@ public class AuthController {
     public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
     }
+=======
+import com.example.backend.dto.request.SignUpRequest;
+import com.example.backend.entities.User;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.example.backend.services.AuthenticationService;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/auth")
+public class AuthController {
+    private final AuthenticationService authenticationService;
+    @PostMapping("/signup")
+    public ResponseEntity<User> signUp(@RequestBody @Valid SignUpRequest signUpRequest){
+        return ResponseEntity.ok(authenticationService.signUp(signUpRequest));
+    }
+>>>>>>> 54a6bb6c909c10a24cc66aa4cc064847a90b8442
 }

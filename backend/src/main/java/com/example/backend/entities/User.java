@@ -1,5 +1,7 @@
 package com.example.backend.entities;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,8 @@ import lombok.Data;
 import java.util.*;
 
 @Data
+@Getter
+@Setter
 @Entity
 @Table(name = "user")
 public class User implements UserDetails{
@@ -73,4 +77,5 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
 }
