@@ -1,13 +1,10 @@
 package com.example.backend.controller;
 
-<<<<<<< HEAD
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.dto.request.RefreshTokenRequest;
 import com.example.backend.dto.request.SignInRequest;
@@ -17,17 +14,15 @@ import com.example.backend.entities.User;
 import com.example.backend.services.AuthenticationService;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 public class AuthController {
-     private final AuthenticationService authenticationService = null;
+    private final AuthenticationService authenticationService = null;
 
     @GetMapping("/demo")
     public ResponseEntity<String> customerHome() {
         return ResponseEntity.ok("Hi Customer");
     }
-    
+
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return ResponseEntity.ok(authenticationService.signUp(signUpRequest));
@@ -39,26 +34,8 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<JwtAuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<JwtAuthenticationResponse> refreshToken(
+            @RequestBody RefreshTokenRequest refreshTokenRequest) {
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
     }
-=======
-import com.example.backend.dto.request.SignUpRequest;
-import com.example.backend.entities.User;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.example.backend.services.AuthenticationService;
-
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/auth")
-public class AuthController {
-    private final AuthenticationService authenticationService;
-    @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody @Valid SignUpRequest signUpRequest){
-        return ResponseEntity.ok(authenticationService.signUp(signUpRequest));
-    }
->>>>>>> 54a6bb6c909c10a24cc66aa4cc064847a90b8442
 }

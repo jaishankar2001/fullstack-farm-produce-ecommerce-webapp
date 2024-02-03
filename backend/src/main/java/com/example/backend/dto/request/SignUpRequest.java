@@ -1,11 +1,5 @@
 package com.example.backend.dto.request;
 
-<<<<<<< HEAD
-import org.hibernate.validator.constraints.UniqueElements;
-
-import jakarta.persistence.UniqueConstraint;
-=======
->>>>>>> 54a6bb6c909c10a24cc66aa4cc064847a90b8442
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,15 +21,8 @@ public class SignUpRequest {
     @NotNull(message = "Password is required")
     private String password;
     @NotNull(message = "Email is required")
-<<<<<<< HEAD
     // @UniqueElements
     @Email(message = "Email should be valid")
     private String email;
     private com.example.backend.entities.Role role;
 }
-=======
-    @Email(message = "Email should be valid")
-    private String email;
-    private com.example.backend.entities.Role role;
-}
->>>>>>> 54a6bb6c909c10a24cc66aa4cc064847a90b8442
