@@ -1,5 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
   return (
@@ -12,10 +13,12 @@ export const Header = () => {
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               <li className="nav-item">
+                <Link to="/">
                 <a className="nav-link">Home</a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link">Start selling property</a>
+                <a className="nav-link">Products</a>
               </li>
             </ul>
             <ul className="ms-auto navbar-nav">
@@ -49,8 +52,12 @@ export const Header = () => {
             </ul>
           </div>
           <div className="d-flex">
+          <Link to="/login">
             <a className="btn btn-outline-primary d-none d-md-block">Login</a>
+            </Link>
+            <Link to="/signup">
             <a className="btn btn-primary d-none d-md-block ms-2">Sign up</a>
+            </Link>
           </div>
         </div>
       </nav>
