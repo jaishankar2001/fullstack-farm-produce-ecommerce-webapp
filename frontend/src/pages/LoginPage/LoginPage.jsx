@@ -1,8 +1,32 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from '../../common/Layout/Layout';
+import api from '../../api/index';
+
 
 function Login() {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Call API with username and password
+    try {
+      const response = await api.auth.login({ email, password });
+
+      // Assuming the response contains a token
+      localStorage.setItem("token", response.data.token);
+
+      // Navigate to desired location upon successful login
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="container py-3">
       <div className="row my-4">
@@ -10,18 +34,21 @@ function Login() {
           <div className="card border-0 shadow-sm">
             <div className="card-body px-4">
               <h4 className="card-title fw-bold mt-2 mb-4">Sign In</h4>
-              <form className="row g-2">
+              <form className="row g-2" onSubmit={handleSubmit}>
                 <div className="col-md-12">
                   <label className="form-label">Email</label>
                   <input
                     type="email"
                     className="form-control"
                     placeholder="name@domain.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="col-md-12">
                   <label className="form-label">Password</label>
-                  <input type="password" className="form-control" />
+                  <input type="password" className="form-control" value={password}
+                    onChange={(e) => setPassword(e.target.value)}/>
                 </div>
                 <div className="col-md-12">
                   <Link to="/forgot-password">
@@ -30,11 +57,8 @@ function Login() {
                 </div>
                 <div className="col-md-12 mt-4">
                   <button
-                    type="button"
+                    type="submit"
                     className="btn btn-primary w-100"
-                    // onClick={() => {
-                    //   router.push({ pathname: "/account/profile" });
-                    // }}
                   >
                     Login
                   </button>
