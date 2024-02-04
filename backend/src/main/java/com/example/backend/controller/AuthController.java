@@ -12,11 +12,15 @@ import com.example.backend.dto.request.SignUpRequest;
 import com.example.backend.dto.response.JwtAuthenticationResponse;
 import com.example.backend.entities.User;
 import com.example.backend.services.AuthenticationService;
-
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/auth")
 public class AuthController {
-    private final AuthenticationService authenticationService = null;
+    private final AuthenticationService authenticationService;
 
     @GetMapping("/demo")
     public ResponseEntity<String> customerHome() {
