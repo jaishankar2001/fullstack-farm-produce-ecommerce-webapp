@@ -17,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
 @RequestMapping("/api/farmer")
 // @RequiredArgsConstructor
 
 public class FarmerController {
-    
+    @GetMapping
+    public ResponseEntity<String> farmerHome() {
+        return ResponseEntity.ok("Hi Farmer");
+    }
 }
