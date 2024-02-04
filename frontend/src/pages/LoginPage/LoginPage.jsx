@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Layout from '../../common/Layout/Layout'
+import { Link } from "react-router-dom";
+import Layout from '../../common/Layout/Layout';
 
 function Login() {
   return (
@@ -23,9 +24,9 @@ function Login() {
                   <input type="password" className="form-control" />
                 </div>
                 <div className="col-md-12">
-                  
+                  <Link to="/forgot-password">
                     <a className="text-decoration-none">Forgot password?</a>
-                 
+                  </Link>
                 </div>
                 <div className="col-md-12 mt-4">
                   <button
