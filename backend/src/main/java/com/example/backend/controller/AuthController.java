@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.request.ResetPasswordRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,11 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return ResponseEntity.ok(authenticationService.signUp(signUpRequest));
+    }
+
+    @PostMapping("/ResetPasswordReq")
+    public ResponseEntity<String> forgotPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
+        return ResponseEntity.ok(authenticationService.forgotPassword(resetPasswordRequest));
     }
 
     @PostMapping("/signin")

@@ -18,7 +18,8 @@ function Login() {
       const response = await api.auth.login({ email, password });
 
       // Assuming the response contains a token
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("refreshToken", response.refreshToken);
 
       // Navigate to desired location upon successful login
       navigate("/");
