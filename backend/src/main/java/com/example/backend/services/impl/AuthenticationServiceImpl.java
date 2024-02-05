@@ -1,11 +1,13 @@
 package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.RefreshTokenRequest;
+import com.example.backend.dto.request.ResetPasswordRequest;
 import com.example.backend.dto.request.SignInRequest;
 import com.example.backend.dto.request.SignUpRequest;
 import com.example.backend.dto.response.JwtAuthenticationResponse;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserMeta;
+import com.example.backend.entities.VerificationType;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.UserMetaRepository;
 import com.example.backend.repository.UserRepository;
@@ -55,11 +57,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserMeta userMeta = new UserMeta();
         userMeta.setUser(user);
         userMetaRepository.save(userMeta);
-
-        verificationService.sendVerificationEmail(user);
-
+        VerificationType type = VerificationType.valueOf("VerifyEmail");
+        verificationService.sendVerificationEmail(user, type);
         return user;
 
+    }
+    public String forgotPassword(ResetPasswordRequest resetPasswordRequest){
+        User user = userRepository.findByEmail(resetPasswordRequest.getEmail());
+        if (user == null) {
+            throw new ApiRequestException("User doesn't exist");
+        }
+        VerificationType type = VerificationType.valueOf("ResetPassword");
+        verificationService.sendVerificationEmail(user, type);
+        return "Please check email for password reset link";
     }
 
     public JwtAuthenticationResponse signIn(SignInRequest signInRequest) {
