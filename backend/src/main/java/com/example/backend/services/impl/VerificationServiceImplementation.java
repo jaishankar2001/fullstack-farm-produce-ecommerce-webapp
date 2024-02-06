@@ -3,6 +3,7 @@ package com.example.backend.services.impl;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.example.backend.entities.VerificationType;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.entities.User;
@@ -54,13 +55,32 @@ public class VerificationServiceImplementation implements VerificationService {
     }
 
     @Override
-    public void sendVerificationEmail(User user) {
+    public void resetPassword(String code, String email, String newPassword){
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new ApiRequestException("Not able to find user");
+        }
+        VerificationCode verificationCode = verificationCodeRepository.findByCodeAndEmail(code, email);
+        if (verificationCode == null) {
+            throw new ApiRequestException("Invalid verification code");
+        }
+
+        if (verificationCode.getExpiryTime().isBefore(LocalDateTime.now())) {
+            throw new ApiRequestException("Verification code has expired");
+        }
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        verificationCodeRepository.delete(verificationCode);
+    }
+
+    @Override
+    public void sendVerificationEmail(User user, VerificationType type) {
         UserMeta userMeta = userMetaRepository.findByUser(user);
         if (user == null) {
             throw new ApiRequestException("User not found!");
         }
 
-        if (userMeta != null && userMeta.isVerified()) {
+        if (userMeta != null && userMeta.isVerified() && type != VerificationType.valueOf("ResetPassword")) {
             throw new ApiRequestException("User already verified");
         }
 
@@ -73,18 +93,24 @@ public class VerificationServiceImplementation implements VerificationService {
         if (verificationCode == null) {
             String code = UUID.randomUUID().toString();
             LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(30);
-            verificationCode = new VerificationCode(code, user.getEmail(), expiryTime);
+            verificationCode = new VerificationCode(code, user.getEmail(), expiryTime, type);
             verificationCodeRepository.save(verificationCode);
         }
 
-        String url = "http://localhost:8080/api/auth/verify?email=%s&code=%s";
+        String url = "http://localhost:3000/verify-email?email=%s&code=%s&type=%s";
         String verificationUrl = String.format(
                 url,
                 user.getEmail(),
-                verificationCode.getCode());
-        String subject = "Verify your email";
-        String body = "Please click on this link to verify your email: " + verificationUrl;
-        emailService.sendEmail(user.getEmail(), subject, body);
+                verificationCode.getCode(),
+                verificationCode.getVerificationType());
+        if(type == VerificationType.valueOf("VerifyEmail")) {
+            String subject = "Verify your email";
+            String body = "Please click on this link to verify your email: " + verificationUrl;
+            emailService.sendEmail(user.getEmail(), subject, body);
+        } else if (type == VerificationType.valueOf("ResetPassword")) {
+            String subject = "Reset your password";
+            String body = "Please click on this link to reset your Password: " + verificationUrl;
+            emailService.sendEmail(user.getEmail(), subject, body);
+        }
     }
-
 }

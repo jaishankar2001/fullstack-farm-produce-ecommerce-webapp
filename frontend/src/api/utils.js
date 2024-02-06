@@ -13,8 +13,8 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    const token = localStorage?.getItem('token');
+    if (token && token != 'undefined') {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
@@ -55,6 +55,7 @@ export const post = async (url, data = {}) => {
     const response = await api.post(url, data);
     return handleResponse(response);
   } catch (error) {
+    console.log("in error", error);
     handleError(error);
   }
 };

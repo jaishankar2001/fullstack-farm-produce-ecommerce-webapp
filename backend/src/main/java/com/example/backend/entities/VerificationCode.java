@@ -1,9 +1,6 @@
 package com.example.backend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,10 +17,13 @@ public class VerificationCode {
     private String code;
     private String email;
     private LocalDateTime expiryTime;
+    @Enumerated(EnumType.STRING)
+    private VerificationType verificationType;
 
-    public VerificationCode(String code, String email, LocalDateTime expiryTime) {
+    public VerificationCode(String code, String email, LocalDateTime expiryTime, VerificationType type) {
         this.code = code;
         this.email = email;
         this.expiryTime = expiryTime;
+        this.verificationType = type;
     }
 }
