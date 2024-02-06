@@ -97,7 +97,7 @@ public class VerificationServiceImplementation implements VerificationService {
             verificationCodeRepository.save(verificationCode);
         }
 
-        String url = "http://localhost:8080/api/auth/verify?email=%s&code=%s&type=%s";
+        String url = "http://localhost:3000/verify-email?email=%s&code=%s&type=%s";
         String verificationUrl = String.format(
                 url,
                 user.getEmail(),
