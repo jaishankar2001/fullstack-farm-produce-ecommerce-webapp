@@ -20,7 +20,7 @@ function VerifyEmail() {
               try {
                   const data = await api.auth.verifyEmail(email, code, type);
                   if(data){
-                    navigate("/");
+                    navigate("/login");
                   }
   
               } catch (error) {
