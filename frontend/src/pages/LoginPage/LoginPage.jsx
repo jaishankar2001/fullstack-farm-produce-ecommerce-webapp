@@ -43,7 +43,7 @@ function Login() {
                     className="form-control"
                     placeholder="name@domain.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onSubmit={handleSubmit}
                   />
                 </div>
                 <div className="col-md-12">
