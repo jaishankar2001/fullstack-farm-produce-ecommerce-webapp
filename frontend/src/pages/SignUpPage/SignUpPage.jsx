@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../../common/Layout/Layout';
 import api from '../../api/index';
 
@@ -13,25 +15,33 @@ function SignUp() {
   });
 
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const response = await api.auth.register({
-         email: formData.email, 
-         firstName: formData.firstName ,
-         lastName: formData.lastName,
-         password: formData.password,
-         role: formData.role
-        });
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        password: formData.password,
+        role: formData.role
+      });
+      setIsLoading(false);
 
-        if(response){
-          navigate("/verify-email");
-        }
+      if (response) {
+        navigate("/verify-email");
+      }
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
     }
-    
+
   };
 
   const handleChange = (e) => {
@@ -40,6 +50,7 @@ function SignUp() {
 
   return (
     <div className="container py-3">
+      <ToastContainer />
       <div className="row my-4">
         <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
           <div className="card border-0 shadow-sm">
@@ -67,11 +78,19 @@ function SignUp() {
                   <input type="password" className="form-control" />
                 </div>
                 <div className="col-md-12 mt-4">
-                  <button type="submit" className="btn btn-primary w-100">Register</button>
+                  <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+                    {isLoading ? (
+                      <div className="spinner-border spinner-border-sm" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    ) : (
+                      "Register"
+                    )}
+                  </button>
                 </div>
                 <div className="col-md-12">
                   <div className="text-muted bg-light rounded p-3 border small">
-                    By clicking the &lsquo;Sign Up&lsquo; button, you confirm
+                    By clicking the &lsquo;Register&lsquo; button, you confirm
                     that you accept our{" "}
                     <a href="#">Terms of use and Privacy Policy</a>.
                   </div>
