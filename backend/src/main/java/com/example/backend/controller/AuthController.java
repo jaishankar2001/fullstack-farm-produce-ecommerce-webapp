@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.checkout.SessionCreateParams;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -26,6 +31,26 @@ public class AuthController {
 
     @PostMapping("/create-payment-intent")
     public ResponseEntity<StripeResponse> createPaymentIntent(@RequestBody String price) {
+
+        String successURL = "http://localhost:3000/payment/success";
+
+        String failureURL = "http://localhost:3000/payment/failed";
+
+        Stripe.apiKey = "sk_test_51J0PUySIJjtkSpgkwLWSNz2rkkS3FtCOBl9XYeFzCKHrQncLQJws9FodTsc1hL9apjqkGUOuIArdeEkDlxDkJUds004LPirNvP";
+
+        SessionCreateParams params = SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setSuccessUrl(successURL)
+                .setCancelUrl(failureURL)
+                .addLineItem(
+                        SessionCreateParams.LineItem.builder()
+                                .setQuantity(1L)
+                                // Provide the exact Price ID (for example, pr_1234) of the product you want to
+                                // sell
+                                .setPrice("{{PRICE_ID}}")
+                                .build())
+                .build();
+        Session session = Session.create(params);
 
         StripeResponse stripeResponse = new StripeResponse(price);
         return ResponseEntity.ok(stripeResponse);
