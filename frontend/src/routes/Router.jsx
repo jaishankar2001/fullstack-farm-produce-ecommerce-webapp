@@ -6,6 +6,8 @@ import SignUp from "../pages/SignUpPage/SignUpPage";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
 import Payment from "../pages/Payment/Payment";
+import Success from "../pages/Payment/Success";
+import Fail from "../pages/Payment/Fail";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -36,6 +38,14 @@ export const Router = () => {
         {
           path: "/payment",
           element: <Payment />,
+        },
+        {
+          path: "/payment/success",
+          element: <Success />,
+        },
+        {
+          path: "/payment/fail",
+          element: <Fail />,
         },
       ],
     },

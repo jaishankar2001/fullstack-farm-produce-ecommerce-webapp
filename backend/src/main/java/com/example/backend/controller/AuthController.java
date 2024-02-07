@@ -3,6 +3,10 @@ package com.example.backend.controller;
 import com.example.backend.dto.request.ResetPasswordRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +19,10 @@ import com.example.backend.dto.response.StripeResponse;
 import com.example.backend.entities.User;
 import com.example.backend.services.AuthenticationService;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -30,35 +36,54 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/create-payment-intent")
-    public ResponseEntity<StripeResponse> createPaymentIntent(@RequestBody String price) {
+    public ResponseEntity<String> createPaymentIntent() {
+        try {
+            String successURL = "http://localhost:8080/api/auth/paymentsuccess?amount=100&email=123@gmail.com";
 
-        String successURL = "http://localhost:3000/payment/success";
+            String failureURL = "http://localhost:3000/payment/fail";
 
-        String failureURL = "http://localhost:3000/payment/failed";
+            Stripe.apiKey = "sk_test_51J0PUySIJjtkSpgkwLWSNz2rkkS3FtCOBl9XYeFzCKHrQncLQJws9FodTsc1hL9apjqkGUOuIArdeEkDlxDkJUds004LPirNvP";
 
-        Stripe.apiKey = "sk_test_51J0PUySIJjtkSpgkwLWSNz2rkkS3FtCOBl9XYeFzCKHrQncLQJws9FodTsc1hL9apjqkGUOuIArdeEkDlxDkJUds004LPirNvP";
+            SessionCreateParams params = SessionCreateParams.builder()
+                    .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                    .setCancelUrl(failureURL)
+                    .setSuccessUrl(successURL)
+                    .addLineItem(SessionCreateParams.LineItem.builder()
+                            .setQuantity(1L)
+                            .setPriceData(
+                                    SessionCreateParams.LineItem.PriceData.builder()
+                                            .setCurrency("usd")
+                                            .setUnitAmount(2000L)
+                                            .setProductData(
+                                                    SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                            .setName("T-shirt")
+                                                            .build())
+                                            .build())
+                            .build())
+                    .build();
 
-        SessionCreateParams params = SessionCreateParams.builder()
-                .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(successURL)
-                .setCancelUrl(failureURL)
-                .addLineItem(
-                        SessionCreateParams.LineItem.builder()
-                                .setQuantity(1L)
-                                // Provide the exact Price ID (for example, pr_1234) of the product you want to
-                                // sell
-                                .setPrice("{{PRICE_ID}}")
-                                .build())
-                .build();
-        Session session = Session.create(params);
+            Session s = Session.create(params);
+            System.out.println(s);
+            return ResponseEntity.ok("HII");
+            // sessionItemList.add(createSessionLineItem());
 
-        StripeResponse stripeResponse = new StripeResponse(price);
-        return ResponseEntity.ok(stripeResponse);
+        } catch (StripeException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.ok("HII");
+        }
     }
 
     @GetMapping("/demo")
     public ResponseEntity<String> customerHome() {
         return ResponseEntity.ok("Hi Customer");
+    }
+
+    @GetMapping("/paymentsuccess")
+    public RedirectView paymentsuccess(@RequestParam("amount") String amount, @RequestParam("email") String email) {
+
+        System.out.println(amount + " " + email);
+        return new RedirectView("http://localhost:3000/payment/success");
     }
 
     @PostMapping("/signup")
