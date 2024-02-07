@@ -3,10 +3,12 @@ package com.example.backend.controller;
 import com.example.backend.dto.request.ResetPasswordRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,42 +38,41 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/create-payment-intent")
-    public ResponseEntity<String> createPaymentIntent() {
-        try {
-            String successURL = "http://localhost:8080/api/auth/paymentsuccess?amount=100&email=123@gmail.com";
+    public ResponseEntity<Map> createPaymentIntent(@RequestParam("amount") String amount) throws StripeException {
 
-            String failureURL = "http://localhost:3000/payment/fail";
+        String successURL = "http://localhost:8080/api/auth/paymentsuccess?amount=100&email=123@gmail.com";
 
-            Stripe.apiKey = "sk_test_51J0PUySIJjtkSpgkwLWSNz2rkkS3FtCOBl9XYeFzCKHrQncLQJws9FodTsc1hL9apjqkGUOuIArdeEkDlxDkJUds004LPirNvP";
+        String failureURL = "http://localhost:3000/payment/fail";
 
-            SessionCreateParams params = SessionCreateParams.builder()
-                    .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                    .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setCancelUrl(failureURL)
-                    .setSuccessUrl(successURL)
-                    .addLineItem(SessionCreateParams.LineItem.builder()
-                            .setQuantity(1L)
-                            .setPriceData(
-                                    SessionCreateParams.LineItem.PriceData.builder()
-                                            .setCurrency("usd")
-                                            .setUnitAmount(2000L)
-                                            .setProductData(
-                                                    SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                            .setName("T-shirt")
-                                                            .build())
-                                            .build())
-                            .build())
-                    .build();
+        Stripe.apiKey = "sk_test_51J0PUySIJjtkSpgkwLWSNz2rkkS3FtCOBl9XYeFzCKHrQncLQJws9FodTsc1hL9apjqkGUOuIArdeEkDlxDkJUds004LPirNvP";
 
-            Session s = Session.create(params);
-            System.out.println(s);
-            return ResponseEntity.ok("HII");
-            // sessionItemList.add(createSessionLineItem());
+        SessionCreateParams params = SessionCreateParams.builder()
+                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setCancelUrl(failureURL)
+                .setSuccessUrl(successURL)
+                .addLineItem(SessionCreateParams.LineItem.builder()
+                        .setQuantity(1L)
+                        .setPriceData(
+                                SessionCreateParams.LineItem.PriceData.builder()
+                                        .setCurrency("cad")
+                                        .setUnitAmount((long) Integer.parseInt(amount) * 100)
+                                        .setProductData(
+                                                SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                        .setName("Ecopick Wallet")
+                                                        .build())
+                                        .build())
+                        .build())
+                .build();
 
-        } catch (StripeException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.ok("HII");
-        }
+        Session s = Session.create(params);
+        System.out.println(s.getId());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("sessionId", s.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+        // return ResponseEntity.ok(s.getId());
+        // return ResponseEntity.ok("h1?");
     }
 
     @GetMapping("/demo")
