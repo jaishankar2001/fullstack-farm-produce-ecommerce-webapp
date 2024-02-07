@@ -11,6 +11,7 @@ import com.example.backend.dto.request.RefreshTokenRequest;
 import com.example.backend.dto.request.SignInRequest;
 import com.example.backend.dto.request.SignUpRequest;
 import com.example.backend.dto.response.JwtAuthenticationResponse;
+import com.example.backend.dto.response.StripeResponse;
 import com.example.backend.entities.User;
 import com.example.backend.services.AuthenticationService;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthenticationService authenticationService;
+
+    @PostMapping("/create-payment-intent")
+    public ResponseEntity<StripeResponse> createPaymentIntent(@RequestBody String price) {
+
+        StripeResponse stripeResponse = new StripeResponse(price);
+        return ResponseEntity.ok(stripeResponse);
+    }
 
     @GetMapping("/demo")
     public ResponseEntity<String> customerHome() {
