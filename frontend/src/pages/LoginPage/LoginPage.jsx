@@ -27,11 +27,12 @@ function Login() {
       navigate("/");
     } catch (error) {
       setIsLoading(false);
-      const { data } = error.response;
-      if (data) {
-        Object.values(data).forEach((message) => {
-          toast.error(message);
-        });
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
       } else {
         toast.error("An error occurred. Please try again later.");
       }
