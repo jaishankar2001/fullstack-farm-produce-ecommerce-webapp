@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Layout from '../../common/Layout/Layout';
-import api from '../../api/index';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Layout from "../../common/Layout/Layout";
+import api from "../../api/index";
 
 function SignUp() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    role: 'CUSTOMER'
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    role: "CUSTOMER",
   });
 
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function SignUp() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         password: formData.password,
-        role: formData.role
+        role: formData.role,
       });
       setIsLoading(false);
 
@@ -35,13 +35,15 @@ function SignUp() {
       }
     } catch (error) {
       setIsLoading(false);
-      if (error.response && error.response.data && error.response.data.message) {
-        toast.error(error.response.data.message);
+      const { data } = error.response;
+      if (data) {
+        Object.values(data).forEach((message) => {
+          toast.error(message);
+        });
       } else {
         toast.error("An error occurred. Please try again later.");
       }
     }
-
   };
 
   const handleChange = (e) => {
@@ -59,28 +61,55 @@ function SignUp() {
               <form className="row g-3" onSubmit={handleSubmit}>
                 <div className="col-md-6">
                   <label className="form-label">First Name</label>
-                  <input type="text" className="form-control" name="firstName" onChange={handleChange} />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="firstName"
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Last Name</label>
-                  <input type="text" className="form-control" name="lastName" onChange={handleChange} />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="lastName"
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="col-md-12">
                   <label className="form-label">Email</label>
-                  <input type="email" className="form-control" name="email" onChange={handleChange} />
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Password</label>
-                  <input type="password" className="form-control" name="password" onChange={handleChange} />
+                  <input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Confirm Password</label>
                   <input type="password" className="form-control" />
                 </div>
                 <div className="col-md-12 mt-4">
-                  <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-100"
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
-                      <div className="spinner-border spinner-border-sm" role="status">
+                      <div
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                      >
                         <span className="visually-hidden">Loading...</span>
                       </div>
                     ) : (

@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
-import Layout from '../../common/Layout/Layout';
-import api from '../../api/index';
-
+import Layout from "../../common/Layout/Layout";
+import api from "../../api/index";
 
 function Login() {
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,8 +17,7 @@ function Login() {
       setIsLoading(true);
       const response = await api.auth.login({ email, password });
 
-
-      if(response){
+      if (response) {
         setIsLoading(false);
         // Store tokens in local storage
         localStorage.setItem("token", response.token);
@@ -29,8 +26,12 @@ function Login() {
 
       navigate("/");
     } catch (error) {
-      setIsLoading(false); 
-      if (error.response && error.response.data && error.response.data.message) {
+      setIsLoading(false);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
       } else {
         toast.error("An error occurred. Please try again later.");
@@ -40,7 +41,7 @@ function Login() {
 
   return (
     <div className="container py-3">
-       <ToastContainer />
+      <ToastContainer />
       <div className="row my-4">
         <div className="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
           <div className="card border-0 shadow-sm">
@@ -59,8 +60,12 @@ function Login() {
                 </div>
                 <div className="col-md-12">
                   <label className="form-label">Password</label>
-                  <input type="password" className="form-control" value={password}
-                    onChange={(e) => setPassword(e.target.value)}/>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                 </div>
                 <div className="col-md-12">
                   <Link to="/forgot-password">
@@ -68,9 +73,16 @@ function Login() {
                   </Link>
                 </div>
                 <div className="col-md-12 mt-4">
-                <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-100"
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
-                      <div className="spinner-border spinner-border-sm" role="status">
+                      <div
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                      >
                         <span className="visually-hidden">Loading...</span>
                       </div>
                     ) : (
@@ -83,7 +95,7 @@ function Login() {
             <hr className="text-muted my-0" />
             <div className="text-center p-3">
               Don&lsquo;t have an account?{" "}
-                <a className="text-decoration-none fw-medium">Register</a>
+              <a className="text-decoration-none fw-medium">Register</a>
             </div>
           </div>
         </div>
