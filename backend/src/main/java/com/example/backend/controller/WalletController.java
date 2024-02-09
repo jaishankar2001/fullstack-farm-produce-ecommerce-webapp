@@ -34,14 +34,4 @@ public class WalletController {
     public void topUp(@RequestBody WalletRequest request) {
         walletService.addMoney(request.getUserId(), request.getAmount());
     }
-
-    // @PostMapping("/spend")
-    // @ResponseStatus(HttpStatus.CREATED)
-    // public void spend(@RequestBody WalletRequest request) {
-    // // For the spend operation, you need to specify the receiverId. Assuming it's
-    // also part of the request.
-    // // int receiverId = request.getUserId();
-    // walletService.spendMoney(request.getUserId(), request.getUserId(),
-    // request.getAmount());
-    // }
 }

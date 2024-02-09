@@ -50,25 +50,4 @@ public class WalletServiceImpl implements WalletService {
             System.out.println("OOPS: Wallet Info not found for the pertaining user: " + userId);
         }
     }
-
-    // public void spendMoney(int payerId, int receiverId, double amount){
-    // UserMeta payerInfo = userMeta.findById(payerId);
-    // UserMeta receiverInfo = userMeta.findById(receiverId);
-
-    // if(payerInfo!= null && receiverInfo != null){
-    // double updatePayerBalance = payerInfo.getWallet_balance() - amount;
-    // payerInfo.setWallet_balance(updatePayerBalance);
-    // // Updating the sender side for the payment.
-
-    // double updateReceiverBalance = receiverInfo.getWallet_balance() + amount;
-    // receiverInfo.setWallet_balance(updateReceiverBalance);
-    // // Updating the receiver side after the deduction from the payer side.
-    // userMeta.save(payerInfo);
-    // userMeta.save(receiverInfo);
-    // // Saving the transaction
-    // } else {
-    // System.out.println("OOPS: Wallet Info not found for either Payer or
-    // Receiver");
-    // }
-    // }
 }
