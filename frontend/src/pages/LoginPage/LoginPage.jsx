@@ -55,7 +55,7 @@ function Login() {
                     className="form-control"
                     placeholder="name@domain.com"
                     value={email}
-                    onSubmit={handleSubmit}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="col-md-12">
