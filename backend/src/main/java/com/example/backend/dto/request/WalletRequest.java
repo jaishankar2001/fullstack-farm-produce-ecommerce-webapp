@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class WalletRequest {
-    private int userId;
-    private double amount;
+    private String email;
+    private Double amount;
 }
