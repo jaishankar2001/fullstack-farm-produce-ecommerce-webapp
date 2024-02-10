@@ -18,7 +18,6 @@ import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
 
 import com.example.backend.dto.request.WalletRequest;
-import com.example.backend.dto.response.WalletHistoryResponse;
 import com.example.backend.dto.response.WalletResponse;
 import com.example.backend.entities.Wallet;
 import com.example.backend.exception.ApiRequestException;
