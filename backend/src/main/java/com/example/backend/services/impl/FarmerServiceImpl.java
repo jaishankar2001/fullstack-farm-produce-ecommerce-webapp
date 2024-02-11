@@ -1,5 +1,6 @@
 package com.example.backend.services.impl;
 
+import com.example.backend.dto.request.EditFarmRequest;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,6 +55,44 @@ public class FarmerServiceImpl implements FarmerService {
 
         List<Farms> userFarms = farmRepository.findByUser(user);
         return userFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public String editFarm(EditFarmRequest farmRequest, MultipartFile[] multipartFiles, Principal principal) {
+        Farms farm = farmRepository.findById(farmRequest.getId());
+        if(farmRequest.getName()!=null){
+            farm.setName(farmRequest.getName());
+        }
+        if(farmRequest.getAddress()!=null){
+            farm.setAddress(farmRequest.getAddress());
+        }
+        if(farmRequest.getLng()!=0){
+            farm.setLng(farmRequest.getLng());
+        }
+        if(farmRequest.getLat()!=0){
+            farm.setLat(farmRequest.getLat());
+        }
+        List<Images> farmImages = farm.getImages();
+        for (Images image : farmImages) {
+            awsutils.deleteFilefromS3(image.getImg_url());
+
+            //imagesRepository.deleteById(image.getId());
+        }
+        farmImages.clear();
+        //farm.getImages().clear();
+        //farmImages = new ArrayList<>();
+        for (MultipartFile file : multipartFiles) {
+            String url = awsutils.uploadFileToS3(file, "FARM", farm.getId());
+            Images image = new Images();
+            image.setFarm(farm);
+            image.setImg_url(url);
+            imagesRepository.save(image);
+            System.out.println("-=-=-=-=-  " + url);
+            farmImages.add(image);
+        }
+        farm.setImages(farmImages);
+        farmRepository.save(farm);
+        return "Farm details edited successfully";
     }
 
     private FarmDto convertFarmResponse(Farms current_farm) {
