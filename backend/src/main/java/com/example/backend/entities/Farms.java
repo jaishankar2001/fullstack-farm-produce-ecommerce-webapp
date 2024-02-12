@@ -28,12 +28,12 @@ public class Farms {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonManagedReference
     private List<Images> images;
 
-    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonManagedReference
     private List<Product> product;

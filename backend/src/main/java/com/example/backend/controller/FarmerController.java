@@ -1,11 +1,13 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.request.EditFarmRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backend.dto.request.AddFarmRequest;
+import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.FarmDto;
 import com.example.backend.services.FarmerService;
 
@@ -17,8 +19,10 @@ import java.util.*;
 import java.security.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -43,5 +47,23 @@ public class FarmerController {
         response.put("message", principal.getName());
         response.put("Farmsss", AllFarmerFarms);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/editfarm")
+    public ResponseEntity<Map> editFarm(@ModelAttribute EditFarmRequest farmRequest,
+            @RequestPart(value = "files") MultipartFile[] files, Principal principal) {
+        String editFarmResponse = farmerService.editFarm(farmRequest, files, principal);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", principal.getName());
+        response.put("Result", editFarmResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/farms/{id}")
+    public ResponseEntity<ApiResponse> deleteFarm(@PathVariable int id) {
+        farmerService.deleteFarm(id);
+        ApiResponse response = new ApiResponse();
+        response.setMessage("Farm deleted successfully");
+        return ResponseEntity.ok(response);
     }
 }

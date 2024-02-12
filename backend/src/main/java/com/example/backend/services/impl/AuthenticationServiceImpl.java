@@ -20,9 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashMap;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
-    private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JWTService jwtService;
     private final UserDetailsService userDetailsService;
@@ -62,7 +59,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return user;
 
     }
-    public String forgotPassword(ResetPasswordRequest resetPasswordRequest){
+
+    public String forgotPassword(ResetPasswordRequest resetPasswordRequest) {
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail());
         if (user == null) {
             throw new ApiRequestException("User doesn't exist");
