@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.request.EditFarmRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,15 @@ public class FarmerController {
 
         response.put("message", principal.getName());
         response.put("Farmsss", AllFarmerFarms);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+    @PostMapping("/editfarm")
+    public ResponseEntity<Map> editFarm(@ModelAttribute EditFarmRequest farmRequest,
+                                     @RequestPart(value = "files") MultipartFile[] files, Principal principal){
+        String editFarmResponse = farmerService.editFarm(farmRequest, files, principal);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", principal.getName());
+        response.put("Result", editFarmResponse);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
