@@ -46,6 +46,11 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_id")
     private UserMeta userMeta;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Wallet> wallet;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
