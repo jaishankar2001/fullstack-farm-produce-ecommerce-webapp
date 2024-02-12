@@ -5,6 +5,7 @@ import com.example.backend.dto.request.ResetPasswordRequest;
 import com.example.backend.dto.request.SignInRequest;
 import com.example.backend.dto.request.SignUpRequest;
 import com.example.backend.dto.response.JwtAuthenticationResponse;
+import com.example.backend.dto.response.LoginResponse;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserMeta;
 import com.example.backend.entities.VerificationType;
@@ -70,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return "Please check email for password reset link";
     }
 
-    public JwtAuthenticationResponse signIn(SignInRequest signInRequest) {
+    public LoginResponse signIn(SignInRequest signInRequest) {
 
         UserMeta userMeta;
         // User tempUser =
@@ -87,10 +88,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     var jwt = jwtService.generateToken(tempUser);
                     var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), tempUser);
 
-                    JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
-                    jwtAuthenticationResponse.setToken(jwt);
-                    jwtAuthenticationResponse.setRefreshToken(refreshToken);
-                    return jwtAuthenticationResponse;
+                    LoginResponse loginResponse = new LoginResponse();
+                    loginResponse.setToken(jwt);
+                    loginResponse.setRefreshToken(refreshToken);
+                    loginResponse.setEmail(tempUser.getEmail());
+                    loginResponse.setFirstname(tempUser.getFirstname());
+                    loginResponse.setLastname(tempUser.getLastname());
+                    loginResponse.setRole(tempUser.getRole());
+                    loginResponse.setWallet_balance(userMeta.getWallet_balance());
+                    return loginResponse;
                 } else {
                     throw new ApiRequestException("please varify your email");
                 }

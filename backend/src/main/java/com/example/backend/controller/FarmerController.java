@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.FarmDto;
+import com.example.backend.entities.Farms;
 import com.example.backend.services.FarmerService;
 
 // import com.example.Auth.entities.Farms;
@@ -36,6 +37,12 @@ public class FarmerController {
     @GetMapping
     public ResponseEntity<String> farmerHome() {
         return ResponseEntity.ok("Hi Farmer");
+    }
+
+    @GetMapping("/own-farms")
+    public ResponseEntity<List<Farms>> getFarms(Principal principal) {
+        List<Farms> userFarms = farmerService.getFarms(principal);
+        return ResponseEntity.ok(userFarms);
     }
 
     @PostMapping("/addfarm")
@@ -66,4 +73,5 @@ public class FarmerController {
         response.setMessage("Farm deleted successfully");
         return ResponseEntity.ok(response);
     }
+
 }
