@@ -123,6 +123,16 @@ public class FarmerServiceImpl implements FarmerService {
         farmRepository.deleteById(id);
     }
 
+    @Override
+    public List<FarmDto> getFarms(Principal principal) {
+        User user = userRepository.findByEmail(principal.getName());
+        if (user == null) {
+            throw new ApiRequestException("User not found");
+        }
+        List<Farms> userFarms = farmRepository.findByUser(user);
+        return userFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
+    }
+
     private FarmDto convertFarmResponse(Farms current_farm) {
         FarmDto farmDTO = new FarmDto();
         farmDTO.setId(current_farm.getId());

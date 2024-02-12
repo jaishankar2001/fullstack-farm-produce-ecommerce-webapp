@@ -7,6 +7,7 @@ import java.util.List;
 import java.security.Principal;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.FarmDto;
+import com.example.backend.entities.Farms;
 
 public interface FarmerService {
     List<FarmDto> addFarm(AddFarmRequest farmRequest, MultipartFile[] files, Principal principal);
@@ -14,4 +15,6 @@ public interface FarmerService {
     void deleteFarm(int id);
 
     String editFarm(EditFarmRequest farmRequest, MultipartFile[] files, Principal principal);
+
+    List<FarmDto> getFarms(Principal principal);
 }
