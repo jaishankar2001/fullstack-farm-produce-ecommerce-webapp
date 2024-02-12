@@ -14,9 +14,12 @@ import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.FarmDto;
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
+import com.example.backend.entities.Product;
 import com.example.backend.entities.User;
+import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.FarmRepository;
 import com.example.backend.repository.ImagesRepository;
+import com.example.backend.repository.ProductRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.FarmerService;
 import com.example.backend.utils.Awsutils;
@@ -29,6 +32,7 @@ public class FarmerServiceImpl implements FarmerService {
     private final ModelMapper modelMapper;
     private final Awsutils awsutils;
     private final ImagesRepository imagesRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public List<FarmDto> addFarm(AddFarmRequest farmRequest, final MultipartFile[] multipartFiles,
@@ -60,27 +64,27 @@ public class FarmerServiceImpl implements FarmerService {
     @Override
     public String editFarm(EditFarmRequest farmRequest, MultipartFile[] multipartFiles, Principal principal) {
         Farms farm = farmRepository.findById(farmRequest.getId());
-        if(farmRequest.getName()!=null){
+        if (farmRequest.getName() != null) {
             farm.setName(farmRequest.getName());
         }
-        if(farmRequest.getAddress()!=null){
+        if (farmRequest.getAddress() != null) {
             farm.setAddress(farmRequest.getAddress());
         }
-        if(farmRequest.getLng()!=0){
+        if (farmRequest.getLng() != 0) {
             farm.setLng(farmRequest.getLng());
         }
-        if(farmRequest.getLat()!=0){
+        if (farmRequest.getLat() != 0) {
             farm.setLat(farmRequest.getLat());
         }
         List<Images> farmImages = farm.getImages();
         for (Images image : farmImages) {
             awsutils.deleteFilefromS3(image.getImg_url());
 
-            //imagesRepository.deleteById(image.getId());
+            // imagesRepository.deleteById(image.getId());
         }
         farmImages.clear();
-        //farm.getImages().clear();
-        //farmImages = new ArrayList<>();
+        // farm.getImages().clear();
+        // farmImages = new ArrayList<>();
         for (MultipartFile file : multipartFiles) {
             String url = awsutils.uploadFileToS3(file, "FARM", farm.getId());
             Images image = new Images();
@@ -93,6 +97,30 @@ public class FarmerServiceImpl implements FarmerService {
         farm.setImages(farmImages);
         farmRepository.save(farm);
         return "Farm details edited successfully";
+    }
+
+    @Override
+    public void deleteFarm(int id) {
+        Farms farm = farmRepository.findById(id);
+        if (farm == null) {
+            throw new ApiRequestException("Farm not found");
+        }
+
+        List<Product> products = farm.getProduct();
+        // looping through products
+        for (Product product : products) {
+
+            // first deleting related images as products are associated with images
+            List<Images> productImages = product.getImages();
+            for (Images image : productImages) {
+                imagesRepository.deleteById(image.getId());
+            }
+            // deleting product
+            productRepository.deleteById(product.getId());
+        }
+
+        // deleting farm
+        farmRepository.deleteById(id);
     }
 
     private FarmDto convertFarmResponse(Farms current_farm) {

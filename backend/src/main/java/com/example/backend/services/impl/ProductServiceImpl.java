@@ -16,6 +16,7 @@ import com.example.backend.entities.Category;
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
 import com.example.backend.entities.Product;
+import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.CategoryRepository;
 import com.example.backend.repository.FarmRepository;
 import com.example.backend.repository.ImagesRepository;
@@ -93,6 +94,21 @@ public class ProductServiceImpl implements ProductService {
             dto.setCategory(categoryDto);
         }
         return dto;
+    }
+
+    @Override
+    public void deleteProduct(int id) {
+        Product product = productRepository.findById(id);
+        if (product == null) {
+            throw new ApiRequestException("Product not found");
+        }
+        List<Images> productImages = product.getImages();
+        for (Images image : productImages) {
+            imagesRepository.deleteById(image.getId());
+        }
+        // deleting product
+        productRepository.deleteById(product.getId());
+
     }
 
 }

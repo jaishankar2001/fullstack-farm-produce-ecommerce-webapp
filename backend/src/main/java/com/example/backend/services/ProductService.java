@@ -8,4 +8,6 @@ import com.example.backend.dto.response.ProductDto;
 
 public interface ProductService {
     List<ProductDto> addProduct(AddProductRequest product, MultipartFile[] files, Principal principal);
+
+    void deleteProduct(int id);
 }

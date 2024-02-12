@@ -9,4 +9,8 @@ import com.example.backend.entities.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByFarm(Farms farm);
+
+    Product findById(int id);
+
+    void deleteById(int id);
 }
