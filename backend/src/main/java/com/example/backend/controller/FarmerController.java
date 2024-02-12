@@ -40,8 +40,8 @@ public class FarmerController {
     }
 
     @GetMapping("/own-farms")
-    public ResponseEntity<List<Farms>> getFarms(Principal principal) {
-        List<Farms> userFarms = farmerService.getFarms(principal);
+    public ResponseEntity<List<FarmDto>> getFarms(Principal principal) {
+        List<FarmDto> userFarms = farmerService.getFarms(principal);
         return ResponseEntity.ok(userFarms);
     }
 
