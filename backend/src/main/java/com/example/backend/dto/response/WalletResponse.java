@@ -3,6 +3,6 @@ package com.example.backend.dto.response;
 import lombok.Data;
 
 @Data
-public class ApiResponse {
-    private String message;
+public class WalletResponse {
+    private double balance;
 }
