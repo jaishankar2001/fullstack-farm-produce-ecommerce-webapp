@@ -23,19 +23,17 @@ public class SecurityConfiguration {
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                    request -> {
-                        request.requestMatchers("/api/farmer/**").hasAuthority(Role.FARMER.name());
-                        request.requestMatchers("/api/customer/**").hasAuthority(Role.CUSTOMER.name());
-                        request.requestMatchers("/api/**").permitAll();
-                        request.anyRequest().authenticated();
-    })
+                        request -> {
+                            request.requestMatchers("/api/farmer/**").hasAuthority(Role.FARMER.name());
+                            request.requestMatchers("/api/auth/**").permitAll();
+                            request.anyRequest().authenticated();
+                        })
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-                
 
         return http.build();
 
