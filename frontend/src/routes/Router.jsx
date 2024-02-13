@@ -6,6 +6,7 @@ import SignUp from "../pages/SignUpPage/SignUpPage";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
+import Wallet from "../pages/wallet/wallet";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -36,6 +37,10 @@ export const Router = () => {
         {
           path: "/verify-email",
           element: <VerifyEmail />,
+        },
+        {
+          path: "/wallet",
+          element: <Wallet />,
         },
       ],
     },
