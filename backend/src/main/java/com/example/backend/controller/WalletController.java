@@ -54,7 +54,7 @@ public class WalletController {
     public RedirectView topUp(@ModelAttribute WalletRequest request) {
         try {
             walletService.addMoney(request.getEmail(), request.getAmount());
-            return new RedirectView("http://localhost:3000/payment/success");
+            return new RedirectView("http://localhost:3000/wallet");
         } catch (Exception e) {
             return new RedirectView("http://localhost:3000/payment/success");
         }
