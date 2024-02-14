@@ -14,8 +14,8 @@ public class FarmDto {
     private int id;
     private String name;
     private String Address;
-    private int lat;
-    private int lng;
+    private double lat;
+    private double lng;
     private List<ImageDto> images = new ArrayList<>();
 
     public void addImage(Images image) {
