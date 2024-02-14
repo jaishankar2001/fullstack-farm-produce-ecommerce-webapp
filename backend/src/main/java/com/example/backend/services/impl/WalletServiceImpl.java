@@ -15,6 +15,7 @@ import com.example.backend.entities.Wallet;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.UserMetaRepository;
 import com.example.backend.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -102,7 +103,7 @@ public class WalletServiceImpl implements WalletService {
     public List<Wallet> gethistory(Principal principal) {
         try {
             User user = userRepository.findByEmail(principal.getName());
-            List<Wallet> wallet = walletRepository.findAllByUserId(user.getId());
+            List<Wallet> wallet = walletRepository.findAllByUserId(user.getId(), Sort.by(Sort.Direction.DESC, "createdAt"));
             return wallet;
         } catch (Exception e) {
             throw new ApiRequestException(e.getMessage());
