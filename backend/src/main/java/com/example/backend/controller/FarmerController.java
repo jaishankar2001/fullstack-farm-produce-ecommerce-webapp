@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.dto.request.EditFarmRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ import com.example.backend.services.FarmerService;
 // import com.example.Auth.services.FarmerService;
 
 import java.util.*;
-
+import java.util.stream.Collectors;
 import java.security.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,11 +48,11 @@ public class FarmerController {
 
     @PostMapping("/addfarm")
     public ResponseEntity<Map> addFarm(@ModelAttribute AddFarmRequest farmRequest,
-            @RequestPart(value = "files") MultipartFile[] files, Principal principal) {
-        List<FarmDto> AllFarmerFarms = farmerService.addFarm(farmRequest, files, principal);
+            @RequestParam(value = "files") MultipartFile[] files, Principal principal) {
+        System.out.println("files" + files);
+        List<FarmDto> AllFarmerFarms = farmerService.addFarm(farmRequest, files,
+                principal);
         Map<String, Object> response = new HashMap<>();
-
-        response.put("message", principal.getName());
         response.put("Farmsss", AllFarmerFarms);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

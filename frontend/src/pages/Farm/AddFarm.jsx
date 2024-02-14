@@ -4,47 +4,43 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import DropzoneComponent from "../../components/DropzoneComponent";
 import MapComponent from "../../components/MapComponent";
-import { farmState } from "../../recoil/atoms/farm"; 
+import { farmState } from "../../recoil/atoms/farm";
 import { useRecoilState } from "recoil";
 
 function AddFarm() {
   const [farmName, setFarmName] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [farmData, setFarmData] = useRecoilState(farmState); 
+  const [farmData, setFarmData] = useRecoilState(farmState);
   const [files, setFiles] = useState([]);
-  console.log(farmData);
-  console.log(files[0], 'files');
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append("files", files);
+
+      files.forEach((file) => {
+        formData.append(`files`, file);
+      });
+      formData.append("name", farmData.name);
       formData.append("Address", farmData.Address);
       formData.append("lat", farmData.lat);
       formData.append("lng", farmData.lng);
 
-      const token = localStorage?.getItem('token');
+      const token = localStorage?.getItem("token");
       const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       };
       const response = await fetch("http://localhost:8080/api/farmer/addfarm", {
-        method: 'POST',
+        method: "POST",
         headers: headers,
         body: formData,
       });
 
-      // const response = await api.farm.addFarm(formData);  
-      if (response) {
-        setIsLoading(false);
-      }
-
       navigate("/");
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       if (
         error.response &&
@@ -73,39 +69,18 @@ function AddFarm() {
                 <h4 className="fw-bold mb-0">Register Your Farm</h4>
                 <div>
                   <label className="form-label">Farm Name</label>
-                  <input type="text" className="form-control" 
-                    value={farmName}
-                    onChange={(e) => {setFarmName(e.target.value);  setFarmData((prevFarmData) => ({
-                      ...prevFarmData,
-                      name: farmName, // Update address in Recoil state
-                    }));}}/>
-                </div>
-                <div className="col-md-12">
-                  <hr className="text-muted mb-0" />
-                </div>
-                <h6 className="fw-semibold mb-0">Contact Info</h6>
-                <div className="col-md-6">
-                  <label className="form-label">Phone</label>
-                  <div className="input-group">
-                    <div>
-                      <select className="form-select rounded-0 rounded-start bg-light">
-                        <option>+1</option>
-                      </select>
-                    </div>
-                    <input type="tel" className="form-control" />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label">Email</label>
                   <input
-                    type="email"
+                    type="text"
                     className="form-control"
-                    placeholder="name@domain.com"
+                    value={farmName}
+                    onChange={(e) => {
+                      setFarmName(e.target.value);
+                      setFarmData((prevFarmData) => ({
+                        ...prevFarmData,
+                        name: farmName, // Update address in Recoil state
+                      }));
+                    }}
                   />
-                </div>
-
-                <div className="col-md-12">
-                  <hr className="text-muted mb-0" />
                 </div>
 
                 <h6 className="fw-semibold mb-0">About your Farm</h6>
@@ -124,11 +99,8 @@ function AddFarm() {
 
                 <div className="col-md-12 mt-4">
                   <div className="d-grid gap-2 d-flex justify-content-end">
-                    <Link href="/shopping-cart">
-                      <a className="btn btn-outline-primary">Cancel</a>
-                    </Link>
                     <Link href="/" onClick={handleSubmit}>
-                      <a className="btn btn-primary">Continue</a>
+                      <a className="btn btn-primary">Submit</a>
                     </Link>
                   </div>
                 </div>

@@ -19,8 +19,8 @@ public class Farms {
 
     private String name;
     private String Address;
-    private int lat;
-    private int lng;
+    private double lat;
+    private double lng;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

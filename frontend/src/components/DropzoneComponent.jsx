@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const baseStyle = {
   display: "flex",
   flexDirection: "column",
@@ -34,17 +34,16 @@ function DropzoneComponent({ onFilesSelected }) {
     (acceptedFiles) => {
       console.log(acceptedFiles, "acceptedfiles");
       onFilesSelected(acceptedFiles);
-  
       const updatedFiles = acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
         })
       );
+
       setFiles(updatedFiles);
     },
     [onFilesSelected]
   );
-  
 
   const {
     getRootProps,
@@ -71,28 +70,19 @@ function DropzoneComponent({ onFilesSelected }) {
     <li key={file.path}>
       {file.path} - {file.size} bytes{" "}
       <button
+        className="btn btn-sm btn-danger"
+        type="button"
         onClick={(e) => {
-          //   e.preventDefault();
-          //   const updatedFiles = files.splice(files.indexOf(file), 1);
           e.preventDefault();
           const newFiles = [...files];
           newFiles.splice(newFiles.indexOf(file), 1);
           setFiles(newFiles);
         }}
       >
-        Remove File
+        <FontAwesomeIcon icon={["fas", "trash-alt"]} />
       </button>
     </li>
   ));
-
-  // clean up
-  useEffect(
-    () => () => {
-      console.log("12", files);
-      // files.forEach((file) => URL.revokeObjectURL(file.preview));
-    },
-    [files]
-  );
 
   return (
     <section>
