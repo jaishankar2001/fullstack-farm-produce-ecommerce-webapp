@@ -27,15 +27,24 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-function DropzoneComponent(props) {
+function DropzoneComponent({ onFilesSelected }) {
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      setFiles([...files, ...acceptedFiles]);
+      console.log(acceptedFiles, "acceptedfiles");
+      onFilesSelected(acceptedFiles);
+  
+      const updatedFiles = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
+      setFiles(updatedFiles);
     },
-    [files]
+    [onFilesSelected]
   );
+  
 
   const {
     getRootProps,

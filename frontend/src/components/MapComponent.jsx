@@ -12,7 +12,7 @@ function MapComponent(props) {
   }, [selectedLocation]);
   return (
     <div>
-      <h2>Pinpoint Your Farm Location</h2>
+      <h5 className="fw-semibold mb-0">Pinpoint Your Farm Location</h5>
       <MapView
         setSelectedLocation={setSelectedLocation}
         selectedLocation={selectedLocation}

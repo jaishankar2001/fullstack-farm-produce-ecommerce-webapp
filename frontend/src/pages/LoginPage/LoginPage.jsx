@@ -22,9 +22,8 @@ function Login() {
         // Store tokens in local storage
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
+        window.location.replace("/");
       }
-
-      navigate("/");
     } catch (error) {
       setIsLoading(false);
       if (

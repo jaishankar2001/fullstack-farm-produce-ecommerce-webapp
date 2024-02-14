@@ -1,9 +1,14 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import axios from "axios";
 import AutoComplete from "react-google-autocomplete";
+import { farmState } from "../recoil/atoms/farm";
+import { useRecoilState } from "recoil";
 
 const MapView = ({ setSelectedLocation, selectedLocation }) => {
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState();
+  const [farmData, setFarmData] = useRecoilState(farmState);
 
   useEffect(() => {
     window.initMap = () => setGmapsLoaded(true);
@@ -12,17 +17,35 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
     document
       .querySelector(`body`)
       .insertAdjacentElement(`beforeend`, gmapScriptEl);
-  }, []);
+  }, [selectedAddress]);
 
   const center = useMemo(() => ({ lat: 44.6475811, lng: -63.5727683 }), []);
+  
+  const address = `${selectedAddress?.[0]?.long_name}, ${selectedAddress?.[1]?.long_name}, ${selectedAddress?.[2]?.long_name}, ${selectedAddress?.[3]?.long_name}, ${selectedAddress?.[4]?.long_name}, ${selectedAddress?.[5]?.long_name}, ${selectedAddress?.[6]?.long_name}, ${selectedAddress?.[7]?.long_name}`;
+
 
   const handlePlaceSelect = async (lat, lng) => {
-    const latLng = {
-      lat,
-      lng,
-    };
-    console.log("lat, lng", lat, lng, latLng);
-    setSelectedLocation(latLng);
+    setSelectedLocation({ lat, lng });
+
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyC92l4kh5h0HvZxwjtRg_F_uIwDCphriQI`
+      );
+
+      const addressComponents = response.data.results[0].address_components;
+      setSelectedAddress((prevAddress) => {
+        const updatedAddress = addressComponents.map((component) => component.long_name).join(", ");
+        setFarmData((prevFarmData) => ({
+          ...prevFarmData,
+          lat,
+          lng,
+          Address: updatedAddress, // Update address in Recoil state
+        }));
+        return addressComponents;
+      });
+    } catch (error) {
+      console.error("Error fetching address:", error);
+    }
   };
   const [map, setMap] = React.useState(null);
 
@@ -42,15 +65,21 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
         <h1>Loading...</h1>
       ) : (
         <>
-          <AutoComplete
-            apiKey={"AIzaSyC92l4kh5h0HvZxwjtRg_F_uIwDCphriQI"}
-            onPlaceSelected={(place) =>
-              handlePlaceSelect(
-                place.geometry.location.lat(),
-                place.geometry.location.lng()
-              )
-            }
-          />
+          <div className="fw-semibold mt-3 mb-3">
+            <AutoComplete
+              apiKey={"AIzaSyC92l4kh5h0HvZxwjtRg_F_uIwDCphriQI"}
+              onPlaceSelected={(place) =>
+                handlePlaceSelect(
+                  place.geometry.location.lat(),
+                  place.geometry.location.lng()
+                )
+              }
+              componentRestrictions={{ country: "canada" }}
+              options={{
+                types: ["geocode", "establishment"],
+              }}
+            />
+          </div>
           <GoogleMap
             mapContainerStyle={{
               height: "400px",
@@ -68,9 +97,17 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
               }}
             />
           </GoogleMap>
-          <h1>
-            {selectedLocation.lat} {selectedLocation.lng}
-          </h1>
+
+          {/* {selectedLocation.lat} {selectedLocation.lng} */}
+          <div className="mt-4">
+            <label className="form-label fw-semibold">Selected Address</label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Address"
+              value={selectedAddress ? address : ""}
+            />
+          </div>
         </>
       )}
     </div>

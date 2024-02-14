@@ -2,28 +2,45 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
-import Layout from "../../common/Layout/Layout";
-import api from "../../api/index";
 import DropzoneComponent from "../../components/DropzoneComponent";
 import MapComponent from "../../components/MapComponent";
+import { farmState } from "../../recoil/atoms/farm"; 
+import { useRecoilState } from "recoil";
 
 function AddFarm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [farmName, setFarmName] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [farmData, setFarmData] = useRecoilState(farmState); 
+  const [files, setFiles] = useState([]);
+  console.log(farmData);
+  console.log(files[0], 'files');
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      const response = await api.auth.login({ email, password });
+      const formData = new FormData();
+      formData.append("files", files);
+      formData.append("Address", farmData.Address);
+      formData.append("lat", farmData.lat);
+      formData.append("lng", farmData.lng);
 
+      const token = localStorage?.getItem('token');
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      };
+      const response = await fetch("http://localhost:8080/api/farmer/addfarm", {
+        method: 'POST',
+        headers: headers,
+        body: formData,
+      });
+
+      // const response = await api.farm.addFarm(formData);  
       if (response) {
         setIsLoading(false);
-        // Store tokens in local storage
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("refreshToken", response.refreshToken);
       }
 
       navigate("/");
@@ -41,6 +58,10 @@ function AddFarm() {
     }
   };
 
+  const handleFilesSelected = (selectedFiles) => {
+    setFiles(selectedFiles);
+  };
+
   return (
     <div className="container py-3">
       <ToastContainer />
@@ -49,21 +70,26 @@ function AddFarm() {
           <div className="card border-0 shadow-sm">
             <div className="card-body">
               <form className="row g-3">
-                <h4 className="fw-semibold mb-0">Contact Info</h4>
-                <div className="col-md-6">
-                  <label className="form-label">First Name</label>
-                  <input type="text" className="form-control" />
+                <h4 className="fw-bold mb-0">Register Your Farm</h4>
+                <div>
+                  <label className="form-label">Farm Name</label>
+                  <input type="text" className="form-control" 
+                    value={farmName}
+                    onChange={(e) => {setFarmName(e.target.value);  setFarmData((prevFarmData) => ({
+                      ...prevFarmData,
+                      name: farmName, // Update address in Recoil state
+                    }));}}/>
                 </div>
-                <div className="col-md-6">
-                  <label className="form-label">Last Name</label>
-                  <input type="text" className="form-control" />
+                <div className="col-md-12">
+                  <hr className="text-muted mb-0" />
                 </div>
+                <h6 className="fw-semibold mb-0">Contact Info</h6>
                 <div className="col-md-6">
                   <label className="form-label">Phone</label>
                   <div className="input-group">
                     <div>
                       <select className="form-select rounded-0 rounded-start bg-light">
-                        <option>+95</option>
+                        <option>+1</option>
                       </select>
                     </div>
                     <input type="tel" className="form-control" />
@@ -82,14 +108,18 @@ function AddFarm() {
                   <hr className="text-muted mb-0" />
                 </div>
 
-                <h4 className="fw-semibold mb-0">Shipping Info</h4>
-                <div className="col-md-12">
-                  <label className="form-label">Address</label>
-                  <input type="text" className="form-control" />
+                <h6 className="fw-semibold mb-0">About your Farm</h6>
+                <div>
+                  <input type="textarea" className="form-control" />
                 </div>
 
                 <div className="col-md-12">
-                  <DropzoneComponent />
+                  <hr className="text-muted mb-0" />
+                </div>
+
+                <h6 className="fw-semibold mb-0">Add Farm Images</h6>
+                <div className="col-md-12">
+                  <DropzoneComponent onFilesSelected={handleFilesSelected} />
                 </div>
 
                 <div className="col-md-12 mt-4">
@@ -97,7 +127,7 @@ function AddFarm() {
                     <Link href="/shopping-cart">
                       <a className="btn btn-outline-primary">Cancel</a>
                     </Link>
-                    <Link href="/checkout/payment-info">
+                    <Link href="/" onClick={handleSubmit}>
                       <a className="btn btn-primary">Continue</a>
                     </Link>
                   </div>

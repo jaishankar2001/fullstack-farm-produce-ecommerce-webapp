@@ -1,16 +1,32 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import { logo } from "../../assets/images";
 import { loadStripe } from "@stripe/stripe-js";
 import Modal from "react-modal";
 import api from "../../api/index";
+import UserDropdown from "../user-dropdown/UserDropDown";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [amount, setAmount] = React.useState();
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+   setIsLoggedIn(localStorage.getItem('token') ? true: false);
+  }, [])
+
   function closeModal() {
     setIsOpen(false);
   }
+
+  const handleLogout = () => {
+    // Simulate logout by removing the token from localStorage
+    setIsLoggedIn(false);
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,20 +54,31 @@ export const Header = () => {
             <span className="ms-2 mb-0 h2 text-primary fw-bold">ECOPICK</span>
           </a>
           <div className="d-flex">
-            <button onClick={() => setIsOpen(true)}>Open Modal</button>
-            <Link to="/login">
-              <a className="btn btn-outline-primary d-none d-md-block">Login</a>
-            </Link>
-            <Link to="/signup">
-              <a className="btn btn-primary d-none d-md-block ms-2">Sign up</a>
-            </Link>
+            {
+              !isLoggedIn? (
+                <>
+                 <button onClick={() => setIsOpen(true)}>Open Modal</button>
+                <Link to="/login">
+                  <a className="btn btn-outline-primary d-none d-md-block">Login</a>
+                </Link>
+                <Link to="/signup">
+                  <a className="btn btn-primary d-none d-md-block ms-2">Sign up</a>
+                </Link>
+                </>
+               
+              ): (
+                <>
+                <UserDropdown handleLogout={handleLogout}/> 
+                </>
+              )
+            }
+          
           </div>
         </div>
       </nav>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        // style={customStyles}
         contentLabel="Example Modal"
       >
         <div className="container py-3">
