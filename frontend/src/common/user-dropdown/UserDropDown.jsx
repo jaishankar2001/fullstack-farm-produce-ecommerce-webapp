@@ -23,7 +23,7 @@ const UserDropdown = ({handleLogout}) => {
       </button>
       {isOpen && (
         <ul className="dropdown-list">
-          <li onClick={() => {setIsOpen(false); navigate("/add-farm");}}>Start Selling</li>
+          <li onClick={() => {setIsOpen(false); navigate("/add-product");}}>Start Selling</li>
           <li onClick={() => {setIsOpen(false); navigate("/wallet");}}>Wallet</li>
           <li onClick={handleLogout}>Logout</li>
         </ul>
