@@ -1,29 +1,25 @@
-import Layout from '../../common/Layout/Layout';
-import { Link, useNavigate, useSearchParams} from "react-router-dom";
-import api from '../../api/index';
+import Layout from "../../common/Layout/Layout";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import api from "../../api/index";
 import { useState } from "react";
 
 function ResetPassword() {
-
-    
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [searchParams] = useSearchParams();
-    const email = searchParams.get('email');
-    const code = searchParams.get('code');
-    const navigate = useNavigate();
-
-    console.log(email, code);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get("email");
+  const code = searchParams.get("code");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Call API with username and password
     try {
-      const response = await api.auth.resetPassword( email, code, newPassword );
+      const response = await api.auth.resetPassword(email, code, newPassword);
 
       // Assuming the response contains a token
-    //   localStorage.setItem("token", response.token);
-    //   localStorage.setItem("refreshToken", response.refreshToken);
+      //   localStorage.setItem("token", response.token);
+      //   localStorage.setItem("refreshToken", response.refreshToken);
 
       // Navigate to desired location upon successful login
       navigate("/");
@@ -42,13 +38,21 @@ function ResetPassword() {
               <form className="row g-3" onSubmit={handleSubmit}>
                 <div className="col-md-6">
                   <label className="form-label">New Password</label>
-                  <input type="password" className="form-control" value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}/>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Confirm Password</label>
-                  <input type="password" className="form-control" value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}/>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
                 </div>
                 <div className="col-md-12 mt-3">
                   <button className="btn btn-primary w-100">Reset</button>

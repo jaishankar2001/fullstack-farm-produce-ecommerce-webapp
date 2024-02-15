@@ -6,4 +6,5 @@ import com.example.backend.entities.Images;
 
 public interface ImagesRepository extends JpaRepository<Images, Integer> {
 
+    void deleteById(int id);
 }
