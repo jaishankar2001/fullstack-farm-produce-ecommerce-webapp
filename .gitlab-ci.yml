@@ -3,7 +3,7 @@ stages:
   - test
   - deploy
 
-buid: 
+build: 
   stage: build
   image: maven:latest
   script: 
@@ -16,7 +16,7 @@ test:
     - echo "Testing backend..."
 
 deploy:
-  stage: deply
+  stage: deploy
   script:
    - echo "Deploying Backend..."
   only: 
