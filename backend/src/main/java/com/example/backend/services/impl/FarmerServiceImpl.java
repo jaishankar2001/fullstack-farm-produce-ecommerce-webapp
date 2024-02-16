@@ -133,6 +133,11 @@ public class FarmerServiceImpl implements FarmerService {
         return userFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
     }
 
+    @Override
+    public List<FarmDto> getAllFarms(){
+        List<Farms> allFarms = farmRepository.findAll();
+        return allFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
+    }
     private FarmDto convertFarmResponse(Farms current_farm) {
         FarmDto farmDTO = new FarmDto();
         farmDTO.setId(current_farm.getId());
