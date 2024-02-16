@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,8 @@ import com.example.backend.services.WalletService;
 public class WalletController {
 
     private final WalletService walletService;
+    @Value("${frontend.endpoint}")
+    private String frontendEndpoint;
 
     @PostMapping("/create-payment-intent")
     public ResponseEntity<Map> createPaymentIntent(@RequestParam("amount") String amount, Principal principal) {
@@ -54,9 +57,9 @@ public class WalletController {
     public RedirectView topUp(@ModelAttribute WalletRequest request) {
         try {
             walletService.addMoney(request.getEmail(), request.getAmount());
-            return new RedirectView("http://localhost:3000/wallet");
+            return new RedirectView(frontendEndpoint + "/wallet");
         } catch (Exception e) {
-            return new RedirectView("http://localhost:3000/payment/success");
+            return new RedirectView(frontendEndpoint + "/payment/success");
         }
     }
 

@@ -28,8 +28,7 @@ function Wallet() {
     console.log(amount);
     const data = await api.auth.walletInit(amount);
     console.log(data);
-    const PUBLIC_KEY =
-      "pk_test_51J0PUySIJjtkSpgkooDHynUUv6NkOpxarspwxKuhx4ZwNQYx0autnl95jEh2MN5jbmlTDsme1fCf8N65IieDV6LO00YHVh6PS0";
+    const PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
 
     console.log("PUBLIC_KEY", PUBLIC_KEY);
     const stripeTestPromise = await loadStripe(PUBLIC_KEY);

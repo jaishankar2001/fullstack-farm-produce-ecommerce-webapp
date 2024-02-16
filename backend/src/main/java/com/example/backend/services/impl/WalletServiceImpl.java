@@ -33,6 +33,12 @@ public class WalletServiceImpl implements WalletService {
     @Value("${stripe.apikey}")
     private String stripeAPI;
 
+    @Value("${api.endpoint}")
+    private String APIendpoint;
+
+    @Value("${frontend.endpoint}")
+    private String frontendEndpoint;
+
     public double checkBalance(int userId) {
         UserMeta walletBalanceById = userMeta.findById(userId);
         double myBalance = 0.0;
@@ -66,11 +72,11 @@ public class WalletServiceImpl implements WalletService {
 
             System.out.println("GERR?");
             System.out.println(principal.getName());
-            String successURL = "http://localhost:8080/api/wallet/topup?amount=" + Double.parseDouble(amount)
+            String successURL = APIendpoint + "/wallet/topup?amount=" + Double.parseDouble(amount)
                     + "&email="
                     + principal.getName();
 
-            String failureURL = "http://localhost:3000/payment/fail";
+            String failureURL = frontendEndpoint + "/payment/fail";
 
             Stripe.apiKey = stripeAPI;
 
@@ -103,7 +109,8 @@ public class WalletServiceImpl implements WalletService {
     public List<Wallet> gethistory(Principal principal) {
         try {
             User user = userRepository.findByEmail(principal.getName());
-            List<Wallet> wallet = walletRepository.findAllByUserId(user.getId(), Sort.by(Sort.Direction.DESC, "createdAt"));
+            List<Wallet> wallet = walletRepository.findAllByUserId(user.getId(),
+                    Sort.by(Sort.Direction.DESC, "createdAt"));
             return wallet;
         } catch (Exception e) {
             throw new ApiRequestException(e.getMessage());
