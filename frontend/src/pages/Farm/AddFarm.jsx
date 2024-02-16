@@ -32,11 +32,14 @@ function AddFarm() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await fetch("http://localhost:8080/api/farmer/addfarm", {
-        method: "POST",
-        headers: headers,
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/farmer/addfarm`,
+        {
+          method: "POST",
+          headers: headers,
+          body: formData,
+        }
+      );
 
       navigate("/");
     } catch (error) {
