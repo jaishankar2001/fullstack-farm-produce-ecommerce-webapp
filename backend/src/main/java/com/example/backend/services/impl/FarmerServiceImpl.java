@@ -144,15 +144,19 @@ public class FarmerServiceImpl implements FarmerService {
                     .collect(Collectors.toList());
         }
 
+    @Override
+    public List<FarmDto> getAllFarms(){
+        List<Farms> allFarms = farmRepository.findAll();
+        return allFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
+    }
         return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
-
     @Override
-    public GetFarmByIdResponse getFarmById(int id){
+    public GetFarmByIdResponse getFarmById(int id) {
         Farms farm = farmRepository.findById(id);
         GetFarmByIdResponse gfid = new GetFarmByIdResponse();
-        if(farm!=null){
+        if (farm != null) {
             gfid.setName(farm.getName());
             gfid.setAddress(farm.getAddress());
             gfid.setLat(farm.getLat());
@@ -162,39 +166,39 @@ public class FarmerServiceImpl implements FarmerService {
             }
             return gfid;
         }
-        
+
         else {
             throw new ApiRequestException("Farm not found with id " + id);
         }
-        
+
     }
 
 }
 
 // Garbage code for get Farm with id
-// 
-// 
+//
+//
 // try {
-//     if(farm != null){
-//         ArrayList responseList = new ArrayList<>();
-//         responseList.add(farm.getName());
-//         responseList.add(farm.getAddress());
-//         responseList.add(farm.getLat());
-//         responseList.add(farm.getLng());
-//         String farmDetails="";
-//         for(Object i:responseList){
-//             farmDetails+= i.toString()+System.lineSeparator();
-//         }
-//         return farmDetails;
+// if(farm != null){
+// ArrayList responseList = new ArrayList<>();
+// responseList.add(farm.getName());
+// responseList.add(farm.getAddress());
+// responseList.add(farm.getLat());
+// responseList.add(farm.getLng());
+// String farmDetails="";
+// for(Object i:responseList){
+// farmDetails+= i.toString()+System.lineSeparator();
+// }
+// return farmDetails;
 
-//     }
+// }
 
-//     else{
-//         return("Id is not present!");
-//     }
-// } 
+// else{
+// return("Id is not present!");
+// }
+// }
 
 // catch (Exception e) {
-//     e.printStackTrace();
-//     return "Invalid Id";
+// e.printStackTrace();
+// return "Invalid Id";
 // }
