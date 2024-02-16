@@ -2,9 +2,7 @@ import * as api from "./utils";
 
 export async function login(payload) {
   try {
-    console.log("Heree?");
     const response = await api.post("/auth/signin", payload);
-    console.log("Heree? 2");
     return response;
   } catch (error) {
     console.error("eee", error);
