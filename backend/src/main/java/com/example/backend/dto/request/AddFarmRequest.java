@@ -6,6 +6,6 @@ import lombok.Data;
 public class AddFarmRequest {
     private String name;
     private String Address;
-    private int lat;
-    private int lng;
+    private double lat;
+    private double lng;
 }
