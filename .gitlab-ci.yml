@@ -7,13 +7,20 @@ build:
   stage: build
   image: maven:latest
   script: 
-    - echo "Building backend..."
+    - cd backend/
+    - echo "Building Application"
+    - mvn clean package
+    - echo "Building Complete"
 
 test: 
   stage: test
   image: maven:latest
   script: 
     - echo "Testing backend..."
+    - cd backend
+    - mvn clean install
+    - echo "Testing backend Completed..."
+
 
 deploy:
   stage: deploy
