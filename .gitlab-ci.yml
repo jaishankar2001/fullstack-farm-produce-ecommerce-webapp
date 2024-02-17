@@ -12,6 +12,8 @@ build:
     - echo "Building Application"
     - mvn clean package
     - echo "Building Complete"
+  only:
+    - develop
 
 test: 
   stage: test
@@ -21,12 +23,18 @@ test:
     - cd backend
     - mvn clean install
     - echo "Testing backend Completed..."
+  only:
+    - develop
 
 publish:
   image: docker:latest
   stage: publish
   tags: 
     - ecopick
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: "tcp://docker:2375"
+
   script:
     - pwd 
     - echo $SERVER_IP
