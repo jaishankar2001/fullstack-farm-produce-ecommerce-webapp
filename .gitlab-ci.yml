@@ -52,6 +52,8 @@ publish:
     - docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
   only:
     - develop
+  dependencies: 
+    - build
 
 
 
