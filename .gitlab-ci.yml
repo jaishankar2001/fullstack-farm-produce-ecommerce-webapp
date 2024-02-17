@@ -13,6 +13,9 @@ build:
     - mvn clean package
     - ls
     - echo "Building Complete"
+  artifacts:
+    paths:
+      - target/*.jar
   only:
     - develop
 
