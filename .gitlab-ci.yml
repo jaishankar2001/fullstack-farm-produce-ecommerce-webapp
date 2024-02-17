@@ -11,6 +11,7 @@ build:
     - cd backend/
     - echo "Building Application"
     - mvn clean package
+    - ls
     - echo "Building Complete"
   only:
     - develop
@@ -39,6 +40,7 @@ publish:
   script:
     - cd backend/
     - pwd 
+    - ls
     - echo $SERVER_IP
     - docker --version
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
