@@ -26,7 +26,7 @@ publish:
   image: docker:latest
   stage: publish
   tags: 
-    - latest
+    - ecopick
   script:
     - pwd 
     - echo $SERVER_IP
@@ -42,6 +42,8 @@ publish:
 deploy:
   image: alpine:latest
   stage: deploy
+  tags: 
+    - ecopick
   script:
    - echo "Deploying Backend..."
    - chmod og= $ID_RSA
