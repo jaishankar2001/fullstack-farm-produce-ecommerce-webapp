@@ -37,6 +37,7 @@ publish:
   services:
     - docker:dind
   script:
+    - cd backend/
     - pwd 
     - echo $SERVER_IP
     - docker --version
@@ -54,6 +55,7 @@ deploy:
   tags: 
     - ecopick
   script:
+   - cd backend/
    - echo "Deploying Backend..."
    - chmod og= $ID_RSA
    - apk update && apk add openssh-client
