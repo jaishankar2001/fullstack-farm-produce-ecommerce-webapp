@@ -43,6 +43,7 @@ publish:
   script:
     - cd backend/
     - pwd 
+    - mvn clean package
     - ls
     - echo $SERVER_IP
     - docker --version
