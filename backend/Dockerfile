@@ -4,10 +4,6 @@ FROM --platform=linux/amd64 amazoncorretto:17-al2023-jdk
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the compiled JAR file from your target directory into the container
-# COPY . /app
-# RUN ./mvn clean package
-# COPY /app/target/backend-0.0.1-SNAPSHOT.jar /app/app.jar
 
 COPY target/backend-0.0.1-SNAPSHOT.jar /app/app.jar 
 
