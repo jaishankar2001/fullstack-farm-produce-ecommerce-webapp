@@ -1,14 +1,14 @@
 package com.example.backend.controller;
+import com.example.backend.dto.request.ResetPasswordRequest;
+import com.example.backend.dto.request.ShowFarmsRequest;
 import com.example.backend.dto.response.FarmDto;
 import com.example.backend.services.FarmerService;
 import com.example.backend.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +23,8 @@ public class CustomerController {
         return ResponseEntity.ok("Hello Buyer!");
     }
     @GetMapping("/listfarms")
-    public  ResponseEntity<List<FarmDto>> listFarms(){
-        List<FarmDto> allFarms = farmerService.getAllFarms();
+    public  ResponseEntity<List<FarmDto>> listFarms(@RequestBody @Valid ShowFarmsRequest showFarmsRequest){
+        List<FarmDto> allFarms = farmerService.getAllFarms(showFarmsRequest);
         return ResponseEntity.ok(allFarms);
     }
 }

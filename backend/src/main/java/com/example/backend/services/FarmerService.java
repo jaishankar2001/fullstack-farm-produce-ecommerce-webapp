@@ -1,6 +1,7 @@
 package com.example.backend.services;
 
 import com.example.backend.dto.request.EditFarmRequest;
+import com.example.backend.dto.request.ShowFarmsRequest;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface FarmerService {
     String editFarm(EditFarmRequest farmRequest, MultipartFile[] files, Principal principal);
 
     List<FarmDto> getFarms(Principal principal);
-    List<FarmDto> getAllFarms();
+    List<FarmDto> getAllFarms(ShowFarmsRequest showFarmsRequest);
 }
