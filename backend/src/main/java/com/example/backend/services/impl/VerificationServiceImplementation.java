@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.example.backend.entities.VerificationType;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserMeta;
@@ -27,6 +28,8 @@ public class VerificationServiceImplementation implements VerificationService {
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    @Value("${frontend.endpoint}")
+    private String frontendEndpoint;
 
     @Override
     public void verify(String code, String email) {
@@ -100,9 +103,9 @@ public class VerificationServiceImplementation implements VerificationService {
 
         String url = "";
         if (type == VerificationType.VerifyEmail) {
-            url = "http://localhost:3000/verify-email?email=%s&code=%s&type=%s";
+            url = frontendEndpoint + "/verify-email?email=%s&code=%s&type=%s";
         } else if (type == VerificationType.ResetPassword) {
-            url = "http://localhost:3000/reset-password?email=%s&code=%s&type=%s";
+            url = frontendEndpoint + "/reset-password?email=%s&code=%s&type=%s";
         }
 
         String verificationUrl = String.format(
