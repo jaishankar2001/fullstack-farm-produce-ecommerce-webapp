@@ -21,6 +21,7 @@ build:
 
 build-frontend:
   stage: build
+  image: node:16
   before_script:
     - apk update && apk add openssh-client
     - chmod og-rwx $ID_RSA
