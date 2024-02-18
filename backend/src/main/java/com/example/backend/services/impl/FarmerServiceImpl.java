@@ -1,10 +1,12 @@
 package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.EditFarmRequest;
+import com.example.backend.dto.request.ShowFarmsRequest;
 import com.example.backend.dto.request.FarmerOwnFarmRequest;
 
 import lombok.RequiredArgsConstructor;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 import org.modelmapper.ModelMapper;
@@ -145,8 +147,19 @@ public class FarmerServiceImpl implements FarmerService {
         }
 
     @Override
-    public List<FarmDto> getAllFarms(){
-        List<Farms> allFarms = farmRepository.findAll();
+    public List<FarmDto> getAllFarms(ShowFarmsRequest showFarmsRequest){
+        List<Farms> allFarms;
+        String farmName = showFarmsRequest.getFarmName();
+        if(!Objects.equals(farmName, "")){
+            System.out.println("showing farms with name" + farmName);
+            allFarms = farmRepository.findByNameContaining(farmName);
+            if(allFarms.isEmpty()){
+                System.out.println("specific Farm not present showing all farms instead");
+                allFarms = farmRepository.findAll();
+            }
+        }else {
+            allFarms = farmRepository.findAll();
+        }
         return allFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
     }
         return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
