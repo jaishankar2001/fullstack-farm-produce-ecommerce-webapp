@@ -4,24 +4,28 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import com.example.backend.dto.request.AddProductRequest;
+import com.example.backend.dto.request.ProductSearchRequest;
 import com.example.backend.dto.response.CategoryDto;
 import com.example.backend.dto.response.ProductDto;
 import com.example.backend.entities.Category;
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
 import com.example.backend.entities.Product;
+import com.example.backend.entities.User;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.CategoryRepository;
 import com.example.backend.repository.FarmRepository;
 import com.example.backend.repository.ImagesRepository;
 import com.example.backend.repository.ProductRepository;
 import com.example.backend.services.ProductService;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.utils.Awsutils;
 
 @Service
@@ -30,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final FarmRepository farmRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final Awsutils awsutils;
     private final ImagesRepository imagesRepository;
@@ -109,6 +114,37 @@ public class ProductServiceImpl implements ProductService {
         // deleting product
         productRepository.deleteById(product.getId());
 
+    }
+
+      @Override
+    public List<ProductDto> getFarmerProducts(Principal principal) {
+          User user = userRepository.findByEmail(principal.getName());
+        if (user == null) {
+            throw new ApiRequestException("User not found");
+        }
+        List<Farms> userFarms = farmRepository.findByUser(user);
+        List<Product> allProducts = new ArrayList<>();
+
+    for (Farms farm : userFarms) {
+        List<Product> products = productRepository.findByFarm(farm);
+        allProducts.addAll(products);
+    }
+    return allProducts.stream().map(this::convertProductResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDto> getAllProducts(ProductSearchRequest productSearchRequest) {
+        List<Product> allProducts = new ArrayList<>();;
+        String productName = productSearchRequest.getProductName();
+        if(!Objects.equals(productName, "")){
+            allProducts = productRepository.findByProductNameContaining(productName);
+            if(allProducts.isEmpty()){
+                allProducts = productRepository.findAll();
+            }
+        }else {
+            allProducts = productRepository.findAll();
+        }
+        return allProducts.stream().map(this::convertProductResponse).collect(Collectors.toList());
     }
 
 }
