@@ -3,6 +3,7 @@ package com.example.backend.services.impl;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.RequiredArgsConstructor;
 import com.example.backend.dto.request.AddProductRequest;
+import com.example.backend.dto.request.EditProductRequest;
 import com.example.backend.dto.response.CategoryDto;
 import com.example.backend.dto.response.ProductDto;
 import com.example.backend.entities.Category;
@@ -109,6 +111,41 @@ public class ProductServiceImpl implements ProductService {
         // deleting product
         productRepository.deleteById(product.getId());
 
+    }
+
+    @Override
+    public List<ProductDto>editProduct(EditProductRequest editProductRequest, MultipartFile[] files, Principal principal) {
+
+        List<ProductDto> editedProductList = new ArrayList<>();
+        try {
+            Product product =  productRepository.findById(editProductRequest.getId());
+            product.setProductName(editProductRequest.getProductName());
+            product.setProductDescription(editProductRequest.getProductDescription());
+            product.setPrice(editProductRequest.getPrice());
+            product.setStock(editProductRequest.getStock());
+            product.setUnit(editProductRequest.getUnit());
+            productRepository.save(product);
+
+            List<Images> productImages = product.getImages();
+            for(MultipartFile item :files){
+                String url = awsutils.uploadFileToS3(item, "Product", product.getId());
+                Images img = new Images();
+                img.setProduct(product);
+                img.setImg_url(url);
+                imagesRepository.save(img);
+                System.out.println("-=-=-=-=-  " + url);
+                productImages.add(img);
+            }
+
+            product.setImages(productImages);
+            productRepository.save(product);
+            editedProductList = productRepository.findByFarm(product.getFarm()).stream().map(this::convertProductResponse).collect(Collectors.toList());
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        return editedProductList;
+        
     }
 
 }

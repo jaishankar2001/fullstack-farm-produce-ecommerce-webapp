@@ -36,4 +36,6 @@ public class ProductDto {
         images.add(imageDTO);
 
     }
+
+    // public void editImage(Ima)
 }

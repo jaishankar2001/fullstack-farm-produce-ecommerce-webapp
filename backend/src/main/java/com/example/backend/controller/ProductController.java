@@ -3,9 +3,8 @@ package com.example.backend.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.dto.request.AddProductRequest;
-import com.example.backend.dto.response.ApiResponse;
-import com.example.backend.dto.response.ProductDto;
+import com.example.backend.dto.request.*;
+import com.example.backend.dto.response.*;
 import com.example.backend.services.ProductService;
 
 import jakarta.validation.Valid;
@@ -39,6 +38,18 @@ public class ProductController {
 
         response.put("message", principal.getName());
         response.put("Products", AllFarmProducts);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PostMapping("/editproduct")
+    public ResponseEntity<Map> editProduct(@ModelAttribute @Valid EditProductRequest product,
+            @RequestPart(value = "files") MultipartFile[] files, Principal principal) {
+        List<ProductDto> editProduct = productService.editProduct(product, files,
+                principal);
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("message", principal.getName());
+        response.put("Products", editProduct);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
