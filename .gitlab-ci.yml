@@ -22,10 +22,7 @@ stages:
 
 build-frontend:
   stage: build
-  image: node:16
-  before_script:
-    - apk update && apk add openssh-client
-    - chmod og-rwx $ID_RSA
+  image: node:latest
   script:
     - echo "Building frontend..."
     - cd frontend  # Change to the 'frontend' directory
@@ -117,20 +114,26 @@ build-frontend:
 #    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
 #   only: 
 #   - develop
-
+# - echo "Deploying application..."
+#     - echo "${CI_COMMIT_SHORT_SHA}.zip build"
+#     - echo ""${ID_RSA}" ${CI_COMMIT_SHORT_SHA}.zip "${SERVER_USER}@${SERVER_IP}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}.zip""
+#     - cd frontend
+#     - apt-get install zip unzip
+#     - chmod og-rwx $ID_RSA
+#     - zip -r ${CI_COMMIT_SHORT_SHA}.zip ./build/*
+#     - scp -r -o StrictHostKeyChecking=no -i "${ID_RSA}" ${CI_COMMIT_SHORT_SHA}.zip "${SERVER_USER}@${SERVER_IP}:/${CI_COMMIT_SHORT_SHA}-react.zip"
+#     - echo "Application successfully deployed."
 
 deploy-frontend:
   stage: deploy 
+  before_script:
+    - chmod og-rwx $ID_RSA
   script:
     - echo "Deploying application..."
-    - echo "${CI_COMMIT_SHORT_SHA}.zip build"
-    - echo ""${ID_RSA}" ${CI_COMMIT_SHORT_SHA}.zip "${SERVER_USER}@${SERVER_IP}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}.zip""
-    - cd frontend
-    - apt-get install zip unzip
-    - chmod og-rwx $ID_RSA
-    - zip -r ${CI_COMMIT_SHORT_SHA}.zip ./build/*
-    - scp -r -o StrictHostKeyChecking=no -i "${ID_RSA}" ${CI_COMMIT_SHORT_SHA}.zip "${SERVER_USER}@${SERVER_IP}:/${CI_COMMIT_SHORT_SHA}-react.zip"
-    - echo "Application successfully deployed."
+    - ssh -o StrictHostKeyChecking=no -i $ID_RSA ${SERVER_USER}@${SERVER_IP} rm -r /var/www/html/*
+    - echo "Transfering Frontend Build Files"
+    - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
+    - echo "Frontend Deplyoment Complete"
   only:
     - develop
   dependencies:
