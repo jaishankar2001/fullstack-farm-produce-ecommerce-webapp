@@ -133,7 +133,7 @@ deploy-frontend:
   only:
     - develop
   dependencies:
-    - react-build
+    - build-frontend
   tags:
     - ecopick
 
