@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProductGridCard from "../../components/ProductGridCard";
 import api from "../../api/index";
 
-function ProductListing() {
+function FarmerProductListing() {
   const [selectedTab, setSelectedTab] = useState("allProducts");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -18,7 +18,6 @@ function ProductListing() {
     setAllProducts(response);
 
   }
-console.log(allProducts);
 
   useEffect(() => {
     getAllProducts();
@@ -121,15 +120,14 @@ console.log(allProducts);
           <div className="hstack justify-content-between mb-3">
             <span className="text-dark">{allProducts?.length} Items found</span>
             <div className="btn-group" role="group">
-              <button className="btn btn-outline-dark">
-                <FontAwesomeIcon icon={["fas", "sort-amount-up"]} />
-              </button>
-              <button className="btn btn-outline-dark">
-                <FontAwesomeIcon icon={["fas", "th-list"]} />
-              </button>
+            <button
+            className="btn btn-primary px-md-4 col col-md-auto me-2"
+          >
+            Add Product
+          </button>
             </div>
           </div>
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-3">
             {allProducts.map((product, index) => (
        <div className="col">
        <ProductGridCard product={product}/>
@@ -144,7 +142,7 @@ console.log(allProducts);
   );
 }
 
-ProductListing.getLayout = (page) => {
+FarmerProductListing.getLayout = (page) => {
   return (
     <Layout simpleHeader hideAuth>
       {page}
@@ -152,4 +150,4 @@ ProductListing.getLayout = (page) => {
   );
 };
 
-export default ProductListing;
+export default FarmerProductListing;
