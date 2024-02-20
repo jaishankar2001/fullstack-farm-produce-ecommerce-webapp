@@ -23,8 +23,8 @@ public class CustomerController {
         return ResponseEntity.ok("Hello Buyer!");
     }
     @GetMapping("/listfarms")
-    public  ResponseEntity<List<FarmDto>> listFarms(@RequestBody @Valid ShowFarmsRequest showFarmsRequest){
-        List<FarmDto> allFarms = farmerService.getAllFarms(showFarmsRequest);
+    public  ResponseEntity<List<FarmDto>> listFarms(@RequestParam("farmName") String farmName){
+        List<FarmDto> allFarms = farmerService.getAllFarms(farmName);
         return ResponseEntity.ok(allFarms);
     }
 }

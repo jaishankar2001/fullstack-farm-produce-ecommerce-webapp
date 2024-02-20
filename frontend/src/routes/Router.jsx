@@ -8,6 +8,7 @@ import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import SignUp from "../pages/SignUpPage/SignUpPage";
 import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
 import Wallet from "../pages/Wallet/Wallet";
+import ShowFarms from "../pages/Farm/ShowFarms";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -47,6 +48,10 @@ export const Router = () => {
           path: "/add-farm",
           element: <AddFarm />,
         },
+        {
+          path: "/show-farms",
+          element: <ShowFarms />,
+        }
       ],
     },
   ]);
