@@ -37,7 +37,7 @@ build-frontend:
     - develop
   artifacts:
     paths:
-      - frotnend/build/*
+      - frontend/build/*
 
 # test: 
 #   stage: test
