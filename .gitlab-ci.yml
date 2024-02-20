@@ -126,6 +126,7 @@ deploy-frontend:
     - echo "${CI_COMMIT_SHORT_SHA}.zip build"
     - echo ""${ID_RSA}" ${CI_COMMIT_SHORT_SHA}.zip "${SERVER_USER}@${SERVER_IP}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}.zip""
     - cd frontend
+    - apt-get install zip unzip
     - chmod og-rwx $ID_RSA
     - zip -r ${CI_COMMIT_SHORT_SHA}.zip ./build/*
     - scp -r -o StrictHostKeyChecking=no -i "${ID_RSA}" ${CI_COMMIT_SHORT_SHA}.zip "${SERVER_USER}@${SERVER_IP}:/${CI_COMMIT_SHORT_SHA}-react.zip"
