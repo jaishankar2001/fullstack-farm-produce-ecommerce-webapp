@@ -14,6 +14,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      console.log("LOFNBDDNDKDKNKDKBDJJFBF F BJF MDFJBF  M");
       setIsLoading(true);
       const response = await api.auth.login({ email, password });
 
