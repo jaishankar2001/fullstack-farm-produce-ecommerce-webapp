@@ -2,7 +2,7 @@ stages:
   - build
   # - test
   # - publish
-  # - deploy
+  - deploy
 
 
 # build-backend: 
@@ -24,12 +24,12 @@ build-frontend:
   script:
     - echo "Building frontend..."
     - printenv
-    # - cd frontend  # Change to the 'frontend' directory
-    # - npm install -g pnpm
-    # - pnpm install
-    # - pnpm i -f
-    # - pnpm build
-    # - echo "frontend code build is completed."
+    - cd frontend  # Change to the 'frontend' directory
+    - npm install -g pnpm
+    - pnpm install
+    - pnpm i -f
+    - pnpm build
+    - echo "frontend code build is completed."
   tags:
     - ecopick
   artifacts:
@@ -82,16 +82,16 @@ build-frontend:
 #     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f ecopick-backend || true"
 #     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
 
-# deploy-frontend:
-#   stage: deploy 
-#   script:
-#     - echo "Deploying application..."
-#     - chmod og-rwx $ID_RSA
-#     - echo "Transfering Frontend Build Files"
-#     - printenv
-#     - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
-#     - echo "Frontend Deplyoment Complete" 
-#   dependencies:
-#     - build-frontend
-#   tags:
-#     - ecopick
+deploy-frontend:
+  stage: deploy 
+  script:
+    - echo "Deploying application..."
+    - chmod og-rwx $ID_RSA
+    - echo "Transfering Frontend Build Files"
+    - printenv
+    - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
+    - echo "Frontend Deplyoment Complete" 
+  dependencies:
+    - build-frontend
+  tags:
+    - ecopick
