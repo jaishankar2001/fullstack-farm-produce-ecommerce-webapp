@@ -22,7 +22,7 @@ public interface FarmerService {
 
     List<FarmDto> getFarms(FarmerOwnFarmRequest farmerOwnFarmRequest, Principal principal);
 
-    List<FarmDto> getAllFarms(ShowFarmsRequest showFarmsRequest);
+    List<FarmDto> getAllFarms(String farmName);
 
     GetFarmByIdResponse getFarmById(int id);
 }

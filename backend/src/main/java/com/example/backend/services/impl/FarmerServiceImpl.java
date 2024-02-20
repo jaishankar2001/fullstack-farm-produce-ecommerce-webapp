@@ -147,9 +147,8 @@ public class FarmerServiceImpl implements FarmerService {
         }
 
     @Override
-    public List<FarmDto> getAllFarms(ShowFarmsRequest showFarmsRequest){
+    public List<FarmDto> getAllFarms(String farmName){
         List<Farms> allFarms;
-        String farmName = showFarmsRequest.getFarmName();
         if(!Objects.equals(farmName, "")){
             System.out.println("showing farms with name" + farmName);
             allFarms = farmRepository.findByNameContaining(farmName);
