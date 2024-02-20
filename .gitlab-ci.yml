@@ -37,7 +37,7 @@ build-frontend:
     - develop
   artifacts:
     paths:
-      - frontend/build/*
+      - frontend/build
 
 # test: 
 #   stage: test
@@ -127,13 +127,13 @@ build-frontend:
 deploy-frontend:
   stage: deploy 
   before_script:
-    - chmod og-rwx $ID_RSA
+    - chmod og-rwx ${ID_RSA}
   script:
     - echo "Deploying application..."
-    - ssh -o StrictHostKeyChecking=no -i $ID_RSA ${SERVER_USER}@${SERVER_IP} 'if [ -d /var/www/html ]; then rm -r /var/www/html/*; fi'
+    - ssh -o StrictHostKeyChecking=no -i ${ID_RSA} ${SERVER_USER}@${SERVER_IP} 'if [ -d /var/www/html ]; then rm -r /var/www/html/*; fi'
     - echo "Transfering Frontend Build Files"
-    - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
-    - echo "Frontend Deplyoment Complete"
+    - scp -r -o StrictHostKeyChecking=no -i ${ID_RSA} frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
+    - echo "Frontend Deplyoment Complete" 
   only:
     - develop
   dependencies:
