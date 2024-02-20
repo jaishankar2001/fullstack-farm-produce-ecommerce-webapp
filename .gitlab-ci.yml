@@ -1,8 +1,8 @@
 stages:          
   - build
-  - test
-  - publish
-  - deploy
+  # - test
+  # - publish
+  # - deploy
 
 
 build-backend: 
@@ -23,12 +23,13 @@ build-frontend:
   image: node:latest
   script:
     - echo "Building frontend..."
-    - cd frontend  # Change to the 'frontend' directory
-    - npm install -g pnpm
-    - pnpm install
-    - pnpm i -f
-    - pnpm build
-    - echo "frontend code build is completed."
+    - printenv
+    # - cd frontend  # Change to the 'frontend' directory
+    # - npm install -g pnpm
+    # - pnpm install
+    # - pnpm i -f
+    # - pnpm build
+    # - echo "frontend code build is completed."
   tags:
     - ecopick
   artifacts:
@@ -87,6 +88,7 @@ deploy-frontend:
     - echo "Deploying application..."
     - chmod og-rwx $ID_RSA
     - echo "Transfering Frontend Build Files"
+    - printenv
     - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
     - echo "Frontend Deplyoment Complete" 
   dependencies:
