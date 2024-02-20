@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.dto.request.AddProductRequest;
+import com.example.backend.dto.request.ProductSearchRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.ProductDto;
 import com.example.backend.services.ProductService;
@@ -15,11 +16,13 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import java.util.Map;
 import java.security.Principal;
@@ -29,6 +32,19 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+
+
+     @GetMapping("/farmer-products")
+    public ResponseEntity<List<ProductDto>> getFarmerProducts(Principal principal) {
+        List<ProductDto> userProducts = productService.getFarmerProducts(principal);
+        return ResponseEntity.ok(userProducts);
+    }
+
+    @GetMapping("/all-products")
+    public ResponseEntity<List<ProductDto>> getAllProducts(@RequestBody @Valid ProductSearchRequest productSearchRequest) {
+        List<ProductDto> allProducts = productService.getAllProducts(productSearchRequest);
+        return ResponseEntity.ok(allProducts);
+    }
 
     @PostMapping("/addproduct")
     public ResponseEntity<Map> addProduct(@ModelAttribute @Valid AddProductRequest product,
