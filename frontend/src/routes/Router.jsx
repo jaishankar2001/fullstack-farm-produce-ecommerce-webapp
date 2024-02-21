@@ -8,7 +8,11 @@ import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import SignUp from "../pages/SignUpPage/SignUpPage";
 import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
 import Wallet from "../pages/Wallet/Wallet";
+import ProductListing from "../pages/ProductListing/ProductListing";
 import AddProduct from "../pages/Product/AddProduct";
+import ProductDetail from "../pages/ProductDetail/ProductDetail";
+import FarmerProductListing from "../pages/FarmerProductListing/FarmerProductListing";
+import FarmerProductDetail from "../pages/FarmerProductDetail/FarmerProductDetail";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -49,8 +53,24 @@ export const Router = () => {
           element: <AddFarm />,
         },
         {
+          path: "/product-listing",
+          element: <ProductListing />,
+        },
+        {
           path: "/add-product",
           element: <AddProduct />,
+        },
+        {
+          path: "/product",
+          element: <ProductDetail />,
+        },
+        {
+          path: "/farmer-products",
+          element: <FarmerProductListing />,
+        },
+        {
+          path: "/farmer-product",
+          element: <FarmerProductDetail/>,
         },
       ],
     },
