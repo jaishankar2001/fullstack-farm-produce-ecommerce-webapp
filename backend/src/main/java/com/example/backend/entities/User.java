@@ -41,10 +41,15 @@ public class User implements UserDetails {
     @JsonManagedReference
     private List<Farms> farms;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JoinColumn(name = "user_id")
     private UserMeta userMeta;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Wallet> wallet;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

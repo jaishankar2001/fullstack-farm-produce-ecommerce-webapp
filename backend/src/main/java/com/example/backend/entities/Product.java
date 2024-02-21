@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -47,7 +46,7 @@ public class Product {
     @JsonBackReference
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonManagedReference
     private List<Images> images;
