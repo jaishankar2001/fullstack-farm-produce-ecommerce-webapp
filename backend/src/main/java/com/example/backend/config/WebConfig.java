@@ -13,6 +13,7 @@ public class WebConfig {
 
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
+    private String localEndpoint = "http://localhost:3000";
 
     @Bean
     public WebMvcConfigurer corsConfig() {
@@ -20,7 +21,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(frontendEndpoint)
+                        .allowedOrigins(frontendEndpoint, localEndpoint)
                         .allowedMethods(HttpMethod.GET.name(),
                                 HttpMethod.POST.name(),
                                 HttpMethod.DELETE.name())

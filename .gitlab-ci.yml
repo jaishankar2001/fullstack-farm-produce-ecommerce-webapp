@@ -36,6 +36,8 @@ build-frontend:
   artifacts:
     paths:
       - frontend/build
+  only:
+    - develop
 
 test: 
   stage: test
@@ -87,15 +89,8 @@ deploy-backend:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f ecopick-backend || true"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
-    - echo "Deploying application..."
-    - echo "${CI_COMMIT_SHORT_SHA}.zip build"
-    - echo ""${ID_RSA}" ${CI_COMMIT_SHORT_SHA}.zip "${SERVER_USER}@${SERVER_IP}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}.zip""
-    - cd frontend
-    - apt-get install zip unzip
-    - chmod og-rwx $ID_RSA
-    - zip -r ${CI_COMMIT_SHORT_SHA}.zip ./build/*
-    - scp -r -o StrictHostKeyChecking=no -i "${ID_RSA}" ${CI_COMMIT_SHORT_SHA}.zip "${SERVER_USER}@${SERVER_IP}:/${CI_COMMIT_SHORT_SHA}-react.zip"
-    - echo "Application successfully deployed."
+  only:
+    - develop
 
 deploy-frontend:
   stage: deploy 
@@ -109,3 +104,5 @@ deploy-frontend:
     - build-frontend
   tags:
     - ecopick
+  only:
+    - develop
