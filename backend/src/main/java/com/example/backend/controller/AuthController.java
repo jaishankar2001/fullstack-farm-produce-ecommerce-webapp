@@ -41,6 +41,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<LoginResponse> signin(@RequestBody @Valid SignInRequest signInRequest) {
+        System.out.println("Sign inn");
         return ResponseEntity.ok(authenticationService.signIn(signInRequest));
     }
 
