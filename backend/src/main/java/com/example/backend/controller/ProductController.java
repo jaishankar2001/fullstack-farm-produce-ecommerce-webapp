@@ -40,7 +40,7 @@ public class ProductController {
         return ResponseEntity.ok(userProducts);
     }
 
-    @GetMapping("/all-products")
+    @PostMapping("/all-products")
     public ResponseEntity<List<ProductDto>> getAllProducts(@RequestBody @Valid ProductSearchRequest productSearchRequest) {
         List<ProductDto> allProducts = productService.getAllProducts(productSearchRequest);
         return ResponseEntity.ok(allProducts);
