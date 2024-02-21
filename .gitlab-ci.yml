@@ -1,6 +1,6 @@
 stages:          
   - build
-  # - test
+  - test
   - publish
   - deploy
 
@@ -17,33 +17,40 @@ build-backend:
   artifacts:
     paths:
       - backend/target/*.jar
+  only: 
+    - develop
 
-# build-frontend:
-#   stage: build
-#   image: node:latest
-#   script:
-#     - echo "Building frontend..."
-#     - printenv
-#     - cd frontend  # Change to the 'frontend' directory
-#     - npm install -g pnpm
-#     - pnpm install
-#     - pnpm i -f
-#     - pnpm build
-#     - echo "frontend code build is completed."
-#   tags:
-#     - ecopick
-#   artifacts:
-#     paths:
-#       - frontend/build
+build-frontend:
+  stage: build
+  image: node:latest
+  script:
+    - echo "Building frontend..."
+    - printenv
+    - cd frontend  # Change to the 'frontend' directory
+    - npm install -g pnpm
+    - pnpm install
+    - pnpm i -f
+    - pnpm build
+    - echo "frontend code build is completed."
+  tags:
+    - ecopick
+  artifacts:
+    paths:
+      - frontend/build
+  only: 
+    - develop
 
-# test: 
-#   stage: test
-#   image: maven:latest
-#   script: 
-#     - echo "Testing backend..."
-#     - cd backend
-#     - mvn clean install
-#     - echo "Testing backend Completed..."
+test: 
+  stage: test
+  image: maven:latest
+  script: 
+    - echo "Testing backend..."
+    - cd backend
+    - mvn clean install
+    - echo "Testing backend Completed..."
+  only: 
+    - develop
+
 publish:
   image: docker:latest
   stage: publish
@@ -65,6 +72,8 @@ publish:
     - docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
   dependencies: 
     - build-backend
+  only: 
+    - develop
 
 
 deploy-backend:
@@ -81,17 +90,21 @@ deploy-backend:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f ecopick-backend || true"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
+  only: 
+    - develop
 
-# deploy-frontend:
-#   stage: deploy 
-#   script:
-#     - echo "Deploying application..."
-#     - chmod og-rwx $ID_RSA
-#     - echo "Transfering Frontend Build Files"
-#     - printenv
-#     - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
-#     - echo "Frontend Deplyoment Complete" 
-#   dependencies:
-#     - build-frontend
-#   tags:
-#     - ecopick
+deploy-frontend:
+  stage: deploy 
+  script:
+    - echo "Deploying application..."
+    - chmod og-rwx $ID_RSA
+    - echo "Transfering Frontend Build Files"
+    - printenv
+    - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
+    - echo "Frontend Deplyoment Complete" 
+  dependencies:
+    - build-frontend
+  tags:
+    - ecopick
+  only: 
+    - develop
