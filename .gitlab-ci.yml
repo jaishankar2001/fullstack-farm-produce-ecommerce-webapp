@@ -1,6 +1,6 @@
 stages:          
   - build
-  - test
+  # - test
   - publish
   - deploy
 
@@ -17,38 +17,38 @@ build-backend:
   artifacts:
     paths:
       - backend/target/*.jar
-  only:
-    - develop
+  # only:
+  #   - develop
 
-build-frontend:
-  stage: build
-  image: node:latest
-  script:
-    - echo "Building frontend..."
-    - cd frontend  # Change to the 'frontend' directory
-    - npm install -g pnpm
-    - pnpm install
-    - pnpm i -f
-    - pnpm build
-    - echo "frontend code build is completed."
-  tags:
-    - ecopick
-  artifacts:
-    paths:
-      - frontend/build
-  only:
-    - develop
+# build-frontend:
+#   stage: build
+#   image: node:latest
+#   script:
+#     - echo "Building frontend..."
+#     - cd frontend  # Change to the 'frontend' directory
+#     - npm install -g pnpm
+#     - pnpm install
+#     - pnpm i -f
+#     - pnpm build
+#     - echo "frontend code build is completed."
+#   tags:
+#     - ecopick
+#   artifacts:
+#     paths:
+#       - frontend/build
+#   only:
+#     - develop
 
-test: 
-  stage: test
-  image: maven:latest
-  script: 
-    - echo "Testing backend..."
-    - cd backend
-    - mvn clean install
-    - echo "Testing backend Completed..."
-  only:
-    - develop
+# test: 
+#   stage: test
+#   image: maven:latest
+#   script: 
+#     - echo "Testing backend..."
+#     - cd backend
+#     - mvn clean install
+#     - echo "Testing backend Completed..."
+#   only:
+#     - develop
 
 publish:
   image: docker:latest
@@ -69,8 +69,8 @@ publish:
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
     - docker build -t docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA -f ./Dockerfile .
     - docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
-  only:
-    - develop
+  # only:
+  #   - develop
   dependencies: 
     - build-backend
 
@@ -92,17 +92,17 @@ deploy-backend:
   only:
     - develop
 
-deploy-frontend:
-  stage: deploy 
-  script:
-    - echo "Deploying application..."
-    - chmod og-rwx $ID_RSA
-    - echo "Transfering Frontend Build Files"
-    - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
-    - echo "Frontend Deplyoment Complete" 
-  dependencies:
-    - build-frontend
-  tags:
-    - ecopick
-  only:
-    - develop
+# deploy-frontend:
+#   stage: deploy 
+#   script:
+#     - echo "Deploying application..."
+#     - chmod og-rwx $ID_RSA
+#     - echo "Transfering Frontend Build Files"
+#     - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
+#     - echo "Frontend Deplyoment Complete" 
+#   dependencies:
+#     - build-frontend
+#   tags:
+#     - ecopick
+#   only:
+#     - develop
