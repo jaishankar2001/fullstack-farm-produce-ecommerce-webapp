@@ -98,6 +98,7 @@ deploy-frontend:
     - echo "Deploying application..."
     - chmod og-rwx $ID_RSA
     - echo "Transfering Frontend Build Files"
+    - ssh -o StrictHostKeyChecking=no -i $ID_RSA ${SERVER_USER}@${SERVER_IP} 'rm -r /var/www/html/*'
     - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
     - echo "Frontend Deplyoment Complete" 
   dependencies:
