@@ -26,7 +26,7 @@ export const HomePage = () => {
                     <div class="top-link pe-10 d-flex ">
                         <a href="#"><small class="text-white mx-2 fw-bold">Home</small></a>
                         <a href="#"><small class="text-white mx-2 fw-bold">Farms</small></a>
-                        <a href="#"><small class="text-white mx-2 fw-bold">Products</small></a>
+                        <a href="/product-listing"><small class="text-white mx-2 fw-bold">Products</small></a>
                         <a href="#"><small class="text-white mx-2 fw-bold">Contact</small></a>
                     </div>
                 </div>
