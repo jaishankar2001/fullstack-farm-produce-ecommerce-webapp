@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                             request.requestMatchers("/api/farmer/**").hasAuthority(Role.FARMER.name());
                             request.requestMatchers("/api/auth/**").permitAll();
                             request.requestMatchers("/api/wallet/**").permitAll();
+                            request.requestMatchers("/api/home/**").permitAll();
                             request.anyRequest().authenticated();
                         })
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
