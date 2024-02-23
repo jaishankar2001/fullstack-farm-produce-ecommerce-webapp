@@ -26,10 +26,10 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public HomeResponse getHomeMeta() {
-        List<Farms> topFarms = farmRepository.findTop10ByOrderByIdDesc();
+        List<Farms> topFarms = farmRepository.findTop8ByOrderByIdDesc();
         List<FarmDto> farms = topFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
 
-        List<Product> latestProducts = productRepository.findTop10ByOrderByIdDesc();
+        List<Product> latestProducts = productRepository.findTop8ByOrderByIdDesc();
         List<ProductDto> products = latestProducts.stream().map(ResponseUtils::convertProductResponse)
                 .collect(Collectors.toList());
 

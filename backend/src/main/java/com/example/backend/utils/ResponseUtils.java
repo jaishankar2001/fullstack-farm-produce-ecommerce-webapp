@@ -21,6 +21,7 @@ public class ResponseUtils {
         farmDTO.setId(current_farm.getId());
         farmDTO.setName(current_farm.getName());
         farmDTO.setAddress(current_farm.getAddress());
+        farmDTO.setDescription(current_farm.getDescription());
         farmDTO.setLat(current_farm.getLat());
         farmDTO.setLng(current_farm.getLng());
 

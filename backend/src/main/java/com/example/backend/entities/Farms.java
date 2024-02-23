@@ -19,6 +19,7 @@ public class Farms {
 
     private String name;
     private String Address;
+    private String Description;
     private double lat;
     private double lng;
 
