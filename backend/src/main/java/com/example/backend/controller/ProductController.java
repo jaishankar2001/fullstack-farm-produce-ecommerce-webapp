@@ -14,6 +14,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -59,5 +60,13 @@ public class ProductController {
         ApiResponse response = new ApiResponse();
         response.setMessage("product deleted successfully");
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getProduct/{productId}")
+    public ResponseEntity<GetProductByIdResponse> getProductById(@PathVariable int productId) {
+        String productInfo = productService.getProductById(productId);
+        GetProductByIdResponse response = new GetProductByIdResponse();
+        response.setProductInfo(productInfo);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

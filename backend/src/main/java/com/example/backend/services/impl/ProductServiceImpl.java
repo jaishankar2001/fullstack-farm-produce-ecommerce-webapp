@@ -148,4 +148,23 @@ public class ProductServiceImpl implements ProductService {
         
     }
 
+    @Override
+    public String getProductById(int id) {
+        Product product = productRepository.findById(id);
+        try {
+            if(product!=null){
+                String productName = product.getProductName();
+                return (productName+": "+product.getProductDescription());
+            }
+            else{
+                return "product not found";
+            }
+        } 
+        
+        catch (Exception e) {
+            e.printStackTrace();
+            return "Invalid ID";
+        }
+    }
+
 }

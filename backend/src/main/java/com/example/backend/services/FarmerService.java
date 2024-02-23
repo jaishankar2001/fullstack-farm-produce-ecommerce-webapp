@@ -17,4 +17,6 @@ public interface FarmerService {
     String editFarm(EditFarmRequest farmRequest, MultipartFile[] files, Principal principal);
 
     List<FarmDto> getFarms(Principal principal);
+
+    String getFarmById(int id);
 }

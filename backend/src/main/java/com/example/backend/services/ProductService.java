@@ -11,4 +11,5 @@ public interface ProductService {
     List<ProductDto> addProduct(AddProductRequest product, MultipartFile[] files, Principal principal);
     List<ProductDto> editProduct(EditProductRequest editProductRequest, MultipartFile[] files, Principal principal);
     void deleteProduct(int id);
+    String getProductById(int id);
 }

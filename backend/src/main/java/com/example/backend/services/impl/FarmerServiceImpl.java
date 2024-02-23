@@ -147,4 +147,24 @@ public class FarmerServiceImpl implements FarmerService {
 
         return farmDTO;
     }
+
+    @Override
+    public String getFarmById(int id){
+        Farms farm = farmRepository.findById(id);
+        try {
+            if(farm != null){
+                String farmName = farm.getName();
+                return farmName+": "+farm.getAddress();
+            }
+
+            else{
+                return("Id is not present!");
+            }
+        } 
+        
+        catch (Exception e) {
+            e.printStackTrace();
+            return "Invalid Id";
+        }
+    }
 }
