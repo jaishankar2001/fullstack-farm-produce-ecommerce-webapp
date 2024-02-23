@@ -11,4 +11,6 @@ public interface FarmRepository extends JpaRepository<Farms, Integer> {
     Farms findById(int id);
 
     List<Farms> findByUser(User user);
+
+    List<Farms> findTop10ByOrderByIdDesc();
 }

@@ -15,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     void deleteById(int id);
 
     List<Product> findByProductNameContaining(String infix);
+
+    List<Product> findTop10ByOrderByIdDesc();
 }

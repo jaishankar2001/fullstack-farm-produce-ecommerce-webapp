@@ -18,7 +18,7 @@ build-backend:
     paths:
       - backend/target/*.jar
   only:
-    - develop
+    - main
 
 build-frontend:
   stage: build
@@ -37,7 +37,7 @@ build-frontend:
     paths:
       - frontend/build
   only:
-    - develop
+    - main
 
 test: 
   stage: test
@@ -48,7 +48,7 @@ test:
     - mvn clean install
     - echo "Testing backend Completed..."
   only:
-    - develop
+    - main
 
 publish:
   image: docker:latest
@@ -70,7 +70,7 @@ publish:
     - docker build -t docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA -f ./Dockerfile .
     - docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
   only:
-    - develop
+    - main
   dependencies: 
     - build-backend
 
@@ -90,7 +90,7 @@ deploy-backend:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f ecopick-backend || true"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
   only:
-    - develop
+    - main
 
 deploy-frontend:
   stage: deploy 
@@ -106,4 +106,4 @@ deploy-frontend:
   tags:
     - ecopick
   only:
-    - develop
+    - main
