@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { CAT1 } from "../assets/images/index";
 
-function ProductGridCard({ product }) {
+function FarmGridCard({ farm }) {
   const navigate = useNavigate();
 
   return (
@@ -11,8 +11,8 @@ function ProductGridCard({ product }) {
         <div className="ratio ratio-1x1 position-relative">
           <img
             className="card-img-top"
-            src={product.images?.[0]?.img_url}
-            alt="Product image."
+            src={farm.images?.[0]?.img_url}
+            alt="farm image."
           />
         </div>
       </a>
@@ -21,36 +21,21 @@ function ProductGridCard({ product }) {
         <div className="vstack gap-2">
           <div>
             <div className="d-flex justify-content-center flex-lg-wrap">
-              <h4 className="text-dark fs-5 fw-bold mb-0">
-                {product.productName}
-              </h4>
+              <h4 className="text-dark fs-5 fw-bold mb-0">{farm.name}</h4>
             </div>
             <div className="d-flex flex-lg-wrap justify-content-center mt-2">
-              <p className="text-center">
-                Our grapes boast unparalleled flavor, grown with care using
-                organic practices on our family farm.
-              </p>
+              <p className="text-center">{farm.description}</p>
             </div>
           </div>
           <div className="hstack gap-2 justify-content-center">
-            {/* <button className="btn btn-outline-secondary text-primary border d-md-block d-lg-none">
-            <FontAwesomeIcon icon={["far", "heart"]} />
-          </button> */}
-
             <button
               className="btn btn-sm btn-secondary text-primary flex-grow-1 d-none d-lg-block"
               onClick={() => {
-                const currentPath = window.location.pathname;
-                console.log(currentPath);
-                if (currentPath == "/product-listing") {
-                  navigate("/product", { state: { product } });
-                } else {
-                  navigate("/farmer-product", { state: { product } });
-                }
+                navigate("/farm-detail", { state: { farm } });
               }}
             >
               <FontAwesomeIcon icon={["fas", "cart-plus"]} />
-              View Product
+              View Farm
             </button>
             <div></div>
           </div>
@@ -60,4 +45,4 @@ function ProductGridCard({ product }) {
   );
 }
 
-export default ProductGridCard;
+export default FarmGridCard;

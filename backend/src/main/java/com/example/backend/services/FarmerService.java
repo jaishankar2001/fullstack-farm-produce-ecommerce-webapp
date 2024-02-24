@@ -1,6 +1,8 @@
 package com.example.backend.services;
 
 import com.example.backend.dto.request.EditFarmRequest;
+import com.example.backend.dto.request.FarmerOwnFarmRequest;
+
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 

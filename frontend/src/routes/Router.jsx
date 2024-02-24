@@ -13,6 +13,8 @@ import AddProduct from "../pages/Product/AddProduct";
 import ProductDetail from "../pages/ProductDetail/ProductDetail";
 import FarmerProductListing from "../pages/FarmerProductListing/FarmerProductListing";
 import FarmerProductDetail from "../pages/FarmerProductDetail/FarmerProductDetail";
+import FarmerFarms from "../pages/Farm/FarmerFarms";
+import FarmDetail from "../pages/Farm/FarmDetail";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -70,7 +72,15 @@ export const Router = () => {
         },
         {
           path: "/farmer-product",
-          element: <FarmerProductDetail/>,
+          element: <FarmerProductDetail />,
+        },
+        {
+          path: "/farmer-farms",
+          element: <FarmerFarms />,
+        },
+        {
+          path: "/farm-detail",
+          element: <FarmDetail />,
         },
       ],
     },
