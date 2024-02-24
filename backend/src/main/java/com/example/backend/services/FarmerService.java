@@ -7,6 +7,7 @@ import java.util.List;
 import java.security.Principal;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.FarmDto;
+import com.example.backend.dto.response.GetFarmByIdResponse;
 import com.example.backend.entities.Farms;
 
 public interface FarmerService {
@@ -18,5 +19,5 @@ public interface FarmerService {
 
     List<FarmDto> getFarms(Principal principal);
 
-    String getFarmById(int id);
+    GetFarmByIdResponse getFarmById(int id);
 }

@@ -78,10 +78,8 @@ public class FarmerController {
 
     @GetMapping("/getFarm/{farmId}")
     public ResponseEntity<GetFarmByIdResponse> getFarmById(@PathVariable int farmId) {
-        String farmInfo = farmerService.getFarmById(farmId);
-        GetFarmByIdResponse response = new GetFarmByIdResponse();
-        response.setFarmInfo(farmInfo);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        GetFarmByIdResponse response = farmerService.getFarmById(farmId);
+        return ResponseEntity.ok(response);
     }
     
 

@@ -149,21 +149,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String getProductById(int id) {
+    public ProductDto getProductById(int id) {
         Product product = productRepository.findById(id);
-        try {
-            if(product!=null){
-                String productName = product.getProductName();
-                return (productName+": "+product.getProductDescription());
+        ProductDto gpid = new ProductDto();
+        if(product!=null){
+            gpid.setProductName(product.getProductName());
+            gpid.setProductDescription(product.getProductDescription());
+            gpid.setPrice(product.getPrice());
+            gpid.setStock(product.getStock());
+            gpid.setUnit(product.getUnit());
+            gpid.setPrebook(product.isPrebook());
+            gpid.setProductCategory(product.getCategory());
+            
+            for(Images images: product.getImages()){
+                gpid.addImage(images);
             }
-            else{
-                return "product not found";
-            }
-        } 
-        
-        catch (Exception e) {
-            e.printStackTrace();
-            return "Invalid ID";
+            return gpid;
+        }
+        else {
+            throw new ApiRequestException("Product not found with id " + id);
         }
     }
 

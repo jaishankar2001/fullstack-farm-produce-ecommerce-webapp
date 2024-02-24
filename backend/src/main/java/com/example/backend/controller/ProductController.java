@@ -63,10 +63,8 @@ public class ProductController {
     }
 
     @GetMapping("/getProduct/{productId}")
-    public ResponseEntity<GetProductByIdResponse> getProductById(@PathVariable int productId) {
-        String productInfo = productService.getProductById(productId);
-        GetProductByIdResponse response = new GetProductByIdResponse();
-        response.setProductInfo(productInfo);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<ProductDto> getProductById(@PathVariable int productId) {
+       ProductDto response = productService.getProductById(productId);
+       return ResponseEntity.ok(response);
     }
 }
