@@ -10,6 +10,17 @@ function FarmerProductListing() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    api.category.getCategories()
+    .then(response => {
+      setCategories(response);
+    })
+    .catch(error => {
+      console.error("Error fetching categories:", error);
+    });
+  }, []);
 
 
   const getAllProducts = async() => {
@@ -38,6 +49,21 @@ function FarmerProductListing() {
       setSelectedCategories([...selectedCategories, category]);
     }
   };
+
+  const getFilteredProducts = () => {
+    // If no categories are selected, return all products
+    if (selectedCategories.length === 0) {
+      return allProducts;
+    }
+
+    // Filter products based on selected categories
+    return allProducts.filter((product) =>
+      selectedCategories.includes(product.category)
+    );
+  };
+
+  const filteredProducts = getFilteredProducts();
+
 
   return (
     <div className="vstack">
@@ -91,25 +117,17 @@ function FarmerProductListing() {
                 >
                   <div className="accordion-body pt-2">
                     <div className="vstack gap-2">
-                      <label className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          checked={selectedCategories.includes("Vegetables")}
-                          onChange={() => handleCategoryCheckboxChange("Vegetables")}
-                        />
-                        Vegetables
-                      </label>
-                      <label className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          checked={selectedCategories.includes("Milk")}
-                          onChange={() => handleCategoryCheckboxChange("Milk")}
-                        />
-                        Milk
-                      </label>
-                      {/* Add similar labels for other categories */}
+                      {categories.map((category) => (
+                        <label className="form-check" key={category.id}>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            checked={selectedCategories.includes(category.id)}
+                            onChange={() => handleCategoryCheckboxChange(category.id)}
+                          />
+                          {category.name}
+                        </label>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -128,7 +146,7 @@ function FarmerProductListing() {
             </div>
           </div>
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-3">
-            {allProducts.map((product, index) => (
+            {filteredProducts.map((product, index) => (
        <div className="col">
        <ProductGridCard product={product}/>
      </div>
