@@ -11,18 +11,17 @@ function ProductListing() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
 
-
-  const getAllProducts = async() => {
-
-    const response = await api.products.getProducts({ productName: searchTerm });
+  const getAllProducts = async () => {
+    const response = await api.products.getProducts({
+      productName: searchTerm,
+    });
     setAllProducts(response);
-
-  }
-console.log(allProducts);
+  };
+  console.log(allProducts);
 
   useEffect(() => {
     getAllProducts();
-   }, [searchTerm])
+  }, [searchTerm]);
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
@@ -46,20 +45,20 @@ console.log(allProducts);
         <div className="container">
           <div className="row py-4 px-2">
             <div className="col-lg-7">
-            <div className="col-lg-7">
-            <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search products..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-                <button className="btn btn-outline-primary" type="button">
-                  Search
-                </button>
+              <div className="col-lg-7">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                  <button className="btn btn-outline-primary" type="button">
+                    Search
+                  </button>
+                </div>
               </div>
-            </div>
               {/* <nav aria-label="breadcrumb">
                 <ol className="breadcrumb mb-1">
                   <li className="breadcrumb-item">
@@ -97,7 +96,9 @@ console.log(allProducts);
                           type="checkbox"
                           className="form-check-input"
                           checked={selectedCategories.includes("Vegetables")}
-                          onChange={() => handleCategoryCheckboxChange("Vegetables")}
+                          onChange={() =>
+                            handleCategoryCheckboxChange("Vegetables")
+                          }
                         />
                         Vegetables
                       </label>
@@ -118,25 +119,26 @@ console.log(allProducts);
             </div>
           </div>
           <div className="col-lg-9">
-          <div className="hstack justify-content-between mb-3">
-            <span className="text-dark">{allProducts?.length} Items found</span>
-            <div className="btn-group" role="group">
-              <button className="btn btn-outline-dark">
-                <FontAwesomeIcon icon={["fas", "sort-amount-up"]} />
-              </button>
-              <button className="btn btn-outline-dark">
-                <FontAwesomeIcon icon={["fas", "th-list"]} />
-              </button>
+            <div className="hstack justify-content-between mb-3">
+              <span className="text-dark">
+                {allProducts?.length} Items found
+              </span>
+              <div className="btn-group" role="group">
+                <button className="btn btn-outline-dark">
+                  <FontAwesomeIcon icon={["fas", "sort-amount-up"]} />
+                </button>
+                <button className="btn btn-outline-dark">
+                  <FontAwesomeIcon icon={["fas", "th-list"]} />
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-            {allProducts.map((product, index) => (
-       <div className="col">
-       <ProductGridCard product={product}/>
-     </div>
-      ))}
-          </div>
-
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+              {allProducts.map((product, index) => (
+                <div className="col">
+                  <ProductGridCard product={product} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

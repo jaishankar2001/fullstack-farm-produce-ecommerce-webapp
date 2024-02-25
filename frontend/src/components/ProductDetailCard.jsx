@@ -20,12 +20,7 @@ function ProductDetailCard({ id }) {
           <a className="text-dark text-decoration-none">Product name here</a>
         </Link> */}
         <h6 className="mb-0 fw-semibold">10000Ks</h6>
-        <div className="mt-auto">
-          <button className="btn btn-sm btn-secondary text-primary rounded-3">
-            <FontAwesomeIcon icon={("fas", "cart-plus")} />
-            &nbsp;Add to cart
-          </button>
-        </div>
+        <div className="mt-auto"></div>
       </div>
     </div>
   );

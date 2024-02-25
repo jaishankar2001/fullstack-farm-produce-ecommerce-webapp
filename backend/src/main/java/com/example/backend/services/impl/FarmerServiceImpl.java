@@ -1,6 +1,8 @@
 package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.EditFarmRequest;
+import com.example.backend.dto.request.FarmerOwnFarmRequest;
+
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -130,6 +132,7 @@ public class FarmerServiceImpl implements FarmerService {
         if (user == null) {
             throw new ApiRequestException("User not found");
         }
+
         List<Farms> userFarms = farmRepository.findByUser(user);
         return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }

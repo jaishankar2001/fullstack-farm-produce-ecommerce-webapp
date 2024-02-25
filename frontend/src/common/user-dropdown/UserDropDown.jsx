@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import './UserDropdown.css'; 
+import React, { useState } from "react";
+import "./UserDropdown.css";
 import { User } from "../../assets/images";
 import { useNavigate } from "react-router-dom";
 
-
-const UserDropdown = ({handleLogout}) => {
+const UserDropdown = ({ handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -17,19 +16,50 @@ const UserDropdown = ({handleLogout}) => {
   };
 
   return (
-    <div className="user-dropdown">
-      <button className="dropdown-button" onClick={handleToggle}>
-      <img src={User} style={{ width: "30px", height: "30px" }} />
-      </button>
-      {isOpen && (
-        <ul className="dropdown-list">
-          <li onClick={() => {setIsOpen(false); navigate("/add-farm");}}>Start Selling</li>
-          <li onClick={() => {setIsOpen(false); navigate("/wallet");}}>Wallet</li>
-          <li onClick={() => {setIsOpen(false); navigate("/farmer-products");}}>My Products</li>
-          <li onClick={handleLogout}>Logout</li>
-        </ul>
-      )}
-    </div>
+    <>
+      <div className="user-dropdown">
+        <button className="dropdown-button" onClick={handleToggle}>
+          <img src={User} style={{ width: "30px", height: "30px" }} />
+        </button>
+        {isOpen && (
+          <ul className="dropdown-list">
+            <li
+              onClick={() => {
+                setIsOpen(false);
+                navigate("/add-farm");
+              }}
+            >
+              Start Selling
+            </li>
+            <li
+              onClick={() => {
+                setIsOpen(false);
+                navigate("/wallet");
+              }}
+            >
+              Wallet
+            </li>
+            <li
+              onClick={() => {
+                setIsOpen(false);
+                navigate("/farmer-products");
+              }}
+            >
+              My Products
+            </li>
+            <li
+              onClick={() => {
+                setIsOpen(false);
+                navigate("/farmer-farms");
+              }}
+            >
+              My Farms
+            </li>
+            <li onClick={handleLogout}>Logout</li>
+          </ul>
+        )}
+      </div>
+    </>
   );
 };
 

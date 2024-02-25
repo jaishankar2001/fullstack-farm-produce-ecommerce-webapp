@@ -1,10 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProductDetailCard from "../../components/ProductDetailCard";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import "./styles.css";
-import {
-    CAT1,
-} from "../../assets/images/index";
+import { CAT1 } from "../../assets/images/index";
 
 function ProductDetail() {
   const images = [2, 4, 6, 8, 1];
@@ -16,8 +14,7 @@ function ProductDetail() {
     <div className="vstack">
       <div className="bg-secondary">
         <div className="container">
-          <div className="row py-4 px-2">
-          </div>
+          <div className="row py-4 px-2"></div>
         </div>
       </div>
       <div className="bg-white mb-4">
@@ -64,7 +61,7 @@ function ProductDetail() {
             <div className="col-lg-7">
               <div className="d-flex">
                 <div className="d-inline h2 mb-0 fw-semibold me-3">
-                 {product.productName}
+                  {product.productName}
                 </div>
                 <div className="ms-auto">
                   <button
@@ -86,7 +83,9 @@ function ProductDetail() {
                     &nbsp;In Stock
                   </span>
                 </div>
-                <h4 className="fw-semibold">${product.price}/{product.unit}</h4>
+                <h4 className="fw-semibold">
+                  ${product.price}/{product.unit}
+                </h4>
                 <p className="fw-light">
                   Lorem ipsum is placeholder text commonly used in the graphic,
                   print, and publishing industries for previewing layouts and
@@ -102,14 +101,19 @@ function ProductDetail() {
                 </dl>
                 <hr className="text-muted" />
                 <div class="attractive-banner">
-  <div class="banner-content d-flex align-items-center">
-    <div class="text-section">
-      <p class="availability-text mt-1">Next Stock available on: <span class="date-highlight">22/02/2024</span></p>
-    </div>
-    <button class="btn btn-primary btn-pre-book">Pre-book Now</button>
-  </div>
-</div>
-<hr className="text-muted" />
+                  <div class="banner-content d-flex align-items-center">
+                    <div class="text-section">
+                      <p class="availability-text mt-1">
+                        Next Stock available on:{" "}
+                        <span class="date-highlight">22/02/2024</span>
+                      </p>
+                    </div>
+                    <button class="btn btn-primary btn-pre-book">
+                      Pre-book Now
+                    </button>
+                  </div>
+                </div>
+                <hr className="text-muted" />
                 <div className="d-flex">
                   <a
                     href="#"
@@ -166,7 +170,7 @@ function ProductDetail() {
                   est velit egestas.
                 </p>
               </div>
-              <div className="card-footer py-3">
+              {/* <div className="card-footer py-3">
                 <small>
                   <FontAwesomeIcon
                     icon={["fas", "truck"]}
@@ -174,12 +178,11 @@ function ProductDetail() {
                   />
                   Delivery within 1-2 days
                 </small>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="col-lg-4">
-            <div className="card border-0 shadow-sm">
-            </div>
+            <div className="card border-0 shadow-sm"></div>
           </div>
         </div>
       </div>
