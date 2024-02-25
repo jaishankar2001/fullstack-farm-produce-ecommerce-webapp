@@ -31,7 +31,7 @@ function FarmDetail() {
     setModalIsOpen(false);
   };
   const handleDeleteConfirmation = async () => {
-    // const response = await api.farm.deleteFarm(farm.id);
+    const response = await api.farm.deleteFarm(farm.id);
     toast.success("Farm deleted successfully!");
     navigate("/farmer-farms");
 

@@ -18,6 +18,7 @@ function MapComponent(props) {
       <MapView
         setSelectedLocation={setSelectedLocation}
         selectedLocation={selectedLocation}
+        editAddress={props.address}
       />
     </div>
   );

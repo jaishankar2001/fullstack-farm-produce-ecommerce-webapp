@@ -82,7 +82,7 @@ function AddFarm() {
                       setFarmName(e.target.value);
                       setFarmData((prevFarmData) => ({
                         ...prevFarmData,
-                        name: farmName, // Update address in Recoil state
+                        name: e.target.value, // Update address in Recoil state
                       }));
                     }}
                   />
@@ -98,7 +98,7 @@ function AddFarm() {
                       setFarmDescription(e.target.value);
                       setFarmData((prevFarmData) => ({
                         ...prevFarmData,
-                        description: farmDescription, // Update address in Recoil state
+                        description: e.target.value, // Update address in Recoil state
                       }));
                     }}
                   />

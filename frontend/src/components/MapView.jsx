@@ -5,7 +5,11 @@ import AutoComplete from "react-google-autocomplete";
 import { farmState } from "../recoil/atoms/farm";
 import { useRecoilState } from "recoil";
 
-const MapView = ({ setSelectedLocation, selectedLocation }) => {
+const MapView = ({
+  setSelectedLocation,
+  selectedLocation,
+  editAddress = "",
+}) => {
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState();
   const [farmData, setFarmData] = useRecoilState(farmState);
@@ -113,7 +117,7 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
               type="email"
               className="form-control"
               placeholder="Address"
-              value={selectedAddress ? address : ""}
+              value={selectedAddress ? address : editAddress}
             />
           </div>
         </>
