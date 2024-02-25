@@ -1,18 +1,22 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.request.EditFarmRequest;
+import com.example.backend.dto.request.FarmerOwnFarmRequest;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.FarmDto;
 import com.example.backend.dto.response.GetFarmByIdResponse;
 import com.example.backend.entities.Farms;
 import com.example.backend.services.FarmerService;
+
+import jakarta.validation.Valid;
 
 // import com.example.Auth.entities.Farms;
 // import com.example.Auth.services.FarmerService;

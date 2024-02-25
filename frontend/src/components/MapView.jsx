@@ -9,32 +9,34 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState();
   const [farmData, setFarmData] = useRecoilState(farmState);
+  const google_api_key = process.env.REACT_APP_MAP_KEY;
 
   useEffect(() => {
     window.initMap = () => setGmapsLoaded(true);
     const gmapScriptEl = document.createElement(`script`);
-    gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyC92l4kh5h0HvZxwjtRg_F_uIwDCphriQI&libraries=places&callback=initMap`;
+    gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&libraries=places&callback=initMap`;
     document
       .querySelector(`body`)
       .insertAdjacentElement(`beforeend`, gmapScriptEl);
   }, [selectedAddress]);
 
   const center = useMemo(() => ({ lat: 44.6475811, lng: -63.5727683 }), []);
-  
-  const address = `${selectedAddress?.[0]?.long_name}, ${selectedAddress?.[1]?.long_name}, ${selectedAddress?.[2]?.long_name}, ${selectedAddress?.[3]?.long_name}, ${selectedAddress?.[4]?.long_name}, ${selectedAddress?.[5]?.long_name}, ${selectedAddress?.[6]?.long_name}, ${selectedAddress?.[7]?.long_name}`;
 
+  const address = `${selectedAddress?.[0]?.long_name}, ${selectedAddress?.[1]?.long_name}, ${selectedAddress?.[2]?.long_name}, ${selectedAddress?.[3]?.long_name}, ${selectedAddress?.[4]?.long_name}, ${selectedAddress?.[5]?.long_name}, ${selectedAddress?.[6]?.long_name}, ${selectedAddress?.[7]?.long_name}`;
 
   const handlePlaceSelect = async (lat, lng) => {
     setSelectedLocation({ lat, lng });
 
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyC92l4kh5h0HvZxwjtRg_F_uIwDCphriQI`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${google_api_key}`
       );
 
       const addressComponents = response.data.results[0].address_components;
       setSelectedAddress((prevAddress) => {
-        const updatedAddress = addressComponents.map((component) => component.long_name).join(", ");
+        const updatedAddress = addressComponents
+          .map((component) => component.long_name)
+          .join(", ");
         setFarmData((prevFarmData) => ({
           ...prevFarmData,
           lat,
@@ -67,7 +69,7 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
         <>
           <div className="fw-semibold mt-3 mb-3">
             <AutoComplete
-              apiKey={"AIzaSyC92l4kh5h0HvZxwjtRg_F_uIwDCphriQI"}
+              apiKey={google_api_key}
               onPlaceSelected={(place) =>
                 handlePlaceSelect(
                   place.geometry.location.lat(),

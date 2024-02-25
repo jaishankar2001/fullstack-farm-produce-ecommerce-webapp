@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 
 function AddFarm() {
   const [farmName, setFarmName] = useState("");
+  const [farmDescription, setFarmDescription] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [farmData, setFarmData] = useRecoilState(farmState);
@@ -25,6 +26,7 @@ function AddFarm() {
       });
       formData.append("name", farmData.name);
       formData.append("Address", farmData.Address);
+      formData.append("Description", farmData.description);
       formData.append("lat", farmData.lat);
       formData.append("lng", farmData.lng);
 
@@ -32,11 +34,14 @@ function AddFarm() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await fetch("http://localhost:8080/api/farmer/addfarm", {
-        method: "POST",
-        headers: headers,
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/farmer/addfarm`,
+        {
+          method: "POST",
+          headers: headers,
+          body: formData,
+        }
+      );
 
       navigate("/");
     } catch (error) {
@@ -85,7 +90,18 @@ function AddFarm() {
 
                 <h6 className="fw-semibold mb-0">About your Farm</h6>
                 <div>
-                  <input type="textarea" className="form-control" />
+                  <input
+                    type="textarea"
+                    className="form-control"
+                    value={farmDescription}
+                    onChange={(e) => {
+                      setFarmDescription(e.target.value);
+                      setFarmData((prevFarmData) => ({
+                        ...prevFarmData,
+                        description: farmDescription, // Update address in Recoil state
+                      }));
+                    }}
+                  />
                 </div>
 
                 <div className="col-md-12">

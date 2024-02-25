@@ -1,6 +1,8 @@
 package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.EditFarmRequest;
+import com.example.backend.dto.request.FarmerOwnFarmRequest;
+
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.services.FarmerService;
 import com.example.backend.utils.Awsutils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.backend.utils.ResponseUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +63,7 @@ public class FarmerServiceImpl implements FarmerService {
         farm.setImages(farmImages);
 
         List<Farms> userFarms = farmRepository.findByUser(user);
-        return userFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
+        return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -131,24 +134,11 @@ public class FarmerServiceImpl implements FarmerService {
         if (user == null) {
             throw new ApiRequestException("User not found");
         }
+
         List<Farms> userFarms = farmRepository.findByUser(user);
-        return userFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
+        return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
-    private FarmDto convertFarmResponse(Farms current_farm) {
-        FarmDto farmDTO = new FarmDto();
-        farmDTO.setId(current_farm.getId());
-        farmDTO.setName(current_farm.getName());
-        farmDTO.setAddress(current_farm.getAddress());
-        farmDTO.setLat(current_farm.getLat());
-        farmDTO.setLng(current_farm.getLng());
-
-        for (Images images : current_farm.getImages()) {
-            farmDTO.addImage(images);
-        }
-
-        return farmDTO;
-    }
 
     @Override
     public GetFarmByIdResponse getFarmById(int id){
