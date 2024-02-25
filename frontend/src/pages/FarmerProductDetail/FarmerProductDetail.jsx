@@ -1,16 +1,50 @@
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ProductDetailCard from "../../components/ProductDetailCard";
+import { useNavigate } from "react-router-dom";
+import Modal from "react-modal";
 import { useLocation } from "react-router-dom";
-import { CAT1 } from "../../assets/images/index";
+import api from "../../api/index";
+import { ToastContainer, toast } from "react-toastify";
 
 function FarmerProductDetail() {
   const images = [2, 4, 6, 8, 1];
+  const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
   const { product } = state;
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  const onDeleteProduct = async() => {
+     const response = await api.products.deleteProduct(product.id);
+     toast.success("Farm deleted successfully!");
+     navigate("/farmer-products");
+ 
+     closeModal();
+
+  }
 
   return (
     <div className="vstack">
+       <ToastContainer />
       <div className="bg-secondary">
         <div className="container">
           <div className="row py-4 px-2"></div>
@@ -106,7 +140,7 @@ function FarmerProductDetail() {
                   >
                     Edit Product
                   </a>
-                  <button className="btn btn-outline-primary col col-md-auto">
+                  <button className="btn btn-outline-primary col col-md-auto" onClick={openModal}>
                     <FontAwesomeIcon icon={["fas", "trash"]} />
                     &nbsp;Delete Product
                   </button>
@@ -117,7 +151,24 @@ function FarmerProductDetail() {
           </div>
         </div>
       </div>
-
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Delete Confirmation"
+        style={customStyles}
+      >
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">Are you sure to delete this farm?</h5>
+            <button
+              className="btn btn-primary"
+              onClick={onDeleteProduct}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </Modal>
       <div className="container">
       </div>
       <br />
