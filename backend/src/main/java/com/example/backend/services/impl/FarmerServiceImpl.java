@@ -79,25 +79,27 @@ public class FarmerServiceImpl implements FarmerService {
         if (farmRequest.getLat() != 0) {
             farm.setLat(farmRequest.getLat());
         }
-        List<Images> farmImages = farm.getImages();
-        for (Images image : farmImages) {
-            awsutils.deleteFilefromS3(image.getImg_url());
+        if (farmRequest.getDescription() != "") {
+            farm.setDescription(farmRequest.getDescription());
+        }
+        if (multipartFiles != null) {
+            List<Images> farmImages = farm.getImages();
+            for (Images image : farmImages) {
+                awsutils.deleteFilefromS3(image.getImg_url());
 
-            // imagesRepository.deleteById(image.getId());
+            }
+            farmImages.clear();
+            for (MultipartFile file : multipartFiles) {
+                String url = awsutils.uploadFileToS3(file, "FARM", farm.getId());
+                Images image = new Images();
+                image.setFarm(farm);
+                image.setImg_url(url);
+                imagesRepository.save(image);
+                System.out.println("-=-=-=-=- " + url);
+                farmImages.add(image);
+            }
+            farm.setImages(farmImages);
         }
-        farmImages.clear();
-        // farm.getImages().clear();
-        // farmImages = new ArrayList<>();
-        for (MultipartFile file : multipartFiles) {
-            String url = awsutils.uploadFileToS3(file, "FARM", farm.getId());
-            Images image = new Images();
-            image.setFarm(farm);
-            image.setImg_url(url);
-            imagesRepository.save(image);
-            System.out.println("-=-=-=-=-  " + url);
-            farmImages.add(image);
-        }
-        farm.setImages(farmImages);
         farmRepository.save(farm);
         return "Farm details edited successfully";
     }
