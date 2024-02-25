@@ -63,7 +63,7 @@ public class FarmerController {
 
     @PostMapping("/editfarm")
     public ResponseEntity<Map> editFarm(@ModelAttribute EditFarmRequest farmRequest,
-            @RequestPart(value = "files") MultipartFile[] files, Principal principal) {
+            @RequestPart(value = "files", required = false) MultipartFile[] files, Principal principal) {
         String editFarmResponse = farmerService.editFarm(farmRequest, files, principal);
         Map<String, Object> response = new HashMap<>();
         response.put("message", principal.getName());

@@ -116,12 +116,15 @@ function FarmDetail() {
                 </dl>
                 <hr className="text-muted" />
                 <div className="d-flex">
-                  <a
-                    href="#"
+                  <button
                     className="btn btn-primary px-md-4 col col-md-auto me-2"
+                    onClick={() => {
+                      console.log("Edit farmsss");
+                      navigate("/editfarm", { state: { farm } });
+                    }}
                   >
                     Edit Farm
-                  </a>
+                  </button>
                   <button
                     className="btn btn-outline-primary col col-md-auto"
                     onClick={openModal}

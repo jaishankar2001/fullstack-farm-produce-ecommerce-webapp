@@ -8,8 +8,10 @@ function MapComponent(props) {
   });
 
   useEffect(() => {
-    console.log("" + selectedLocation);
-  }, [selectedLocation]);
+    if (props.lat && props.lng) {
+      setSelectedLocation({ lat: props.lat, lng: props.lng });
+    }
+  }, []);
   return (
     <div>
       <h5 className="fw-semibold mb-0">Pinpoint Your Farm Location</h5>

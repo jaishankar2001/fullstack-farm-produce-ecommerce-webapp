@@ -41,7 +41,7 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
           ...prevFarmData,
           lat,
           lng,
-          Address: updatedAddress, // Update address in Recoil state
+          Address: updatedAddress,
         }));
         return addressComponents;
       });
