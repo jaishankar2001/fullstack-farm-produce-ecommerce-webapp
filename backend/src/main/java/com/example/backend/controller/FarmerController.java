@@ -44,7 +44,7 @@ public class FarmerController {
         return ResponseEntity.ok("Hi Farmer");
     }
 
-    @GetMapping("/own-farms")
+    @PostMapping("/own-farms")
     public ResponseEntity<List<FarmDto>> getFarms(@RequestBody FarmerOwnFarmRequest farmerOwnFarmRequest,
             Principal principal) {
         List<FarmDto> userFarms = farmerService.getFarms(farmerOwnFarmRequest, principal);
