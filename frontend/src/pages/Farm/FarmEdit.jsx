@@ -86,7 +86,7 @@ function FarmEdit() {
           <div className="card border-0 shadow-sm">
             <div className="card-body">
               <form className="row g-3">
-                <h4 className="fw-bold mb-0">Register Your Farm</h4>
+                <h4 className="fw-bold mb-0">Edit Your Farm</h4>
                 <div>
                   <label className="form-label">Farm Name</label>
                   <input
