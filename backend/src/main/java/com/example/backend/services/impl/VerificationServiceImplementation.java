@@ -5,7 +5,8 @@ import java.util.UUID;
 
 import com.example.backend.entities.VerificationType;
 import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserMeta;
 import com.example.backend.entities.VerificationCode;
@@ -26,6 +27,9 @@ public class VerificationServiceImplementation implements VerificationService {
     private final UserMetaRepository userMetaRepository;
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
+    @Value("${frontend.endpoint}")
+    private String frontendEndpoint;
 
     @Override
     public void verify(String code, String email) {
@@ -55,7 +59,7 @@ public class VerificationServiceImplementation implements VerificationService {
     }
 
     @Override
-    public void resetPassword(String code, String email, String newPassword){
+    public void resetPassword(String code, String email, String newPassword) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new ApiRequestException("Not able to find user");
@@ -68,7 +72,7 @@ public class VerificationServiceImplementation implements VerificationService {
         if (verificationCode.getExpiryTime().isBefore(LocalDateTime.now())) {
             throw new ApiRequestException("Verification code has expired");
         }
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         verificationCodeRepository.delete(verificationCode);
     }
@@ -97,13 +101,19 @@ public class VerificationServiceImplementation implements VerificationService {
             verificationCodeRepository.save(verificationCode);
         }
 
-        String url = "http://localhost:3000/verify-email?email=%s&code=%s&type=%s";
+        String url = "";
+        if (type == VerificationType.VerifyEmail) {
+            url = frontendEndpoint + "/verify-email?email=%s&code=%s&type=%s";
+        } else if (type == VerificationType.ResetPassword) {
+            url = frontendEndpoint + "/reset-password?email=%s&code=%s&type=%s";
+        }
+
         String verificationUrl = String.format(
                 url,
                 user.getEmail(),
                 verificationCode.getCode(),
                 verificationCode.getVerificationType());
-        if(type == VerificationType.valueOf("VerifyEmail")) {
+        if (type == VerificationType.valueOf("VerifyEmail")) {
             String subject = "Verify your email";
             String body = "Please click on this link to verify your email: " + verificationUrl;
             emailService.sendEmail(user.getEmail(), subject, body);
