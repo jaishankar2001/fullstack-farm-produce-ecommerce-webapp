@@ -141,7 +141,6 @@ export const HomePage = () => {
                       <div class="row g-3">
                         {homeFarms.length > 0 &&
                           homeFarms.map((farm) => {
-                            console.log("INSIDERRR" + farm);
                             return (
                               <div class="col-md-6 col-lg-4 col-xl-3 shadow lg ">
                                 <div class="hoverable">
@@ -161,13 +160,13 @@ export const HomePage = () => {
                                     >
                                       {farm.name}
                                     </div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <div class="p-4 rounded-bottom">
                                       <h4>About our Farm</h4>
                                       <p>{farm.description}</p>
                                       <div class="d-flex justify-content-center flex-lg-wrap">
                                         <a
                                           href="#"
-                                          class="btn border border-secondary rounded-pill px-3 text-primary"
+                                          class="btn border rounded-pill px-3 text-primary"
                                         >
                                           <i class="fa fa-shopping-bag me-2 text-primary"></i>{" "}
                                           Visit the farm
@@ -281,8 +280,7 @@ export const HomePage = () => {
                                     >
                                       {product.productName}
                                     </div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                      {/* <h4>Grapes</h4> */}
+                                    <div class="p-4 border-top-0 rounded-bottom">
                                       <p>{product.productDescription}</p>
                                       <div class="d-flex justify-content-between flex-lg-wrap">
                                         <p class="text-dark fs-5 fw-bold mb-0">

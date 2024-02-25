@@ -22,14 +22,6 @@ function FarmerFarms() {
     setSearchTerm(event.target.value);
   };
 
-  const handleCategoryCheckboxChange = (category) => {
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter((c) => c !== category));
-    } else {
-      setSelectedCategories([...selectedCategories, category]);
-    }
-  };
-
   return (
     <div className="vstack">
       <div className="bg-secondary">
