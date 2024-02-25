@@ -12,12 +12,18 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
   const google_api_key = process.env.REACT_APP_MAP_KEY;
 
   useEffect(() => {
-    window.initMap = () => setGmapsLoaded(true);
-    const gmapScriptEl = document.createElement(`script`);
-    gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&libraries=places&callback=initMap`;
-    document
-      .querySelector(`body`)
-      .insertAdjacentElement(`beforeend`, gmapScriptEl);
+    const timer = setTimeout(() => {
+      window.initMap = () => setGmapsLoaded(true);
+      const gmapScriptEl = document.createElement(`script`);
+      gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&libraries=places&callback=initMap`;
+      document
+        .querySelector(`body`)
+        .insertAdjacentElement(`beforeend`, gmapScriptEl);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [selectedAddress]);
 
   const center = useMemo(() => ({ lat: 44.6475811, lng: -63.5727683 }), []);
