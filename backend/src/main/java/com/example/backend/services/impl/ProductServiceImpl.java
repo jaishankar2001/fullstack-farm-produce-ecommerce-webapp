@@ -114,11 +114,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto>editProduct(EditProductRequest editProductRequest, MultipartFile[] files, Principal principal) {
+    public Product editProduct(EditProductRequest editProductRequest, MultipartFile[] files, Principal principal) {
 
-        List<ProductDto> editedProductList = new ArrayList<>();
+        // List<ProductDto> editedProductList = new ArrayList<>();
+        Product product =  productRepository.findById(editProductRequest.getId());
         try {
-            Product product =  productRepository.findById(editProductRequest.getId());
+            
             product.setProductName(editProductRequest.getProductName());
             product.setProductDescription(editProductRequest.getProductDescription());
             product.setPrice(editProductRequest.getPrice());
@@ -126,7 +127,13 @@ public class ProductServiceImpl implements ProductService {
             product.setUnit(editProductRequest.getUnit());
             productRepository.save(product);
 
-            List<Images> productImages = product.getImages();
+            List<Images> imgArr = product.getImages();
+
+            for(Images image:imgArr){
+                awsutils.deleteFilefromS3(image.getImg_url());
+            }
+            imgArr.clear();
+            
             for(MultipartFile item :files){
                 String url = awsutils.uploadFileToS3(item, "Product", product.getId());
                 Images img = new Images();
@@ -134,17 +141,19 @@ public class ProductServiceImpl implements ProductService {
                 img.setImg_url(url);
                 imagesRepository.save(img);
                 System.out.println("-=-=-=-=-  " + url);
-                productImages.add(img);
+                imgArr.add(img);
             }
 
-            product.setImages(productImages);
+            product.setImages(imgArr);
             productRepository.save(product);
-            editedProductList = productRepository.findByFarm(product.getFarm()).stream().map(this::convertProductResponse).collect(Collectors.toList());
+            return product;
+            // editedProductList = productRepository.findByFarm(product.getFarm()).stream().map(this::convertProductResponse).collect(Collectors.toList());
         }
         catch (Exception e) {
             System.out.println(e);
+            throw new ApiRequestException("Product not found" );
         }
-        return editedProductList;
+        
         
     }
 
