@@ -59,7 +59,7 @@ public class WalletServiceImpl implements WalletService {
             userInfo.setWallet_balance(updatedBalance);
             amountInfo.setAmount_Added(amount);
             amountInfo.setUser(user);
-            amountInfo.setPaymnent_Method_Reference("N.A.N");
+            amountInfo.setPaymnent_Method_Reference("Stripe");
             userMeta.save(userInfo);
             walletRepository.save(amountInfo);
         } else {

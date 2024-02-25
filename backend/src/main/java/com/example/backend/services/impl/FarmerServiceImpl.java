@@ -129,13 +129,19 @@ public class FarmerServiceImpl implements FarmerService {
     }
 
     @Override
-    public List<FarmDto> getFarms(Principal principal) {
+    public List<FarmDto> getFarms(FarmerOwnFarmRequest farmerOwnFarmRequest, Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
         if (user == null) {
             throw new ApiRequestException("User not found");
         }
-
         List<Farms> userFarms = farmRepository.findByUser(user);
+        if (farmerOwnFarmRequest.getSearchTerm() != null) {
+            return userFarms.stream().filter(
+                    farm -> farm.getName().toLowerCase().contains(farmerOwnFarmRequest.getSearchTerm().toLowerCase()))
+                    .map(ResponseUtils::convertFarmResponse)
+                    .collect(Collectors.toList());
+        }
+
         return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
