@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.FarmDto;
+import com.example.backend.dto.response.GetFarmByIdResponse;
 import com.example.backend.entities.Farms;
 import com.example.backend.services.FarmerService;
 
@@ -79,5 +80,12 @@ public class FarmerController {
         response.setMessage("Farm deleted successfully");
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/getFarm/{farmId}")
+    public ResponseEntity<GetFarmByIdResponse> getFarmById(@PathVariable int farmId) {
+        GetFarmByIdResponse response = farmerService.getFarmById(farmId);
+        return ResponseEntity.ok(response);
+    }
+    
 
 }

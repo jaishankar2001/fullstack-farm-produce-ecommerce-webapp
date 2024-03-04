@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.FarmDto;
+import com.example.backend.dto.response.GetFarmByIdResponse;
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
 import com.example.backend.entities.Product;
@@ -25,6 +26,7 @@ import com.example.backend.repository.ProductRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.FarmerService;
 import com.example.backend.utils.Awsutils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.backend.utils.ResponseUtils;
 
 @Service
@@ -145,4 +147,54 @@ public class FarmerServiceImpl implements FarmerService {
         return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
+
+    @Override
+    public GetFarmByIdResponse getFarmById(int id){
+        Farms farm = farmRepository.findById(id);
+        GetFarmByIdResponse gfid = new GetFarmByIdResponse();
+        if(farm!=null){
+            gfid.setName(farm.getName());
+            gfid.setAddress(farm.getAddress());
+            gfid.setLat(farm.getLat());
+            gfid.setLng(farm.getLng());
+            for (Images images : farm.getImages()) {
+                gfid.fetchImage(images);
+            }
+            return gfid;
+        }
+        
+        else {
+            throw new ApiRequestException("Farm not found with id " + id);
+        }
+        
+    }
+
 }
+
+// Garbage code for get Farm with id
+// 
+// 
+// try {
+//     if(farm != null){
+//         ArrayList responseList = new ArrayList<>();
+//         responseList.add(farm.getName());
+//         responseList.add(farm.getAddress());
+//         responseList.add(farm.getLat());
+//         responseList.add(farm.getLng());
+//         String farmDetails="";
+//         for(Object i:responseList){
+//             farmDetails+= i.toString()+System.lineSeparator();
+//         }
+//         return farmDetails;
+
+//     }
+
+//     else{
+//         return("Id is not present!");
+//     }
+// } 
+
+// catch (Exception e) {
+//     e.printStackTrace();
+//     return "Invalid Id";
+// }
