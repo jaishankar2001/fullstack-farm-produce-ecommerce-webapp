@@ -11,7 +11,7 @@ export async function addFarm(payload) {
 
 export async function getFarmerFarms(payload) {
   try {
-    const response = await api.get("/farmer/own-farms", payload);
+    const response = await api.post("/farmer/own-farms", payload);
     return response;
   } catch (error) {
     throw error;

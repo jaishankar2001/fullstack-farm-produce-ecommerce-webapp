@@ -17,4 +17,6 @@ public interface FarmRepository extends JpaRepository<Farms, Integer> {
 
     List<Farms> findTop8ByOrderByIdDesc();
 
+    List<Farms> findByNameIgnoreCaseContaining(String name);
+
 }

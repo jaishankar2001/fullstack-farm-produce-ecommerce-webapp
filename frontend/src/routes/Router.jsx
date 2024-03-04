@@ -15,6 +15,7 @@ import FarmerProductListing from "../pages/FarmerProductListing/FarmerProductLis
 import FarmerProductDetail from "../pages/FarmerProductDetail/FarmerProductDetail";
 import FarmerFarms from "../pages/Farm/FarmerFarms";
 import FarmDetail from "../pages/Farm/FarmDetail";
+import FarmEdit from "../pages/Farm/FarmEdit";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -81,6 +82,10 @@ export const Router = () => {
         {
           path: "/farm-detail",
           element: <FarmDetail />,
+        },
+        {
+          path: "/editfarm",
+          element: <FarmEdit />,
         },
       ],
     },

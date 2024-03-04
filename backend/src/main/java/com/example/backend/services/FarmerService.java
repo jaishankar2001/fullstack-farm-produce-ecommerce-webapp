@@ -19,7 +19,7 @@ public interface FarmerService {
 
     String editFarm(EditFarmRequest farmRequest, MultipartFile[] files, Principal principal);
 
-    List<FarmDto> getFarms(Principal principal);
+    List<FarmDto> getFarms(FarmerOwnFarmRequest farmerOwnFarmRequest, Principal principal);
 
     GetFarmByIdResponse getFarmById(int id);
 }

@@ -9,9 +9,19 @@ export async function getProducts(payload) {
   }
 }
 
+export async function deleteProduct(id) {
+  try {
+    const response = await api.del(`/products/delete/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 export async function getFarmerProducts(payload) {
     try {
-      const response = await api.post("/products/farmer-products", payload);
+      const response = await api.post("/products/delete", payload);
       return response;
     } catch (error) {
       throw error;

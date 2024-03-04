@@ -45,9 +45,10 @@ public class FarmerController {
         return ResponseEntity.ok("Hi Farmer");
     }
 
-    @GetMapping("/own-farms")
-    public ResponseEntity<List<FarmDto>> getFarms(Principal principal) {
-        List<FarmDto> userFarms = farmerService.getFarms(principal);
+    @PostMapping("/own-farms")
+    public ResponseEntity<List<FarmDto>> getFarms(@RequestBody FarmerOwnFarmRequest farmerOwnFarmRequest,
+            Principal principal) {
+        List<FarmDto> userFarms = farmerService.getFarms(farmerOwnFarmRequest, principal);
         return ResponseEntity.ok(userFarms);
     }
 
@@ -64,7 +65,7 @@ public class FarmerController {
 
     @PostMapping("/editfarm")
     public ResponseEntity<Map> editFarm(@ModelAttribute EditFarmRequest farmRequest,
-            @RequestPart(value = "files") MultipartFile[] files, Principal principal) {
+            @RequestPart(value = "files", required = false) MultipartFile[] files, Principal principal) {
         String editFarmResponse = farmerService.editFarm(farmRequest, files, principal);
         Map<String, Object> response = new HashMap<>();
         response.put("message", principal.getName());

@@ -31,7 +31,7 @@ function FarmDetail() {
     setModalIsOpen(false);
   };
   const handleDeleteConfirmation = async () => {
-    // const response = await api.farm.deleteFarm(farm.id);
+    const response = await api.farm.deleteFarm(farm.id);
     toast.success("Farm deleted successfully!");
     navigate("/farmer-farms");
 
@@ -116,12 +116,15 @@ function FarmDetail() {
                 </dl>
                 <hr className="text-muted" />
                 <div className="d-flex">
-                  <a
-                    href="#"
+                  <button
                     className="btn btn-primary px-md-4 col col-md-auto me-2"
+                    onClick={() => {
+                      console.log("Edit farmsss");
+                      navigate("/editfarm", { state: { farm } });
+                    }}
                   >
                     Edit Farm
-                  </a>
+                  </button>
                   <button
                     className="btn btn-outline-primary col col-md-auto"
                     onClick={openModal}

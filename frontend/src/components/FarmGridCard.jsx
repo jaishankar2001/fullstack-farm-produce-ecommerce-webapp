@@ -34,7 +34,6 @@ function FarmGridCard({ farm }) {
                 navigate("/farm-detail", { state: { farm } });
               }}
             >
-              <FontAwesomeIcon icon={["fas", "cart-plus"]} />
               View Farm
             </button>
             <div></div>
