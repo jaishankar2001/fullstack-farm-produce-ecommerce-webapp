@@ -1,6 +1,5 @@
 package com.example.backend.dto.response;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class ProductDto {
     private int id;
     private String productName;
     private String productDescription;
-    private BigDecimal price;
+    private double price;
     private int stock;
     private String unit;
     private CategoryDto category;
@@ -40,5 +39,5 @@ public class ProductDto {
     }
 
     // public void editImage(Ima)
-    
+
 }

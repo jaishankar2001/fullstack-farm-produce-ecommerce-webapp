@@ -1,9 +1,7 @@
 package com.example.backend.dto.request;
-import java.math.BigDecimal;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
 
 @Data
 /**
@@ -14,7 +12,7 @@ public class EditProductRequest {
     private int id;
     private String productName;
     private String productDescription;
-    private BigDecimal price;
+    private double price;
     private int stock;
     private String unit;
 }
