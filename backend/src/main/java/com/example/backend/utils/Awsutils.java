@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -59,5 +60,14 @@ public class Awsutils {
             System.out.println("Error {} occurred while deleting temporary file" + ex.getLocalizedMessage());
         }
         return null;
+    }
+    @Async
+    public void deleteFilefromS3(String url){
+        try{
+            final DeleteObjectRequest s3ObjectRequest = new DeleteObjectRequest(s3BucketName, url);
+            amazonS3.deleteObject(s3ObjectRequest);
+        } catch (AmazonServiceException e){
+            System.out.println("Error {} occured while deleting file" + e.getLocalizedMessage());
+        }
     }
 }

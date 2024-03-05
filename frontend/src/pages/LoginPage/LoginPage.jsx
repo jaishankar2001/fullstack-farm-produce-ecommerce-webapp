@@ -14,6 +14,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      console.log("LOFNBDDNDKDKNKDKBDJJFBF F BJF MDFJBF  M");
       setIsLoading(true);
       const response = await api.auth.login({ email, password });
 
@@ -22,16 +23,16 @@ function Login() {
         // Store tokens in local storage
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
+        window.location.replace("/");
       }
-
-      navigate("/");
     } catch (error) {
       setIsLoading(false);
-      const { data } = error.response;
-      if (data) {
-        Object.values(data).forEach((message) => {
-          toast.error(message);
-        });
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
       } else {
         toast.error("An error occurred. Please try again later.");
       }
@@ -54,7 +55,7 @@ function Login() {
                     className="form-control"
                     placeholder="name@domain.com"
                     value={email}
-                    onSubmit={handleSubmit}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="col-md-12">
