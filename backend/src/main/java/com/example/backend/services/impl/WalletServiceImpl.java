@@ -57,7 +57,7 @@ public class WalletServiceImpl implements WalletService {
         if (userInfo != null) {
             double updatedBalance = userInfo.getWallet_balance() + amount;
             userInfo.setWallet_balance(updatedBalance);
-            amountInfo.setAmount_Added(amount);
+            amountInfo.setAmount(amount);
             amountInfo.setUser(user);
             amountInfo.setPaymnent_Method_Reference("Stripe");
             userMeta.save(userInfo);

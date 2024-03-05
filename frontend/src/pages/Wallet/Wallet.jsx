@@ -107,7 +107,7 @@ function Wallet() {
                               </td>
                               <td>
                                 <h6 className="mb-0">
-                                  ${parseFloat(wallet.amount_Added).toFixed(2)}
+                                  ${parseFloat(wallet.amount).toFixed(2)}
                                 </h6>
                               </td>
                               <td>
