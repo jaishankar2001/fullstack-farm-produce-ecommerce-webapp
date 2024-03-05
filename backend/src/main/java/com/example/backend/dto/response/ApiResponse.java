@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class ApiResponse {
-    private String messane;
+    private String message;
 }
