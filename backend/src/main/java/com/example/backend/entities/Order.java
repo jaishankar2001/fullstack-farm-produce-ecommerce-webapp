@@ -1,5 +1,6 @@
 package com.example.backend.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -45,6 +46,6 @@ public class Order {
 
     
     private LocalDateTime orderDate;
-    private double orderValue = 0.0;
+    private BigDecimal orderValue;
     private String orderPaymentMethod;
 }

@@ -1,5 +1,7 @@
 package com.example.backend.dto.request;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,7 +16,7 @@ public class OrderRequest {
     @NotNull(message = "product id is required")
     private int product_id;
     @NotNull(message = "Quantity is required")
-    private int quantity;
+    private BigDecimal quantity;
     @NotBlank(message = "paymentmethod is required")
     private String orderPaymentMethod;
 }
