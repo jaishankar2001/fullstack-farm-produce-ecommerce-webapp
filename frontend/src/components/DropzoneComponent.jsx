@@ -67,21 +67,25 @@ function DropzoneComponent({ onFilesSelected }) {
   );
 
   const thumbs = files.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes{" "}
-      <button
-        className="btn btn-sm btn-danger"
-        type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          const newFiles = [...files];
-          newFiles.splice(newFiles.indexOf(file), 1);
-          setFiles(newFiles);
-        }}
-      >
-        <FontAwesomeIcon icon={["fas", "trash-alt"]} />
-      </button>
-    </li>
+    <div className="row">
+      <div className="col-md-10">
+        {file.path} - {file.size} bytes{" "}
+      </div>
+      <div className="col-md-2">
+        <button
+          className="btn btn-sm btn-danger"
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            const newFiles = [...files];
+            newFiles.splice(newFiles.indexOf(file), 1);
+            setFiles(newFiles);
+          }}
+        >
+          <FontAwesomeIcon icon={["fas", "trash-alt"]} />
+        </button>
+      </div>
+    </div>
   ));
 
   return (

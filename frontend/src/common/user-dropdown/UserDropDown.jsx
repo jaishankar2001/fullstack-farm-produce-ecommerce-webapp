@@ -1,64 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UserDropdown.css";
 import { User } from "../../assets/images";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const UserDropdown = ({ handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [userMeta, setUserMeta] = React.useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setUserMeta(JSON.parse(localStorage.getItem("userMeta")));
+  }, []);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleItemClick = (item) => {
-    setIsOpen(false); // Close dropdown after item click
-  };
-
   return (
     <>
-      <div className="user-dropdown">
-        <button className="dropdown-button" onClick={handleToggle}>
-          <img src={User} style={{ width: "30px", height: "30px" }} />
-        </button>
-        {isOpen && (
-          <ul className="dropdown-list">
-            <li
-              onClick={() => {
-                setIsOpen(false);
-                navigate("/add-farm");
-              }}
-            >
-              Start Selling
-            </li>
-            <li
-              onClick={() => {
-                setIsOpen(false);
-                navigate("/wallet");
-              }}
-            >
-              Wallet
-            </li>
-            <li
-              onClick={() => {
-                setIsOpen(false);
-                navigate("/farmer-products");
-              }}
-            >
-              My Products
-            </li>
-            <li
-              onClick={() => {
-                setIsOpen(false);
-                navigate("/farmer-farms");
-              }}
-            >
-              My Farms
-            </li>
-            <li onClick={handleLogout}>Logout</li>
-          </ul>
-        )}
-      </div>
+      {userMeta && (
+        <ul class="nav navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link" data-bs-toggle="dropdown">
+              {userMeta?.name} <FontAwesomeIcon icon="fa-solid fa-caret-down" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+              <Link to="/add-farm">
+                <a className="dropdown-item">Start Selling</a>
+              </Link>
+
+              <Link to="/farmer-farms">
+                <a className="dropdown-item">My farm</a>
+              </Link>
+
+              <Link to="/farmer-products">
+                <a className="dropdown-item">My products</a>
+              </Link>
+
+              <Link to="/wallet">
+                <a className="dropdown-item">Wallet</a>
+              </Link>
+
+              <a class="dropdown-item" onClick={handleLogout}>
+                Logout
+              </a>
+            </div>
+          </li>
+        </ul>
+      )}
     </>
   );
 };
