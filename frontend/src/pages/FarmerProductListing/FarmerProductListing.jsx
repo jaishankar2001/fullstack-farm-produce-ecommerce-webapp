@@ -58,7 +58,7 @@ function FarmerProductListing() {
 
     // Filter products based on selected categories
     return allProducts.filter((product) =>
-      selectedCategories.includes(product.category)
+      selectedCategories.includes(product.category.id)
     );
   };
 
