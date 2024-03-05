@@ -1,10 +1,9 @@
-import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import Modal from "react-modal";
-import { useLocation } from "react-router-dom";
-import api from "../../api/index";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import api from "../../api/index";
 
 function FarmerProductDetail() {
   const images = [2, 4, 6, 8, 1];
@@ -135,7 +134,7 @@ function FarmerProductDetail() {
                 <hr className="text-muted" />
                 <div className="d-flex">
                   <a
-                    href="#"
+                    href="/edit-product"
                     className="btn btn-primary px-md-4 col col-md-auto me-2"
                   >
                     Edit Product

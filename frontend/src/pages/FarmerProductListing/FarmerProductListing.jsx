@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import Layout from "../../common/Layout/Layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ProductGridCard from "../../components/ProductGridCard";
 import api from "../../api/index";
+import Layout from "../../common/Layout/Layout";
+import ProductGridCard from "../../components/ProductGridCard";
 
 function FarmerProductListing() {
   const [selectedTab, setSelectedTab] = useState("allProducts");
@@ -138,11 +138,13 @@ function FarmerProductListing() {
           <div className="hstack justify-content-between mb-3">
             <span className="text-dark">{allProducts?.length} Items found</span>
             <div className="btn-group" role="group">
+              <Link href="\AddProduct">
             <button
             className="btn btn-primary px-md-4 col col-md-auto me-2"
           >
             Add Product
           </button>
+          </Link>
             </div>
           </div>
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-3">
