@@ -1,41 +1,83 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate,useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRecoilState } from "recoil";
+import api from "../../api/index";
 import DropzoneComponent from "../../components/DropzoneComponent";
+import Dropdown from "../../components/Dropdown";
 import { productState } from "../../recoil/atoms/product";
 
 function ProductEdit() {
-  const location = useLocation();
-  const { state } = location;
-  const { product } = state;
-  console.log(product.id);
-  const [productName, setProductName] = useState(product.name);
-  const [productID, setProductID] = useState(product.productID);
-  const [productDescription, setProductDescription] = useState(product.description);
-  const [categoryID, setCategoryID]= useState(product.categoryID);
-  const [farmID, setFarmID]= useState(product.farmID);
-  const [price, setPrice]= useState(product.setPrice);
-  const [stock, setStock]= useState(product.setStock);
-  const [unit, setUnit]= useState(product.setUnit);
+  const { id } = useParams();
+  const [productData, setProductData] = useState();
+  const [productName, setProductName] = useState();
+  const [productDescription, setProductDescription] = useState();
+  const [categoryID, setCategoryID] = useState();
+  const [farmID, setFarmID] = useState(4);
+  const [price, setPrice] = useState();
+  const [stock, setStock] = useState();
+  const [unit, setUnit] = useState();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [productData, setProductData] = useRecoilState(productState);
   const [files, setFiles] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [allFarms, setAllFarms] = useState([]);
+
+  const unitOptions = [
+    {
+      id: 1,
+      name: "lb",
+    },
+    {
+      id: 2,
+      name: "litre",
+    },
+    {
+      id: 3,
+      name: "piece",
+    },
+  ];
 
   useEffect(() => {
-    setProductData((prevProductData) => ({
-      ...prevProductData,
-      productName: productName,
-      productDescription: productDescription,
-      price: price,
-      stock: stock,
-      unit: unit,
-      farm_id: farmID,
-      category_id: categoryID,
-    }));
+    api.products
+      .getProductById(id)
+      .then((response) => {
+        setProductData(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching Product:", error);
+      });
   }, []);
+
+
+  const getFarmerFarms = async () => {
+    const response = await api.farm.getFarmerFarms();
+    setAllFarms(response);
+  };
+
+  useEffect(() => {
+    getFarmerFarms();
+  }, []);
+
+  useEffect(() => {
+    api.category
+      .getCategories()
+      .then((response) => {
+        setCategories(response);
+        setProductName(productData?.productName)
+      setProductDescription(productData?.productDescription);
+      setCategoryID(productData?.productCategory?.id);
+      setPrice(productData?.price);
+      setStock(productData?.stock);
+      setUnit(productData?.unit);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+
+  }, [productData]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -45,7 +87,7 @@ function ProductEdit() {
       files.forEach((file) => {
         formData.append(`files`, file);
       });
-      formData.append("id", product.id);
+      formData.append("id", id);
       formData.append("name", productName);
       formData.append("Description", productDescription);
       formData.append("category_id", categoryID);
@@ -55,21 +97,19 @@ function ProductEdit() {
       formData.append("unit", unit);
 
       const token = localStorage?.getItem("token");
-      console.log("token", token);
       const headers = {
         Authorization: `Bearer ${token}`,
       };
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/product/editproduct`,
+        `${process.env.REACT_APP_BASE_URL}/products/editproduct`,
         {
           method: "POST",
           headers: headers,
           body: formData,
         }
       );
-      navigate("/farmer-farms");
+      navigate("/farmer-products");
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
       if (
         error.response &&
@@ -87,6 +127,11 @@ function ProductEdit() {
     setFiles(selectedFiles);
   };
 
+  const handleCategorySelect = (selectedCategory) => {
+    const category = categories.find(category => category.name === selectedCategory);
+    setCategoryID(category?.id);
+  };
+
   return (
     <div className="container py-3">
       <ToastContainer />
@@ -95,7 +140,9 @@ function ProductEdit() {
           <div className="card border-1 shadow-sm">
             <div className="card-body">
               <form className="row g-3">
-                <h4 className="fw-bold py-1 mb-0 row justify-content-center">Edit your product details</h4>
+                <h4 className="fw-bold py-1 mb-0 row justify-content-center">
+                  Edit your product details
+                </h4>
 
                 <div className="col-md-4 fw-semibold">
                   <label className="form-label ">Product ID</label>
@@ -103,48 +150,26 @@ function ProductEdit() {
                     type="text"
                     className="form-control"
                     name="productID"
-                    value={product.id}
-                    onChange={(e) => {
-                      setProductID(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        product_id: productID, // Update address in Recoil state
-                      }));
-                    }}
+                    value={id}
+                    disabled
                   />
                 </div>
 
                 <div className="col-md-4 fw-semibold">
-                  <label className="form-label">Farm ID</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="farmID"
-                    value={farmID}
-                    onChange={(e) => {
-                      setFarmID(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        farm_id: farmID, // Update address in Recoil state
-                      }));
-                    }}
+                  <label className="form-label">Farm</label>
+                   <Dropdown
+                    options={allFarms}
+                    onSelect={handleCategorySelect}
+                    selectedValue={productData?.productCategory?.name}
                   />
                 </div>
 
                 <div className="col-md-4 fw-semibold">
-                  <label className="form-label">Category ID</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="categoryID"
-                    value={categoryID}
-                    onChange={(e) => {
-                      setCategoryID(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        category_id: categoryID, // Update address in Recoil state
-                      }));
-                    }}
+                  <label className="form-label">Category</label>
+                  <Dropdown
+                    options={categories}
+                    onSelect={handleCategorySelect}
+                    selectedValue={productData?.productCategory?.name}
                   />
                 </div>
 
@@ -156,10 +181,6 @@ function ProductEdit() {
                     value={productName}
                     onChange={(e) => {
                       setProductName(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        name: productName, // Update address in Recoil state
-                      }));
                     }}
                   />
                 </div>
@@ -172,10 +193,6 @@ function ProductEdit() {
                     value={price}
                     onChange={(e) => {
                       setPrice(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        price: price, // Update address in Recoil state
-                      }));
                     }}
                   />
                 </div>
@@ -188,28 +205,25 @@ function ProductEdit() {
                     value={stock}
                     onChange={(e) => {
                       setStock(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        stock: stock, // Update address in Recoil state
-                      }));
                     }}
                   />
                 </div>
 
-                <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Unit
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">lb</a>
-                <a class="dropdown-item" href="#">litre</a>
-                <a class="dropdown-item" href="#">piece</a>
-            </div>
-        </div>
-
-        <h6 className="fw-semibold mb-0">About your Product</h6>
+                <div className="col-md-4 fw-semibold mb-0">
+                  <label className="form-label fw-semibold">Unit</label>
+                  <Dropdown
+                    options={unitOptions}
+                    onSelect={handleCategorySelect}
+                    selectedValue={productData?.unit}
+                  />
+                </div>
+                <h6 className="fw-semibold mb-0">About your Product</h6>
                 <div>
-                  <input type="textarea" className="form-control" />
+                  <input
+                    type="textarea"
+                    className="form-control"
+                    value={productDescription}
+                  />
                 </div>
 
                 <div className="col-md-12">

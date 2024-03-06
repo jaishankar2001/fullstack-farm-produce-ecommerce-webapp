@@ -73,7 +73,7 @@ export const Router = () => {
           element: <FarmerProductListing />,
         },
         {
-          path: "/farmer-product",
+          path: "/farmer-product/:id",
           element: <FarmerProductDetail />,
         },
         {
@@ -89,7 +89,7 @@ export const Router = () => {
           element: <FarmEdit />,
         },
         {
-          path: "/edit-product",
+          path: "/edit-product/:id",
           element: <ProductEdit />,
         },
       ],

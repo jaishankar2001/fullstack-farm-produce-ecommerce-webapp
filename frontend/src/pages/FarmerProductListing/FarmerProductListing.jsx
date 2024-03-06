@@ -64,7 +64,6 @@ function FarmerProductListing() {
 
   const filteredProducts = getFilteredProducts();
 
-
   return (
     <div className="vstack">
       <div className="bg-secondary">
@@ -138,7 +137,7 @@ function FarmerProductListing() {
           <div className="hstack justify-content-between mb-3">
             <span className="text-dark">{allProducts?.length} Items found</span>
             <div className="btn-group" role="group">
-              <Link href="\AddProduct">
+              <Link to="/add-product">
             <button
             className="btn btn-primary px-md-4 col col-md-auto me-2"
           >
