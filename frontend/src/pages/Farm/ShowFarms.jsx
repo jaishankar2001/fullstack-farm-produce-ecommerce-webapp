@@ -143,7 +143,7 @@ function ShowFarms(){
                                                 <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style={{ top: '10px', left: '10px' }}>{farm.id}</div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                     <h4>{farm.name}</h4>
-                                                    <p>{farm.address}</p>
+                                                    <p>{farm.Description}</p>
                                                     <div class="d-flex justify-content-center flex-lg-wrap">
                                                         <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Visit the farm</a>
                                                     </div>
