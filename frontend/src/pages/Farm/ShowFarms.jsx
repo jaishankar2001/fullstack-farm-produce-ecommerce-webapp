@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import DropzoneComponent from "../../components/DropzoneComponent";
 
 import axios from "axios";
-import MapView from "../../components/MapView";
+import Map from "../../components/Map";
 
 function ShowFarms(){
   const [farmName, setFarmName] = useState("");
@@ -13,18 +13,31 @@ function ShowFarms(){
   const [isLoading, setIsLoading] = useState(false);
   const [farmData, setFarmData] = useState([]);
   let [number, setNumber] = useState(5);
+  const [farmLoc, setFarmLoc] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState({
     lat: 44.6475811,
     lng: -63.5727683,
   });
+
+  const changeFarmLoc = () => {
+    setFarmLoc((prevFarmLoc) => {
+      let newFarmLoc = [];
+      for (let i = 0; i < farmData.length; i++) {
+        const id = farmData[i].id;
+        const lat = farmData[i].lat;
+        const long = farmData[i].lng;
+        newFarmLoc.push({ id, lat, long });
+      }
+      return newFarmLoc;
+    });
+  }
+    
   const handleInputChange = (e) => {
     setFarmName(e.target.value);
   };
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const fetchData = async () => {
     try {
       setIsLoading(true);
-      
       const token = localStorage?.getItem("token");
       const config = {
         headers: {
@@ -38,7 +51,6 @@ function ShowFarms(){
 
       const responseFromBackend = axios.get("http://localhost:8080/api/customer/listfarms", config);
       setFarmData((await responseFromBackend).data);
-      console.log(farmData);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -52,6 +64,16 @@ function ShowFarms(){
         toast.error("An error occurred. Please try again later.");
       }
     }
+  };
+  useEffect(() => {
+    changeFarmLoc();
+  }, [farmData]);
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetchData();
   };
   
 
@@ -72,8 +94,8 @@ function ShowFarms(){
             </div>
       <div className="container py-3">
       <ToastContainer />
-      <div className="row my-4">
-        <div className="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+      <div className="row my-2">
+        <div className="col-md-6 offset-md-1 col-lg-4 offset-lg-4">
           <div className="card border-0 shadow-sm">
             <div className="card-body px-4">
               <form className="row g-2" onSubmit={handleSubmit}>
@@ -98,10 +120,10 @@ function ShowFarms(){
         </div>
       </div>
     </div>
-    <div class="container-fluid fruite py-5">
-        <div class="container py-5">
+    <div class="container-fluid fruite py-1">
+        <div class="container py-2">
             <div class="tab-class text-center">
-                <div class="row g-4">
+                <div class="row g-2">
                     <div class="col-lg-4 text-start">
                         <h1>Farms</h1>
                     </div>
@@ -133,7 +155,8 @@ function ShowFarms(){
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                            <MapView
+                            <Map
+                              farmLoc={farmLoc}
                               setSelectedLocation={setSelectedLocation}
                               selectedLocation={selectedLocation} />
                             </div>
