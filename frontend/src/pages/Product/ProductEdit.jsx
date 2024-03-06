@@ -1,26 +1,28 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DropzoneComponent from "../../components/DropzoneComponent";
+import { useRecoilState } from "recoil";
 import api from "../../api/index";
+import DropzoneComponent from "../../components/DropzoneComponent";
 import Dropdown from "../../components/Dropdown";
+import { productState } from "../../recoil/atoms/product";
 
-
-function AddProduct() {
-  const [productName, setProductName] = useState("");
-  const [categoryID, setCategoryID]= useState("");
-  const [farmID, setFarmID]= useState("");
-  const [price, setPrice]= useState("");
-  const [stock, setStock]= useState("");
-  const [categories, setCategories] = useState([]);
+function ProductEdit() {
+  const { id } = useParams();
+  const [productData, setProductData] = useState();
+  const [productName, setProductName] = useState();
   const [productDescription, setProductDescription] = useState();
-  const [unit, setUnit]= useState("");
+  const [categoryID, setCategoryID] = useState();
+  const [farmID, setFarmID] = useState(4);
+  const [price, setPrice] = useState();
+  const [stock, setStock] = useState();
+  const [unit, setUnit] = useState();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [allFarms, setAllFarms] = useState([]);
-
 
   const unitOptions = [
     {
@@ -37,6 +39,45 @@ function AddProduct() {
     },
   ];
 
+  useEffect(() => {
+    api.products
+      .getProductById(id)
+      .then((response) => {
+        setProductData(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching Product:", error);
+      });
+  }, []);
+
+
+  const getFarmerFarms = async () => {
+    const response = await api.farm.getFarmerFarms();
+    setAllFarms(response);
+  };
+
+  useEffect(() => {
+    getFarmerFarms();
+  }, []);
+
+  useEffect(() => {
+    api.category
+      .getCategories()
+      .then((response) => {
+        setCategories(response);
+        setProductName(productData?.productName)
+      setProductDescription(productData?.productDescription);
+      setCategoryID(productData?.productCategory?.id);
+      setPrice(productData?.price);
+      setStock(productData?.stock);
+      setUnit(productData?.unit);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+
+  }, [productData]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -46,27 +87,29 @@ function AddProduct() {
       files.forEach((file) => {
         formData.append(`files`, file);
       });
-      formData.append("productName", productName);
-      formData.append("productDescription", productDescription);
-      formData.append("price", price);
+      formData.append("id", id);
+      formData.append("name", productName);
+      formData.append("Description", productDescription);
+      formData.append("category_id", categoryID);
+      formData.append("farm_id", farmID);
+      formData.append("price", parseFloat(price));
       formData.append("stock", stock);
       formData.append("unit", unit);
-      formData.append("farmID", farmID);
-      formData.append("categoryID", categoryID);
 
       const token = localStorage?.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await fetch("http://localhost:8080/api/products/addproduct", {
-        method: "POST",
-        headers: headers,
-        body: formData,
-      });
-
-      navigate("/");
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/products/editproduct`,
+        {
+          method: "POST",
+          headers: headers,
+          body: formData,
+        }
+      );
+      navigate("/farmer-products");
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
       if (
         error.response &&
@@ -80,47 +123,13 @@ function AddProduct() {
     }
   };
 
-
-  useEffect(() => {
-    api.category
-      .getCategories()
-      .then((response) => {
-        setCategories(response);
-      
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error);
-      });
-
-  }, []);
-
   const handleFilesSelected = (selectedFiles) => {
     setFiles(selectedFiles);
   };
 
-  const handleFarmSelect = (selectedFarm) => {
-    const farm = allFarms.find(farm => farm.name === selectedFarm);
-    setFarmID(farm.id);
-  };
-
-
-  const getFarmerFarms = async () => {
-    const response = await api.farm.getFarmerFarms();
-    setAllFarms(response);
-  };
-
-  useEffect(() => {
-    getFarmerFarms();
-  }, []);
-
   const handleCategorySelect = (selectedCategory) => {
     const category = categories.find(category => category.name === selectedCategory);
     setCategoryID(category?.id);
-  };
-
-  const handleUnitSelect = (selectedUnit) => {
-    const unit = unitOptions.find(unit => unit.name === selectedUnit);
-    setUnit(unit.name);
   };
 
   return (
@@ -131,22 +140,36 @@ function AddProduct() {
           <div className="card border-1 shadow-sm">
             <div className="card-body">
               <form className="row g-3">
-                <h4 className="fw-bold py-1 mb-0 row justify-content-center">Add the product</h4>
+                <h4 className="fw-bold py-1 mb-0 row justify-content-center">
+                  Edit your product details
+                </h4>
 
                 <div className="col-md-4 fw-semibold">
-                  <label className="form-label ">Farm</label>
-                  <Dropdown
-                    options={allFarms}
-                    onSelect={handleFarmSelect}
-                    selectedValue={farmID}
+                  <label className="form-label ">Product ID</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="productID"
+                    value={id}
+                    disabled
                   />
                 </div>
+
+                <div className="col-md-4 fw-semibold">
+                  <label className="form-label">Farm</label>
+                   <Dropdown
+                    options={allFarms}
+                    onSelect={handleCategorySelect}
+                    selectedValue={productData?.productCategory?.name}
+                  />
+                </div>
+
                 <div className="col-md-4 fw-semibold">
                   <label className="form-label">Category</label>
                   <Dropdown
                     options={categories}
                     onSelect={handleCategorySelect}
-                    selectedValue={categoryID}
+                    selectedValue={productData?.productCategory?.name}
                   />
                 </div>
 
@@ -186,36 +209,21 @@ function AddProduct() {
                   />
                 </div>
 
-                {/* <div className="col-md-4 fw-semibold mb-0">
+                <div className="col-md-4 fw-semibold mb-0">
                   <label className="form-label fw-semibold">Unit</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={unit}
-                    onChange={(e) => {
-                      setUnit(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        unit: unit, // Update address in Recoil state
-                      }));
-                    }}
-                  />
-                </div> */}
-
-                
-                <div class="dropdown">
-                <label className="form-label fw-semibold">Unit</label>
                   <Dropdown
                     options={unitOptions}
-                    onSelect={handleUnitSelect}
-                    selectedValue={unit}
+                    onSelect={handleCategorySelect}
+                    selectedValue={productData?.unit}
                   />
-        </div>
-        
-
+                </div>
                 <h6 className="fw-semibold mb-0">About your Product</h6>
                 <div>
-                  <input type="textarea" className="form-control"  value={productDescription}/>
+                  <input
+                    type="textarea"
+                    className="form-control"
+                    value={productDescription}
+                  />
                 </div>
 
                 <div className="col-md-12">
@@ -230,7 +238,7 @@ function AddProduct() {
                 <div className="col-md-12 mt-4">
                   <div className="d-grid gap-2 d-flex justify-content-end">
                     <Link href="/" onClick={handleSubmit}>
-                      <a className="btn btn-primary">Submit</a>
+                      <a className="btn btn-primary">Update</a>
                     </Link>
                   </div>
                 </div>
@@ -246,4 +254,4 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+export default ProductEdit;

@@ -33,19 +33,15 @@ function ProductGridCard({ product }) {
             </div>
           </div>
           <div className="hstack gap-2 justify-content-center">
-            {/* <button className="btn btn-outline-secondary text-primary border d-md-block d-lg-none">
-            <FontAwesomeIcon icon={["far", "heart"]} />
-          </button> */}
-
             <button
               className="btn btn-sm btn-secondary text-primary flex-grow-1 d-none d-lg-block"
               onClick={() => {
                 const currentPath = window.location.pathname;
                 console.log(currentPath);
                 if (currentPath == "/product-listing") {
-                  navigate("/product", { state: { product } });
+                  navigate(`/product/${product.id}`);
                 } else {
-                  navigate("/farmer-product", { state: { product } });
+                  navigate(`/farmer-product/${product.id}`);
                 }
               }}
             >

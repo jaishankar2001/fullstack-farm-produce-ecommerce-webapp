@@ -1,22 +1,31 @@
-import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Modal from "react-modal";
-import { useLocation } from "react-router-dom";
-import api from "../../api/index";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import api from "../../api/index";
 
 function FarmerProductDetail() {
   const images = [2, 4, 6, 8, 1];
   const navigate = useNavigate();
-  const location = useLocation();
-  const { state } = location;
-  const { product } = state;
+  const { id } = useParams();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [product, setProduct] = useState();
   const openModal = () => {
     setModalIsOpen(true);
   };
 
+
+  useEffect(() => {
+    api.products.getProductById(id)
+    .then(response => {
+      setProduct(response);
+    })
+    .catch(error => {
+      console.error("Error fetching Product:", error);
+    });
+  }, []);
 
   const closeModal = () => {
     setModalIsOpen(false);
@@ -59,7 +68,7 @@ function FarmerProductDetail() {
                   <div className="ratio ratio-1x1">
                     <img
                       className="rounded"
-                      src={product.images?.[0]?.img_url}
+                      src={product?.images?.[0]?.img_url}
                       width={150}
                       height={150}
                       alt="Product image."
@@ -94,7 +103,7 @@ function FarmerProductDetail() {
             <div className="col-lg-7">
               <div className="d-flex">
                 <div className="d-inline h2 mb-0 fw-semibold me-3">
-                  {product.productName}
+                  {product?.productName}
                 </div>
                 <div className="ms-auto">
                   <button
@@ -117,29 +126,31 @@ function FarmerProductDetail() {
                   </span>
                 </div>
                 <h4 className="fw-semibold">
-                  ${product.price}/{product.unit}
+                  ${product?.price}/{product?.unit}
                 </h4>
                 <p className="fw-light">
-                  Lorem ipsum is placeholder text commonly used in the graphic,
-                  print, and publishing industries for previewing layouts and
-                  visual mockups.
+                  {product?.productDescription}
                 </p>
                 <dl className="row mb-0">
                   <dt className="col-sm-3 fw-semibold">Code#</dt>
-                  <dd className="col-sm-9">{product.id}</dd>
+                  <dd className="col-sm-9">{id}</dd>
                   <dt className="col-sm-3 fw-semibold">Category</dt>
-                  <dd className="col-sm-9">{product.id}</dd>
+                  <dd className="col-sm-9">{product?.productCategory?.name}</dd>
                   <dt className="col-sm-3 fw-semibold">Stock</dt>
-                  <dd className="col-sm-9">{product.stock}</dd>
+                  <dd className="col-sm-9">{product?.stock}</dd>
                 </dl>
                 <hr className="text-muted" />
                 <div className="d-flex">
-                  <a
-                    href="#"
-                    className="btn btn-primary px-md-4 col col-md-auto me-2"
-                  >
-                    Edit Product
-                  </a>
+                   <button
+               className="btn btn-primary px-md-4 col col-md-auto me-2"
+               
+              onClick={() => {
+                  navigate(`/edit-product/${id}`);
+              }}
+            >
+               Edit Product
+            </button>
+
                   <button className="btn btn-outline-primary col col-md-auto" onClick={openModal}>
                     <FontAwesomeIcon icon={["fas", "trash"]} />
                     &nbsp;Delete Product
