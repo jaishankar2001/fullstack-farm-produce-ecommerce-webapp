@@ -141,28 +141,27 @@ public class FarmerServiceImpl implements FarmerService {
         List<Farms> userFarms = farmRepository.findByUser(user);
         if (farmerOwnFarmRequest.getSearchTerm() != null) {
             return userFarms.stream().filter(
-                            farm -> farm.getName().toLowerCase().contains(farmerOwnFarmRequest.getSearchTerm().toLowerCase()))
+                    farm -> farm.getName().toLowerCase().contains(farmerOwnFarmRequest.getSearchTerm().toLowerCase()))
                     .map(ResponseUtils::convertFarmResponse)
                     .collect(Collectors.toList());
         }
         return null;
     }
+
     @Override
-    public List<FarmDto> getAllFarms(String farmName){
+    public List<FarmDto> getAllFarms(String farmName) {
         List<Farms> allFarms;
-        if(!Objects.equals(farmName, "")){
+        if (!Objects.equals(farmName, "")) {
             System.out.println("showing farms with name" + farmName);
-            allFarms = farmRepository.findByNameContaining(farmName);
-            if(allFarms.isEmpty()){
+            allFarms = farmRepository.findByNameIgnoreCaseContaining(farmName);
+            if (allFarms.isEmpty()) {
                 System.out.println("specific Farm not present showing all farms instead");
                 allFarms = farmRepository.findAll();
             }
-        }else {
+        } else {
             allFarms = farmRepository.findAll();
         }
-        return allFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
-    }
-        return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
+        return allFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
     @Override
