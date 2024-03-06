@@ -19,6 +19,7 @@ public class Farms {
 
     private String name;
     private String Address;
+    private String Description;
     private double lat;
     private double lng;
 
@@ -37,4 +38,9 @@ public class Farms {
     @ToString.Exclude
     @JsonManagedReference
     private List<Product> product;
+
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Order> order;
 }

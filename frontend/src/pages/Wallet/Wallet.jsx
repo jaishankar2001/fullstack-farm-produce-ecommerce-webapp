@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { loadStripe } from "@stripe/stripe-js";
 import api from "../../api/index";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Wallet() {
   const [amount, setAmount] = React.useState();
@@ -26,17 +28,21 @@ function Wallet() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(amount);
-    const data = await api.auth.walletInit(amount);
-    console.log(data);
-    const PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
+    if (amount == null) {
+      toast.error("Amont is Required");
+    } else {
+      const data = await api.auth.walletInit(amount);
+      console.log(data);
+      const PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
 
-    console.log("PUBLIC_KEY", PUBLIC_KEY);
-    const stripeTestPromise = await loadStripe(PUBLIC_KEY);
-    const { err } = await stripeTestPromise.redirectToCheckout({
-      sessionId: data.sessionId,
-    });
+      console.log("PUBLIC_KEY", PUBLIC_KEY);
+      const stripeTestPromise = await loadStripe(PUBLIC_KEY);
+      const { err } = await stripeTestPromise.redirectToCheckout({
+        sessionId: data.sessionId,
+      });
 
-    window.location = data.url;
+      window.location = data.url;
+    }
   };
 
   const getQtyInput = () => {
@@ -60,6 +66,7 @@ function Wallet() {
   };
   return (
     <>
+      <ToastContainer />
       <div className="container py-4">
         <div className="row g-3">
           <div className="col-lg-8">
@@ -79,7 +86,7 @@ function Wallet() {
                       <tr>
                         <th scope="col">Date</th>
                         <th scope="col">Amount</th>
-                        <th scope="col">Reference number</th>
+                        <th scope="col">Payment Method</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -99,7 +106,9 @@ function Wallet() {
                                 </div>
                               </td>
                               <td>
-                                <h6 className="mb-0">{wallet.amount_Added}</h6>
+                                <h6 className="mb-0">
+                                  ${parseFloat(wallet.amount).toFixed(2)}
+                                </h6>
                               </td>
                               <td>
                                 <h6 className="mb-0">

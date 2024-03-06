@@ -24,7 +24,7 @@ public class Wallet {
     @JsonBackReference
     private User user;
 
-    private Double Amount_Added;
+    private double Amount;
     private String Paymnent_Method_Reference;
 
     @CreatedDate

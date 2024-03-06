@@ -12,6 +12,7 @@ public class EditFarmRequest {
     private int id;
     private String name;
     private String Address;
-    private int lat;
-    private int lng;
+    private String Description;
+    private double lat;
+    private double lng;
 }

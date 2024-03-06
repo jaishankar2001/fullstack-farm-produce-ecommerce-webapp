@@ -1,17 +1,22 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.request.EditFarmRequest;
+import com.example.backend.dto.request.FarmerOwnFarmRequest;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.FarmDto;
+import com.example.backend.dto.response.GetFarmByIdResponse;
 import com.example.backend.entities.Farms;
 import com.example.backend.services.FarmerService;
+
+import jakarta.validation.Valid;
 
 // import com.example.Auth.entities.Farms;
 // import com.example.Auth.services.FarmerService;
@@ -40,9 +45,10 @@ public class FarmerController {
         return ResponseEntity.ok("Hi Farmer");
     }
 
-    @GetMapping("/own-farms")
-    public ResponseEntity<List<FarmDto>> getFarms(Principal principal) {
-        List<FarmDto> userFarms = farmerService.getFarms(principal);
+    @PostMapping("/own-farms")
+    public ResponseEntity<List<FarmDto>> getFarms(@RequestBody FarmerOwnFarmRequest farmerOwnFarmRequest,
+            Principal principal) {
+        List<FarmDto> userFarms = farmerService.getFarms(farmerOwnFarmRequest, principal);
         return ResponseEntity.ok(userFarms);
     }
 
@@ -59,7 +65,7 @@ public class FarmerController {
 
     @PostMapping("/editfarm")
     public ResponseEntity<Map> editFarm(@ModelAttribute EditFarmRequest farmRequest,
-            @RequestPart(value = "files") MultipartFile[] files, Principal principal) {
+            @RequestPart(value = "files", required = false) MultipartFile[] files, Principal principal) {
         String editFarmResponse = farmerService.editFarm(farmRequest, files, principal);
         Map<String, Object> response = new HashMap<>();
         response.put("message", principal.getName());
@@ -74,5 +80,12 @@ public class FarmerController {
         response.setMessage("Farm deleted successfully");
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/getFarm/{farmId}")
+    public ResponseEntity<GetFarmByIdResponse> getFarmById(@PathVariable int farmId) {
+        GetFarmByIdResponse response = farmerService.getFarmById(farmId);
+        return ResponseEntity.ok(response);
+    }
+    
 
 }

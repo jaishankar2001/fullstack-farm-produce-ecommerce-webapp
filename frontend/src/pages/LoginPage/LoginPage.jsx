@@ -22,6 +22,12 @@ function Login() {
         // Store tokens in local storage
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
+        const userMeta = {
+          name: response.firstname,
+          email: response.email,
+          balance: response.wallet_balance,
+        };
+        localStorage.setItem("userMeta", JSON.stringify(userMeta));
         window.location.replace("/");
       }
     } catch (error) {

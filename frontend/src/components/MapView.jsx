@@ -5,19 +5,29 @@ import AutoComplete from "react-google-autocomplete";
 import { farmState } from "../recoil/atoms/farm";
 import { useRecoilState } from "recoil";
 
-const MapView = ({ setSelectedLocation, selectedLocation }) => {
+const MapView = ({
+  setSelectedLocation,
+  selectedLocation,
+  editAddress = "",
+}) => {
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState();
   const [farmData, setFarmData] = useRecoilState(farmState);
   const google_api_key = 'AIzaSyC92l4kh5h0HvZxwjtRg_F_uIwDCphriQI';
 
   useEffect(() => {
-    window.initMap = () => setGmapsLoaded(true);
-    const gmapScriptEl = document.createElement(`script`);
-    gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&libraries=places&callback=initMap`;
-    document
-      .querySelector(`body`)
-      .insertAdjacentElement(`beforeend`, gmapScriptEl);
+    const timer = setTimeout(() => {
+      window.initMap = () => setGmapsLoaded(true);
+      const gmapScriptEl = document.createElement(`script`);
+      gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&libraries=places&callback=initMap`;
+      document
+        .querySelector(`body`)
+        .insertAdjacentElement(`beforeend`, gmapScriptEl);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [selectedAddress]);
 
   const center = useMemo(() => ({ lat: 44.6475811, lng: -63.5727683 }), []);
@@ -41,7 +51,7 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
           ...prevFarmData,
           lat,
           lng,
-          Address: updatedAddress, // Update address in Recoil state
+          Address: updatedAddress,
         }));
         return addressComponents;
       });
@@ -107,7 +117,7 @@ const MapView = ({ setSelectedLocation, selectedLocation }) => {
               type="email"
               className="form-control"
               placeholder="Address"
-              value={selectedAddress ? address : ""}
+              value={selectedAddress ? address : editAddress}
             />
           </div>
         </>

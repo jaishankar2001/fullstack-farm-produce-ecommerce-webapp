@@ -1,6 +1,5 @@
 package com.example.backend.dto.request;
 
-import java.math.BigDecimal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,7 +14,7 @@ public class AddProductRequest {
     private String productDescription;
 
     @NotNull(message = "price is required")
-    private BigDecimal price;
+    private double price;
 
     @NotNull(message = "stock is required")
     private int stock;

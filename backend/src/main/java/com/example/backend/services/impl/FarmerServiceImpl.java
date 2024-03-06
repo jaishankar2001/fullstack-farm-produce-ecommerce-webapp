@@ -2,6 +2,8 @@ package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.EditFarmRequest;
 import com.example.backend.dto.request.ShowFarmsRequest;
+import com.example.backend.dto.request.FarmerOwnFarmRequest;
+
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.FarmDto;
+import com.example.backend.dto.response.GetFarmByIdResponse;
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
 import com.example.backend.entities.Product;
@@ -25,6 +28,8 @@ import com.example.backend.repository.ProductRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.FarmerService;
 import com.example.backend.utils.Awsutils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.backend.utils.ResponseUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +65,7 @@ public class FarmerServiceImpl implements FarmerService {
         farm.setImages(farmImages);
 
         List<Farms> userFarms = farmRepository.findByUser(user);
-        return userFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
+        return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -78,25 +83,27 @@ public class FarmerServiceImpl implements FarmerService {
         if (farmRequest.getLat() != 0) {
             farm.setLat(farmRequest.getLat());
         }
-        List<Images> farmImages = farm.getImages();
-        for (Images image : farmImages) {
-            awsutils.deleteFilefromS3(image.getImg_url());
+        if (farmRequest.getDescription() != "") {
+            farm.setDescription(farmRequest.getDescription());
+        }
+        if (multipartFiles != null) {
+            List<Images> farmImages = farm.getImages();
+            for (Images image : farmImages) {
+                awsutils.deleteFilefromS3(image.getImg_url());
 
-            // imagesRepository.deleteById(image.getId());
+            }
+            farmImages.clear();
+            for (MultipartFile file : multipartFiles) {
+                String url = awsutils.uploadFileToS3(file, "FARM", farm.getId());
+                Images image = new Images();
+                image.setFarm(farm);
+                image.setImg_url(url);
+                imagesRepository.save(image);
+                System.out.println("-=-=-=-=- " + url);
+                farmImages.add(image);
+            }
+            farm.setImages(farmImages);
         }
-        farmImages.clear();
-        // farm.getImages().clear();
-        // farmImages = new ArrayList<>();
-        for (MultipartFile file : multipartFiles) {
-            String url = awsutils.uploadFileToS3(file, "FARM", farm.getId());
-            Images image = new Images();
-            image.setFarm(farm);
-            image.setImg_url(url);
-            imagesRepository.save(image);
-            System.out.println("-=-=-=-=-  " + url);
-            farmImages.add(image);
-        }
-        farm.setImages(farmImages);
         farmRepository.save(farm);
         return "Farm details edited successfully";
     }
@@ -126,42 +133,82 @@ public class FarmerServiceImpl implements FarmerService {
     }
 
     @Override
-    public List<FarmDto> getFarms(Principal principal) {
+    public List<FarmDto> getFarms(FarmerOwnFarmRequest farmerOwnFarmRequest, Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
         if (user == null) {
             throw new ApiRequestException("User not found");
         }
         List<Farms> userFarms = farmRepository.findByUser(user);
-        return userFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
-    }
+        if (farmerOwnFarmRequest.getSearchTerm() != null) {
+            return userFarms.stream().filter(
+                    farm -> farm.getName().toLowerCase().contains(farmerOwnFarmRequest.getSearchTerm().toLowerCase()))
+                    .map(ResponseUtils::convertFarmResponse)
+                    .collect(Collectors.toList());
+        }
 
     @Override
-    public List<FarmDto> getAllFarms(String farmName){
+    public List<FarmDto> getAllFarms(String farmName) {
         List<Farms> allFarms;
-        if(!Objects.equals(farmName, "")){
+        if (!Objects.equals(farmName, "")) {
             System.out.println("showing farms with name" + farmName);
-            allFarms = farmRepository.findByNameContaining(farmName);
-            if(allFarms.isEmpty()){
+            allFarms = farmRepository.findByNameIgnoreCaseContaining(farmName);
+            if (allFarms.isEmpty()) {
                 System.out.println("specific Farm not present showing all farms instead");
                 allFarms = farmRepository.findAll();
             }
-        }else {
+        } else {
             allFarms = farmRepository.findAll();
         }
-        return allFarms.stream().map(this::convertFarmResponse).collect(Collectors.toList());
+        return allFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
-    private FarmDto convertFarmResponse(Farms current_farm) {
-        FarmDto farmDTO = new FarmDto();
-        farmDTO.setId(current_farm.getId());
-        farmDTO.setName(current_farm.getName());
-        farmDTO.setAddress(current_farm.getAddress());
-        farmDTO.setLat(current_farm.getLat());
-        farmDTO.setLng(current_farm.getLng());
 
-        for (Images images : current_farm.getImages()) {
-            farmDTO.addImage(images);
+    @Override
+    public GetFarmByIdResponse getFarmById(int id) {
+        Farms farm = farmRepository.findById(id);
+        GetFarmByIdResponse gfid = new GetFarmByIdResponse();
+        if (farm != null) {
+            gfid.setName(farm.getName());
+            gfid.setAddress(farm.getAddress());
+            gfid.setLat(farm.getLat());
+            gfid.setLng(farm.getLng());
+            for (Images images : farm.getImages()) {
+                gfid.fetchImage(images);
+            }
+            return gfid;
         }
 
-        return farmDTO;
+        else {
+            throw new ApiRequestException("Farm not found with id " + id);
+        }
+
     }
+
 }
+
+// Garbage code for get Farm with id
+//
+//
+// try {
+// if(farm != null){
+// ArrayList responseList = new ArrayList<>();
+// responseList.add(farm.getName());
+// responseList.add(farm.getAddress());
+// responseList.add(farm.getLat());
+// responseList.add(farm.getLng());
+// String farmDetails="";
+// for(Object i:responseList){
+// farmDetails+= i.toString()+System.lineSeparator();
+// }
+// return farmDetails;
+
+// }
+
+// else{
+// return("Id is not present!");
+// }
+// }
+
+// catch (Exception e) {
+// e.printStackTrace();
+// return "Invalid Id";
+// }

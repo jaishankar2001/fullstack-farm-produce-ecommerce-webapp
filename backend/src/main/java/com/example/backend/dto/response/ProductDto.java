@@ -1,11 +1,11 @@
 package com.example.backend.dto.response;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.example.backend.entities.Category;
 import com.example.backend.entities.Images;
 
 import jakarta.validation.constraints.NotBlank;
@@ -18,10 +18,11 @@ public class ProductDto {
     private int id;
     private String productName;
     private String productDescription;
-    private BigDecimal price;
+    private double price;
     private int stock;
     private String unit;
     private CategoryDto category;
+    private Category productCategory;
 
     @Value("${prebook:false}")
     private boolean prebook;
@@ -36,4 +37,7 @@ public class ProductDto {
         images.add(imageDTO);
 
     }
+
+    // public void editImage(Ima)
+
 }

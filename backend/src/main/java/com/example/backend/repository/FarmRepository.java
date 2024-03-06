@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.User;
 
@@ -14,5 +17,8 @@ public interface FarmRepository extends JpaRepository<Farms, Integer> {
 
     List<Farms> findByUser(User user);
 
-    List<Farms> findByNameContaining(String infix);
+    List<Farms> findTop8ByOrderByIdDesc();
+
+    List<Farms> findByNameIgnoreCaseContaining(String name);
+
 }
