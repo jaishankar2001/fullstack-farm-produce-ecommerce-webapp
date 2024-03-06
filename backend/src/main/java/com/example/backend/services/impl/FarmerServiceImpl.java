@@ -1,7 +1,6 @@
 package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.EditFarmRequest;
-import com.example.backend.dto.request.ShowFarmsRequest;
 import com.example.backend.dto.request.FarmerOwnFarmRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ import com.example.backend.repository.ProductRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.FarmerService;
 import com.example.backend.utils.Awsutils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.backend.utils.ResponseUtils;
 
 @Service
