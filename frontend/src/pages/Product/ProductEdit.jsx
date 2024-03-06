@@ -23,6 +23,7 @@ function ProductEdit() {
   const [files, setFiles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [allFarms, setAllFarms] = useState([]);
+  const [categoryName, setCategoryName] = useState();
 
   const unitOptions = [
     {
@@ -50,7 +51,6 @@ function ProductEdit() {
       });
   }, []);
 
-
   const getFarmerFarms = async () => {
     const response = await api.farm.getFarmerFarms();
     setAllFarms(response);
@@ -65,19 +65,18 @@ function ProductEdit() {
       .getCategories()
       .then((response) => {
         setCategories(response);
-        setProductName(productData?.productName)
-      setProductDescription(productData?.productDescription);
-      setCategoryID(productData?.productCategory?.id);
-      setPrice(productData?.price);
-      setStock(productData?.stock);
-      setUnit(productData?.unit);
+        setProductName(productData?.productName);
+        setProductDescription(productData?.productDescription);
+        setCategoryID(productData?.productCategory?.id);
+        setPrice(productData?.price);
+        setStock(productData?.stock);
+        setUnit(productData?.unit);
+        setCategoryName(productData?.productCategory?.name);
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
-
   }, [productData]);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -88,8 +87,8 @@ function ProductEdit() {
         formData.append(`files`, file);
       });
       formData.append("id", id);
-      formData.append("name", productName);
-      formData.append("Description", productDescription);
+      formData.append("productName", productName);
+      formData.append("productDescription", productDescription);
       formData.append("category_id", categoryID);
       formData.append("farm_id", farmID);
       formData.append("price", parseFloat(price));
@@ -128,8 +127,20 @@ function ProductEdit() {
   };
 
   const handleCategorySelect = (selectedCategory) => {
-    const category = categories.find(category => category.name === selectedCategory);
+    const category = categories.find(
+      (category) => category.name === selectedCategory
+    );
     setCategoryID(category?.id);
+  };
+
+  const handleUnitSelect = (selectedUnit) => {
+    const unit = unitOptions.find((unit) => unit.name === selectedUnit);
+    setUnit(unit.name);
+  };
+
+  const handleFarmSelect = (selectedFarm) => {
+    const farm = allFarms.find((farm) => farm.name === selectedFarm);
+    setFarmID(farm.id);
   };
 
   return (
@@ -157,9 +168,9 @@ function ProductEdit() {
 
                 <div className="col-md-4 fw-semibold">
                   <label className="form-label">Farm</label>
-                   <Dropdown
+                  <Dropdown
                     options={allFarms}
-                    onSelect={handleCategorySelect}
+                    onSelect={handleFarmSelect}
                     selectedValue={productData?.productCategory?.name}
                   />
                 </div>
@@ -169,7 +180,7 @@ function ProductEdit() {
                   <Dropdown
                     options={categories}
                     onSelect={handleCategorySelect}
-                    selectedValue={productData?.productCategory?.name}
+                    selectedValue={categoryName}
                   />
                 </div>
 
@@ -213,7 +224,7 @@ function ProductEdit() {
                   <label className="form-label fw-semibold">Unit</label>
                   <Dropdown
                     options={unitOptions}
-                    onSelect={handleCategorySelect}
+                    onSelect={handleUnitSelect}
                     selectedValue={productData?.unit}
                   />
                 </div>
@@ -223,6 +234,9 @@ function ProductEdit() {
                     type="textarea"
                     className="form-control"
                     value={productDescription}
+                    onChange={(e) => {
+                      setProductDescription(e.target.value);
+                    }}
                   />
                 </div>
 

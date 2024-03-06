@@ -43,8 +43,8 @@ function FarmerProductDetail() {
   };
 
   const onDeleteProduct = async() => {
-     const response = await api.products.deleteProduct(product.id);
-     toast.success("Farm deleted successfully!");
+     const response = await api.products.deleteProduct(id);
+     toast.success("Product deleted successfully!");
      navigate("/farmer-products");
  
      closeModal();
@@ -170,7 +170,7 @@ function FarmerProductDetail() {
       >
         <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">Are you sure to delete this farm?</h5>
+            <h5 class="card-title">Are you sure to delete this product?</h5>
             <button
               className="btn btn-primary"
               onClick={onDeleteProduct}

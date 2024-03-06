@@ -27,8 +27,7 @@ function ProductGridCard({ product }) {
             </div>
             <div className="d-flex flex-lg-wrap justify-content-center mt-2">
               <p className="text-center">
-                Our grapes boast unparalleled flavor, grown with care using
-                organic practices on our family farm.
+                {product.productDescription}
               </p>
             </div>
           </div>

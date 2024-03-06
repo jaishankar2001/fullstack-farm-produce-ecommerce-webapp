@@ -40,6 +40,7 @@ public class ResponseUtils {
         dto.setStock(product.getStock());
         dto.setPrice(product.getPrice());
         dto.setUnit(product.getUnit());
+        dto.setProductDescription(product.getProductDescription());
 
         Category category = product.getCategory();
 
