@@ -23,10 +23,10 @@ function ShowFarms(){
     setFarmLoc((prevFarmLoc) => {
       let newFarmLoc = [];
       for (let i = 0; i < farmData.length; i++) {
-        const id = farmData[i].id;
+        const name = farmData[i].name;
         const lat = farmData[i].lat;
         const long = farmData[i].lng;
-        newFarmLoc.push({ id, lat, long });
+        newFarmLoc.push({ name, lat, long });
       }
       return newFarmLoc;
     });
@@ -49,7 +49,7 @@ function ShowFarms(){
         }
     }
 
-      const responseFromBackend = axios.get("http://localhost:8080/api/customer/listfarms", config);
+      const responseFromBackend = axios.get(`${process.env.REACT_APP_BASE_URL}/customer/listfarms`, config);
       setFarmData((await responseFromBackend).data);
     } catch (error) {
       console.log(error);
@@ -143,7 +143,7 @@ function ShowFarms(){
                                                 <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style={{ top: '10px', left: '10px' }}>{farm.id}</div>
                                                 <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                     <h4>{farm.name}</h4>
-                                                    <p>{farm.Description}</p>
+                                                    <p>{farm.description}</p>
                                                     <div class="d-flex justify-content-center flex-lg-wrap">
                                                         <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Visit the farm</a>
                                                     </div>

@@ -22,17 +22,10 @@ public class CustomerController {
 
     private final FarmerService farmerService;
 
-    private final FarmerService farmerService;
 
     @GetMapping
     public ResponseEntity<String> customerHome() {
         return ResponseEntity.ok("Hello Buyer!");
-    }
-
-    @GetMapping("/listfarms")
-    public ResponseEntity<List<FarmDto>> listFarms() {
-        List<FarmDto> allFarms = farmerService.getAllFarms();
-        return ResponseEntity.ok(allFarms);
     }
 
     @GetMapping("/listfarms")

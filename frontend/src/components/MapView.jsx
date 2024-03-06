@@ -13,7 +13,7 @@ const MapView = ({
   const [gmapsLoaded, setGmapsLoaded] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState();
   const [farmData, setFarmData] = useRecoilState(farmState);
-  const google_api_key = 'AIzaSyC92l4kh5h0HvZxwjtRg_F_uIwDCphriQI';
+  const google_api_key = process.env.REACT_APP_MAP_KEY;
 
   useEffect(() => {
     const timer = setTimeout(() => {
