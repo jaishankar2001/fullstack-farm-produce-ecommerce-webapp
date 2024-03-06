@@ -24,7 +24,6 @@ function FarmerProductListing() {
 
 
   const getAllProducts = async() => {
-
     const response = await api.products.getProducts({ productName: searchTerm });
     setAllProducts(response);
 
@@ -58,7 +57,7 @@ function FarmerProductListing() {
 
     // Filter products based on selected categories
     return allProducts.filter((product) =>
-      selectedCategories.includes(product.category.id)
+      selectedCategories.includes(product?.category?.id)
     );
   };
 
@@ -117,12 +116,12 @@ function FarmerProductListing() {
                   <div className="accordion-body pt-2">
                     <div className="vstack gap-2">
                       {categories.map((category) => (
-                        <label className="form-check" key={category.id}>
+                        <label className="form-check" key={category?.id}>
                           <input
                             type="checkbox"
                             className="form-check-input"
-                            checked={selectedCategories.includes(category.id)}
-                            onChange={() => handleCategoryCheckboxChange(category.id)}
+                            checked={selectedCategories.includes(category?.id)}
+                            onChange={() => handleCategoryCheckboxChange(category?.id)}
                           />
                           {category.name}
                         </label>

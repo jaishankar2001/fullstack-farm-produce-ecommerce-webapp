@@ -51,8 +51,8 @@ function AddProduct() {
       formData.append("price", price);
       formData.append("stock", stock);
       formData.append("unit", unit);
-      formData.append("farmID", farmID);
-      formData.append("categoryID", categoryID);
+      formData.append("farm_id", farmID);
+      formData.append("category_id", categoryID);
 
       const token = localStorage?.getItem("token");
       const headers = {
@@ -64,7 +64,7 @@ function AddProduct() {
         body: formData,
       });
 
-      navigate("/");
+      navigate("/farmer-products");
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -131,9 +131,9 @@ function AddProduct() {
           <div className="card border-1 shadow-sm">
             <div className="card-body">
               <form className="row g-3">
-                <h4 className="fw-bold py-1 mb-0 row justify-content-center">Add the product</h4>
+                <h4 className="fw-bold py-1 mb-0 row justify-content-center mt-2">Add Product</h4>
 
-                <div className="col-md-4 fw-semibold">
+                <div className="col-md-4 fw-semibold mt-4">
                   <label className="form-label ">Farm</label>
                   <Dropdown
                     options={allFarms}
@@ -141,7 +141,7 @@ function AddProduct() {
                     selectedValue={farmID}
                   />
                 </div>
-                <div className="col-md-4 fw-semibold">
+                <div className="col-md-4 fw-semibold mt-4">
                   <label className="form-label">Category</label>
                   <Dropdown
                     options={categories}
@@ -215,7 +215,9 @@ function AddProduct() {
 
                 <h6 className="fw-semibold mb-0">About your Product</h6>
                 <div>
-                  <input type="textarea" className="form-control"  value={productDescription}/>
+                  <input type="textarea" className="form-control"  value={productDescription} onChange={(e) => {
+                      setProductDescription(e.target.value);
+                    }}/>
                 </div>
 
                 <div className="col-md-12">
