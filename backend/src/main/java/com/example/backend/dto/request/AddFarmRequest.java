@@ -1,8 +1,10 @@
 package com.example.backend.dto.request;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class AddFarmRequest {
     private String name;
     private String Address;
