@@ -145,7 +145,7 @@ public class FarmerServiceImpl implements FarmerService {
                     .map(ResponseUtils::convertFarmResponse)
                     .collect(Collectors.toList());
         }
-        return null;
+        return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
     @Override
