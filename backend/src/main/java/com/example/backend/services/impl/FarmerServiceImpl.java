@@ -141,11 +141,12 @@ public class FarmerServiceImpl implements FarmerService {
         List<Farms> userFarms = farmRepository.findByUser(user);
         if (farmerOwnFarmRequest.getSearchTerm() != null) {
             return userFarms.stream().filter(
-                    farm -> farm.getName().toLowerCase().contains(farmerOwnFarmRequest.getSearchTerm().toLowerCase()))
+                            farm -> farm.getName().toLowerCase().contains(farmerOwnFarmRequest.getSearchTerm().toLowerCase()))
                     .map(ResponseUtils::convertFarmResponse)
                     .collect(Collectors.toList());
         }
-
+        return null;
+    }
     @Override
     public List<FarmDto> getAllFarms(String farmName) {
         List<Farms> allFarms;
