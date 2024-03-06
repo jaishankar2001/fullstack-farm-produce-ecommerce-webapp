@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ImageDto {
     private int id;
-
     private String img_url;
 
 }

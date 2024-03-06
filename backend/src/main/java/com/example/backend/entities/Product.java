@@ -1,7 +1,5 @@
 package com.example.backend.entities;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
@@ -9,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +29,7 @@ public class Product {
 
     private String productDescription;
 
-    private BigDecimal price;
+    private double price;
 
     private int stock;
 
@@ -47,7 +44,7 @@ public class Product {
     @JsonBackReference
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonManagedReference
     private List<Images> images;
@@ -57,4 +54,10 @@ public class Product {
     @ToString.Exclude
     @JsonBackReference
     private Farms farm;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Order> orders;
+
 }

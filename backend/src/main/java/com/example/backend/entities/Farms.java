@@ -19,8 +19,9 @@ public class Farms {
 
     private String name;
     private String Address;
-    private int lat;
-    private int lng;
+    private String Description;
+    private double lat;
+    private double lng;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -28,13 +29,18 @@ public class Farms {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonManagedReference
     private List<Images> images;
 
-    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonManagedReference
     private List<Product> product;
+
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Order> order;
 }
