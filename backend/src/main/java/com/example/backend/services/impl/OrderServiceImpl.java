@@ -3,8 +3,10 @@ package com.example.backend.services.impl;
 import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.example.backend.dto.request.OrderRequest;
+import com.example.backend.dto.response.OrderDto;
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Order;
 import com.example.backend.entities.Product;
@@ -73,6 +75,12 @@ public class OrderServiceImpl implements OrderService {
         userDetails.setWallet_balance(userDetails.getWallet_balance() - total_price);
         userMetaRepository.save(userDetails);
 
+    }
+
+    @Override
+    public List<OrderDto> orderHistory(Principal principal) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orderHistory'");
     }
 
 }
