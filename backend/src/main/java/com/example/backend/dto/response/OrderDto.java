@@ -6,18 +6,18 @@ import java.util.List;
 
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
-import com.example.backend.entities.Order;
 import com.example.backend.entities.Product;
-import com.example.backend.entities.User;
 
 import lombok.Data;
 
 @Data
 public class OrderDto {
     private int id;
-    private User user;
     private Product product;
+    private String productName;
+    private String productDescription;
     private Farms farm;
+    private String farmName;
     private int quantity;
     private LocalDateTime orderDate;
     private double orderValue;

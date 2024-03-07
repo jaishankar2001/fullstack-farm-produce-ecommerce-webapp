@@ -3,11 +3,14 @@ package com.example.backend.services.impl;
 import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.example.backend.dto.request.OrderRequest;
 import com.example.backend.dto.response.OrderDto;
 import com.example.backend.entities.Farms;
+import com.example.backend.entities.Images;
 import com.example.backend.entities.Order;
 import com.example.backend.entities.Product;
 import com.example.backend.entities.User;
@@ -79,8 +82,34 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> orderHistory(Principal principal) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'orderHistory'");
+        // Order order = new Order();
+        User user = userRepository.findByEmail(principal.getName());
+        ArrayList <OrderDto> orderDtoList = new ArrayList<>();
+        // UserMeta userDetails = userMetaRepository.findByUser(user);
+        if(user == null){
+            throw new ApiRequestException("User not Found");
+        }
+        
+        List<Order> orders = orderRepository.findByUser(user);
+        for(Order orderPlaced: orders){
+            OrderDto orderDto = new OrderDto();
+            orderDto.setId(orderPlaced.getId());
+            orderDto.setProduct(orderPlaced.getProduct());
+            orderDto.setProductName(orderPlaced.getProduct().getProductName());
+            orderDto.setProductDescription(orderPlaced.getProduct().getProductDescription());
+            orderDto.setFarm(orderPlaced.getFarm());
+            orderDto.setFarmName(orderPlaced.getFarm().getName());
+            orderDto.setOrderDate(orderPlaced.getOrderDate());
+            orderDto.setOrderValue(orderPlaced.getOrderValue());
+            orderDto.setQuantity(orderPlaced.getQuantity());
+            orderDto.setOrderPaymentMethod(orderPlaced.getOrderPaymentMethod());
+
+            for(Images image: orderPlaced.getProduct().getImages()){
+                orderDto.addImage(image);
+            }
+            orderDtoList.add(orderDto);
+        }
+        return orderDtoList;
     }
 
 }
