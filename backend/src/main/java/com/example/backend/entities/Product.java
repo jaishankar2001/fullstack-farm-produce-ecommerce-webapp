@@ -49,6 +49,16 @@ public class Product {
     @JsonManagedReference
     private List<Images> images;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Subscription> subscription;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Subscription> subscriptions;
+
     @ManyToOne
     @JoinColumn(name = "farm_id")
     @ToString.Exclude

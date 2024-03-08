@@ -34,15 +34,15 @@ import java.security.Principal;
 public class ProductController {
     private final ProductService productService;
 
-
-     @GetMapping("/farmer-products")
+    @GetMapping("/farmer-products")
     public ResponseEntity<List<ProductDto>> getFarmerProducts(Principal principal) {
         List<ProductDto> userProducts = productService.getFarmerProducts(principal);
         return ResponseEntity.ok(userProducts);
     }
 
     @PostMapping("/all-products")
-    public ResponseEntity<List<ProductDto>> getAllProducts(@RequestBody @Valid ProductSearchRequest productSearchRequest) {
+    public ResponseEntity<List<ProductDto>> getAllProducts(
+            @RequestBody @Valid ProductSearchRequest productSearchRequest) {
         List<ProductDto> allProducts = productService.getAllProducts(productSearchRequest);
         return ResponseEntity.ok(allProducts);
     }
@@ -76,7 +76,7 @@ public class ProductController {
 
     @GetMapping("/getProduct/{productId}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable int productId) {
-       ProductDto response = productService.getProductById(productId);
-       return ResponseEntity.ok(response);
+        ProductDto response = productService.getProductById(productId);
+        return ResponseEntity.ok(response);
     }
 }
