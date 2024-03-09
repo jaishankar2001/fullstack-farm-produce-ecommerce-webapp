@@ -23,8 +23,8 @@ public class OrderTests {
     OrderService orderService;
 
     @Test
-    public void testOrderHistory(){
+    public void testOrderHistory(Principal principal){
     //    assertFalse(orderService.orderHistory(null));
-       assertTrue( orderService.orderHistory(null) instanceof List);
+       assertTrue( orderService.orderHistory(principal) instanceof List);
     }
 }
