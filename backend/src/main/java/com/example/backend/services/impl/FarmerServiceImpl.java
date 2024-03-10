@@ -5,6 +5,7 @@ import com.example.backend.dto.request.FarmerOwnFarmRequest;
 
 import lombok.RequiredArgsConstructor;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 import org.modelmapper.ModelMapper;
@@ -26,7 +27,6 @@ import com.example.backend.repository.ProductRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.FarmerService;
 import com.example.backend.utils.Awsutils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.backend.utils.ResponseUtils;
 
 @Service
@@ -143,16 +143,30 @@ public class FarmerServiceImpl implements FarmerService {
                     .map(ResponseUtils::convertFarmResponse)
                     .collect(Collectors.toList());
         }
-
         return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
+    @Override
+    public List<FarmDto> getAllFarms(String farmName) {
+        List<Farms> allFarms;
+        if (!Objects.equals(farmName, "")) {
+            System.out.println("showing farms with name" + farmName);
+            allFarms = farmRepository.findByNameIgnoreCaseContaining(farmName);
+            if (allFarms.isEmpty()) {
+                System.out.println("specific Farm not present showing all farms instead");
+                allFarms = farmRepository.findAll();
+            }
+        } else {
+            allFarms = farmRepository.findAll();
+        }
+        return allFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
+    }
 
     @Override
-    public GetFarmByIdResponse getFarmById(int id){
+    public GetFarmByIdResponse getFarmById(int id) {
         Farms farm = farmRepository.findById(id);
         GetFarmByIdResponse gfid = new GetFarmByIdResponse();
-        if(farm!=null){
+        if (farm != null) {
             gfid.setName(farm.getName());
             gfid.setAddress(farm.getAddress());
             gfid.setLat(farm.getLat());
@@ -162,39 +176,39 @@ public class FarmerServiceImpl implements FarmerService {
             }
             return gfid;
         }
-        
+
         else {
             throw new ApiRequestException("Farm not found with id " + id);
         }
-        
+
     }
 
 }
 
 // Garbage code for get Farm with id
-// 
-// 
+//
+//
 // try {
-//     if(farm != null){
-//         ArrayList responseList = new ArrayList<>();
-//         responseList.add(farm.getName());
-//         responseList.add(farm.getAddress());
-//         responseList.add(farm.getLat());
-//         responseList.add(farm.getLng());
-//         String farmDetails="";
-//         for(Object i:responseList){
-//             farmDetails+= i.toString()+System.lineSeparator();
-//         }
-//         return farmDetails;
+// if(farm != null){
+// ArrayList responseList = new ArrayList<>();
+// responseList.add(farm.getName());
+// responseList.add(farm.getAddress());
+// responseList.add(farm.getLat());
+// responseList.add(farm.getLng());
+// String farmDetails="";
+// for(Object i:responseList){
+// farmDetails+= i.toString()+System.lineSeparator();
+// }
+// return farmDetails;
 
-//     }
+// }
 
-//     else{
-//         return("Id is not present!");
-//     }
-// } 
+// else{
+// return("Id is not present!");
+// }
+// }
 
 // catch (Exception e) {
-//     e.printStackTrace();
-//     return "Invalid Id";
+// e.printStackTrace();
+// return "Invalid Id";
 // }
