@@ -1,23 +1,30 @@
 package com.example.backend.services.impl;
 
 import java.security.Principal;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.example.backend.dto.request.ProductSubscribeRequest;
 import com.example.backend.entities.Days;
 import com.example.backend.entities.Farms;
+import com.example.backend.entities.Order;
+import com.example.backend.entities.OrderType;
 import com.example.backend.entities.Product;
 import com.example.backend.entities.Subscription;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserMeta;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.FarmRepository;
+import com.example.backend.repository.OrderRepository;
 import com.example.backend.repository.ProductRepository;
 import com.example.backend.repository.SubscriptionRepository;
 import com.example.backend.repository.UserMetaRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.SubscriptionService;
+import java.time.LocalDate;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +37,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final ProductRepository productRepository;
     private final FarmRepository farmRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public void subscribeProduct(ProductSubscribeRequest request, Principal principal) {
@@ -63,25 +71,25 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         List<String> subscribeDays = new ArrayList<>();
 
         if (request.getMon() == 1) {
-            subscribeDays.add(Days.MON.name());
+            subscribeDays.add(Days.MONDAY.name());
         }
         if (request.getTue() == 1) {
-            subscribeDays.add(Days.TUE.name());
+            subscribeDays.add(Days.TUESDAY.name());
         }
         if (request.getWed() == 1) {
-            subscribeDays.add(Days.WED.name());
+            subscribeDays.add(Days.WEDNSDAY.name());
         }
         if (request.getThu() == 1) {
-            subscribeDays.add(Days.THU.name());
+            subscribeDays.add(Days.THURSDAY.name());
         }
         if (request.getFri() == 1) {
-            subscribeDays.add(Days.FRI.name());
+            subscribeDays.add(Days.FRIDAY.name());
         }
         if (request.getSat() == 1) {
-            subscribeDays.add(Days.SAT.name());
+            subscribeDays.add(Days.SATURDAY.name());
         }
         if (request.getSun() == 1) {
-            subscribeDays.add(Days.SUN.name());
+            subscribeDays.add(Days.SUNDAY.name());
         }
 
         for (String day : subscribeDays) {
@@ -92,7 +100,37 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscription.setSubscriptionDate(LocalDateTime.now());
             subscription.setUser(user);
             subscription.setProduct(product);
+            subscription.setFarm(farm);
             subscriptionRepository.save(subscription);
         }
     }
+
+    // @Scheduled(cron = "0 * * * * *") // running every minute
+    // @Scheduled(cron = "* * * * * *") // every second
+    @Scheduled(cron = "55 23 * * *") // Runs everyday at 11:55 PM
+    public void CronForMakeOrder() {
+        DayOfWeek currentDayOfWeek = LocalDate.now().getDayOfWeek();
+
+        // next Day
+        DayOfWeek upcomingDay = currentDayOfWeek.plus(1);
+        List<Subscription> upcomingSubscriptions = subscriptionRepository
+                .findByDays(Days.valueOf(upcomingDay.toString()));
+
+        // creating order for all upcoming subscription
+        for (Subscription subscription : upcomingSubscriptions) {
+            Product product = subscription.getProduct();
+            Order order = new Order();
+            order.setUser(subscription.getUser());
+            order.setProduct(subscription.getProduct());
+            order.setFarm(subscription.getFarm());
+            order.setOrderDate(LocalDateTime.now());
+            order.setOrderValue(product.getPrice());
+            order.setQuantity(1);
+            order.setOrderPaymentMethod("Wallet");
+            order.setOrderType(OrderType.SUBSCRIPTION);
+            order.setSubscription(subscription);
+            orderRepository.save(order);
+        }
+    }
+
 }
