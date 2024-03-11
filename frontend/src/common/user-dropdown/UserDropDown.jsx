@@ -42,6 +42,10 @@ const UserDropdown = ({ handleLogout }) => {
                 <a className="dropdown-item">Wallet</a>
               </Link>
 
+              <Link to="/order-history">
+                <a className="dropdown-item">My Orders</a>
+              </Link>
+
               <a class="dropdown-item" onClick={handleLogout}>
                 Logout
               </a>
