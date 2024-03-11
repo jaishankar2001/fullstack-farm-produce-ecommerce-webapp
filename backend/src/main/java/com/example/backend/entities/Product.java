@@ -52,11 +52,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @JsonManagedReference
-    private List<Subscription> subscription;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    @JsonManagedReference
     private List<Subscription> subscriptions;
 
     @ManyToOne

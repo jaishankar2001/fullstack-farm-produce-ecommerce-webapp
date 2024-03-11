@@ -46,5 +46,16 @@ public class Subscription {
     @JsonBackReference
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "farm_id")
+    @ToString.Exclude
+    @JsonBackReference
+    private Farms farm;
+
     private LocalDateTime subscriptionDate;
+
+    @OneToMany(mappedBy = "subscription", orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Order> orders;
 }

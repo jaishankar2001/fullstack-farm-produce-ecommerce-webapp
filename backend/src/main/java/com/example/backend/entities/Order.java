@@ -2,10 +2,14 @@ package com.example.backend.entities;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,4 +50,14 @@ public class Order {
     private LocalDateTime orderDate;
     private double orderValue;
     private String orderPaymentMethod;
+
+    @Column(columnDefinition = "varchar(255) default 'ORDER'")
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType;
+
+    @ManyToOne
+    @JoinColumn(name = "subscription_id")
+    @ToString.Exclude
+    @JsonBackReference
+    private Subscription subscription;
 }
