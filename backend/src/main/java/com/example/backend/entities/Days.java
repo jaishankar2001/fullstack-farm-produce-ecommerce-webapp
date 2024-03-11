@@ -1,11 +1,11 @@
 package com.example.backend.entities;
 
 public enum Days {
-    MON,
-    TUE,
-    WED,
-    THU,
-    FRI,
-    SAT,
-    SUN
+    MONDAY,
+    TUESDAY,
+    WEDNSDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
 }
