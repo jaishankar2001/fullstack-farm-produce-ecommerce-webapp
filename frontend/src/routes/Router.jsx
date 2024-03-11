@@ -65,15 +65,11 @@ export const Router = () => {
           element: <AddProduct />,
         },
         {
-          path: "/product",
-          element: <ProductDetail />,
-        },
-        {
           path: "/farmer-products",
           element: <FarmerProductListing />,
         },
         {
-          path: "/farmer-product/:id",
+          path: "/product/:id",
           element: <FarmerProductDetail />,
         },
         {
