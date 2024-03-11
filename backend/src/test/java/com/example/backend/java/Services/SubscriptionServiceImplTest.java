@@ -20,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +30,9 @@ public class SubscriptionServiceImplTest {
 
     @Mock
     private FarmRepository farmRepositoryMock;
+
+    @Mock
+    private OrderRepository orderRepositoryMock;
 
     @Mock
     private SubscriptionRepository subscriptionRepositoryMock;
@@ -49,9 +51,9 @@ public class SubscriptionServiceImplTest {
         ProductSubscribeRequest request = new ProductSubscribeRequest();
         request.setProduct_id(100);
         when(productRepositoryMock.findById(100)).thenReturn(null);
-        Exception exception = assertThrows(ApiRequestException.class,
+        assertThrows(ApiRequestException.class,
                 () -> subscriptionServiceImpl.subscribeProduct(request, mock(Principal.class)));
-        
+
     }
 
     @Test
@@ -97,7 +99,6 @@ public class SubscriptionServiceImplTest {
         assertThrows(ApiRequestException.class, () -> subscriptionServiceImpl.subscribeProduct(request, principal));
     }
 
-
     @Test
     public void testProductSubscription() {
         ProductSubscribeRequest request = new ProductSubscribeRequest();
@@ -124,6 +125,19 @@ public class SubscriptionServiceImplTest {
         when(userMetaRepositoryMock.findByUser(any())).thenReturn(userMeta);
         subscriptionServiceImpl.subscribeProduct(request, principal);
         verify(subscriptionRepositoryMock, times(7)).save(any(Subscription.class));
+    }
+
+    @Test
+    public void testCronForMakeOrder() {
+        Product product = new Product();
+        product.setPrice(Mockito.anyInt());
+        List<Subscription> subscriptions = new ArrayList<>();
+        Subscription subscription = new Subscription();
+        subscription.setProduct(product);
+        subscriptions.add(subscription);
+        when(subscriptionRepositoryMock.findByDays(Mockito.any())).thenReturn(subscriptions);
+        subscriptionServiceImpl.CronForMakeOrder();
+        Mockito.verify(orderRepositoryMock, Mockito.times(subscriptions.size())).save(Mockito.any(Order.class));
     }
 
 }
