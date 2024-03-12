@@ -1,4 +1,4 @@
-package com.example.backend.java.Services;
+package com.example.backend.Services;
 
 import com.example.backend.dto.request.ProductSubscribeRequest;
 import com.example.backend.entities.*;
@@ -137,7 +137,8 @@ public class SubscriptionServiceImplTest {
         subscriptions.add(subscription);
         when(subscriptionRepositoryMock.findByDays(any())).thenReturn(subscriptions);
         subscriptionServiceImpl.CronForMakeOrder();
-        Mockito.verify(orderRepositoryMock, Mockito.times(subscriptions.size())).save(Mockito.any(Order.class));
+        Mockito.verify(orderRepositoryMock,
+                Mockito.times(subscriptions.size())).save(Mockito.any(Order.class));
     }
 
 }

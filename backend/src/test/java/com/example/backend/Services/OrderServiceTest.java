@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.Services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +25,6 @@ import com.example.backend.repository.OrderRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.impl.OrderServiceImpl;
 
-
 @SpringBootTest
 public class OrderServiceTest {
     // @Autowired
@@ -37,16 +36,16 @@ public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
-    @InjectMocks
+    @Mock
     private OrderServiceImpl orderService;
 
     private User mockUser;
     private List<Order> mockOrders;
 
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
         orderService = new OrderServiceImpl(userRepository, null, null, null, orderRepository, null);
         mockUser = new User();
         mockUser.setEmail("test@example.com");
@@ -77,8 +76,9 @@ public class OrderServiceTest {
         mockOrders.add(order1);
 
     }
+
     @Test
-    public void testOrderHistory(){
+    public void testOrderHistory() {
 
         when(userRepository.findByEmail(anyString())).thenReturn(mockUser);
         when(orderRepository.findByUser(any(User.class))).thenReturn(mockOrders);
@@ -88,7 +88,7 @@ public class OrderServiceTest {
 
         assertEquals(mockOrders.size(), orderDtoList.size());
         OrderDto orderDto = orderDtoList.get(0);
-        assertTrue( orderService.orderHistory(mockPrincipal) instanceof List);
+        assertTrue(orderService.orderHistory(mockPrincipal) instanceof List);
         assertEquals(Long.valueOf(1), orderDto.getId());
         assertEquals("Test Product", orderDto.getProductName());
         assertEquals("Test Product Description", orderDto.getProductDescription());
@@ -98,12 +98,12 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testWhenUSerNotPresent(){
+    public void testWhenUSerNotPresent() {
         when(userRepository.findByEmail(anyString())).thenReturn(null);
         when(orderRepository.findByUser(any(User.class))).thenReturn(new ArrayList<>());
         Principal mockNullPrincipal = mock(Principal.class);
         when(mockNullPrincipal.getName()).thenReturn(null);
-        assertThrows(ApiRequestException.class, () -> orderService.orderHistory(mockNullPrincipal),"User not Found");
+        assertThrows(ApiRequestException.class, () -> orderService.orderHistory(mockNullPrincipal), "User not Found");
 
     }
 }
