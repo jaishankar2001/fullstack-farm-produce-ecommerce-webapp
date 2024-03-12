@@ -4,6 +4,7 @@ import * as walletApi from "./wallet";
 import * as productApi from "./products";
 import * as homeApi from "./home";
 import * as categoryApi from './category';
+import * as orderApi from './order';
 
 const api = {
   auth: authApi,
@@ -11,7 +12,8 @@ const api = {
   farm: farmApi,
   products: productApi,
   home: homeApi,
-  category: categoryApi
+  category: categoryApi,
+  order: orderApi
 };
 
 export default api;

@@ -20,7 +20,7 @@ function AddProduct() {
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const [allFarms, setAllFarms] = useState([]);
-
+  const [categoryName, setCategoryName] = useState("");
 
   const unitOptions = [
     {
@@ -116,6 +116,7 @@ function AddProduct() {
   const handleCategorySelect = (selectedCategory) => {
     const category = categories.find(category => category.name === selectedCategory);
     setCategoryID(category?.id);
+    setCategoryName(category?.name);
   };
 
   const handleUnitSelect = (selectedUnit) => {
@@ -146,7 +147,7 @@ function AddProduct() {
                   <Dropdown
                     options={categories}
                     onSelect={handleCategorySelect}
-                    selectedValue={categoryID}
+                    selectedValue={categoryName}
                   />
                 </div>
 
@@ -163,7 +164,7 @@ function AddProduct() {
                 </div>
 
                 <div className="col-md-4 fw-semibold mb-0">
-                  <label className="form-label fw-semibold">Price</label>
+                  <label className="form-label fw-semibold">Price (in CAD)</label>
                   <input
                     type="text"
                     className="form-control"

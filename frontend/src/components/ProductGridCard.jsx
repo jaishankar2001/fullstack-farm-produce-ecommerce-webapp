@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { CAT1 } from "../assets/images/index";
 
-function ProductGridCard({ product }) {
+function ProductGridCard({ product, from }) {
   const navigate = useNavigate();
 
   return (
@@ -35,16 +35,9 @@ function ProductGridCard({ product }) {
             <button
               className="btn btn-sm btn-secondary text-primary flex-grow-1 d-none d-lg-block"
               onClick={() => {
-                const currentPath = window.location.pathname;
-                console.log(currentPath);
-                if (currentPath == "/product-listing") {
-                  navigate(`/product/${product.id}`);
-                } else {
-                  navigate(`/farmer-product/${product.id}`);
-                }
+                  navigate(`/product/${product.id}`,{ state: { previousPath: from } });
               }}
             >
-              <FontAwesomeIcon icon={["fas", "cart-plus"]} />
               View Product
             </button>
             <div></div>

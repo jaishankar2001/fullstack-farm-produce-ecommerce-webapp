@@ -131,6 +131,7 @@ function ProductEdit() {
       (category) => category.name === selectedCategory
     );
     setCategoryID(category?.id);
+    setCategoryName(category?.name);
   };
 
   const handleUnitSelect = (selectedUnit) => {
@@ -197,7 +198,7 @@ function ProductEdit() {
                 </div>
 
                 <div className="col-md-4 fw-semibold mb-0">
-                  <label className="form-label fw-semibold">Price</label>
+                  <label className="form-label fw-semibold">Price (in CAD)</label>
                   <input
                     type="text"
                     className="form-control"
