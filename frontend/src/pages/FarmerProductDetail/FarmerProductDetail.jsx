@@ -5,26 +5,36 @@ import Modal from "react-modal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import api from "../../api/index";
+import QuantitySelector from "../../components/QuantitySelector";
 
 function FarmerProductDetail() {
   const images = [2, 4, 6, 8, 1];
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [product, setProduct] = useState();
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantityChange = (newQuantity) => {
+    setQuantity(newQuantity);
+  };
+
   const openModal = () => {
     setModalIsOpen(true);
   };
 
+  const previousPath = location.state && location.state.previousPath;
 
   useEffect(() => {
-    api.products.getProductById(id)
-    .then(response => {
-      setProduct(response);
-    })
-    .catch(error => {
-      console.error("Error fetching Product:", error);
-    });
+    api.products
+      .getProductById(id)
+      .then((response) => {
+        setProduct(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching Product:", error);
+      });
   }, []);
 
   const closeModal = () => {
@@ -42,18 +52,29 @@ function FarmerProductDetail() {
     },
   };
 
-  const onDeleteProduct = async() => {
-     const response = await api.products.deleteProduct(id);
-     toast.success("Product deleted successfully!");
-     navigate("/farmer-products");
- 
-     closeModal();
+  const onDeleteProduct = async () => {
+    const response = await api.products.deleteProduct(id);
+    toast.success("Product deleted successfully!");
+    navigate("/farmer-products");
 
+    closeModal();
+  };
+
+  const onBuyProduct = async () => {
+    const response = await api.order.placeOrder({
+      farm_id: 2,
+      product_id: id,
+      quantity: quantity,
+      orderPaymentMethod: "Wallet"
+    });
+    if(response){
+      navigate("/product-listing")
+    }
   }
 
   return (
     <div className="vstack">
-       <ToastContainer />
+      <ToastContainer />
       <div className="bg-secondary">
         <div className="container">
           <div className="row py-4 px-2"></div>
@@ -128,9 +149,7 @@ function FarmerProductDetail() {
                 <h4 className="fw-semibold">
                   ${product?.price}/{product?.unit}
                 </h4>
-                <p className="fw-light">
-                  {product?.productDescription}
-                </p>
+                <p className="fw-light">{product?.productDescription}</p>
                 <dl className="row mb-0">
                   <dt className="col-sm-3 fw-semibold">Code#</dt>
                   <dd className="col-sm-9">{id}</dd>
@@ -139,24 +158,54 @@ function FarmerProductDetail() {
                   <dt className="col-sm-3 fw-semibold">Stock</dt>
                   <dd className="col-sm-9">{product?.stock}</dd>
                 </dl>
+                {previousPath === "products" && (
+                  <div>
+                   <h6 className="fw-semibold">
+                  Select Quantity
+                </h6>
+                   <QuantitySelector quantity={quantity} handleQuantityChange={handleQuantityChange}/>
+                  </div>
+                )}
                 <hr className="text-muted" />
                 <div className="d-flex">
-                   <button
-               className="btn btn-primary px-md-4 col col-md-auto me-2"
-               
-              onClick={() => {
-                  navigate(`/edit-product/${id}`);
-              }}
-            >
-               Edit Product
-            </button>
+                  {previousPath === "farmerProducts" && (
+                    <>
+                      <button
+                        className="btn btn-primary px-md-4 col col-md-auto me-2"
+                        onClick={() => {
+                          navigate(`/edit-product/${id}`);
+                        }}
+                      >
+                        Edit Product
+                      </button>
 
-                  <button className="btn btn-outline-primary col col-md-auto" onClick={openModal}>
-                    <FontAwesomeIcon icon={["fas", "trash"]} />
-                    &nbsp;Delete Product
-                  </button>
+                      <button
+                        className="btn btn-outline-primary col col-md-auto"
+                        onClick={openModal}
+                      >
+                        <FontAwesomeIcon icon={["fas", "trash"]} />
+                        &nbsp;Delete Product
+                      </button>
+                    </>
+                  )}
+                  {previousPath === "products" && (
+                    <>
+                      <button
+                        className="btn btn-primary px-md-4 col col-md-auto me-2"
+                        onClick={onBuyProduct}
+                      >
+                        Buy now
+                      </button>
+
+                      <button
+                        className="btn btn-outline-primary col col-md-auto"
+                        onClick={openModal}
+                      >
+                        &nbsp;Pre-book Now
+                      </button>
+                    </>
+                  )}
                 </div>
-                
               </div>
             </div>
           </div>
@@ -171,17 +220,13 @@ function FarmerProductDetail() {
         <div class="card text-center">
           <div class="card-body">
             <h5 class="card-title">Are you sure to delete this product?</h5>
-            <button
-              className="btn btn-primary"
-              onClick={onDeleteProduct}
-            >
+            <button className="btn btn-primary" onClick={onDeleteProduct}>
               Delete
             </button>
           </div>
         </div>
       </Modal>
-      <div className="container">
-      </div>
+      <div className="container"></div>
       <br />
       <br />
       <br />
