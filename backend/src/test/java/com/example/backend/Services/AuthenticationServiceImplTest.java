@@ -26,7 +26,6 @@ import com.example.backend.services.JWTService;
 import com.example.backend.services.VerificationService;
 import com.example.backend.services.impl.AuthenticationServiceImpl;
 
-
 public class AuthenticationServiceImplTest {
 
     @Mock
@@ -47,10 +46,9 @@ public class AuthenticationServiceImplTest {
     @InjectMocks
     private AuthenticationServiceImpl authenticationService;
 
-    //@SuppressWarnings("deprecation")
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -72,7 +70,7 @@ public class AuthenticationServiceImplTest {
         assertEquals(signUpRequest.getEmail(), result.getEmail());
         assertEquals(signUpRequest.getFirstName(), result.getFirstname());
         assertEquals(signUpRequest.getLastName(), result.getLastname());
-        //assertEquals(signUpRequest.getRole(), result.getRole());
+        // assertEquals(signUpRequest.getRole(), result.getRole());
 
         // Verify userRepository.save is called once
         verify(userRepository, times(1)).save(any(User.class));

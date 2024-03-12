@@ -3,10 +3,8 @@ package com.example.backend.dto.request;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Data
-/**
- * EditProductRequest
- */
+@Getter
+@Setter
 public class EditProductRequest {
     @NotNull(message = "Product ID is required")
     private int id;

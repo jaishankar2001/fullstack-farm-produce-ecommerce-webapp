@@ -57,7 +57,6 @@ public class FarmerServiceImpl implements FarmerService {
             image.setFarm(savedFarm);
             image.setImg_url(url);
             imagesRepository.save(image);
-            System.out.println("-=-=-=-=-  " + url);
             farmImages.add(image);
         }
         farm.setImages(farmImages);
@@ -88,7 +87,6 @@ public class FarmerServiceImpl implements FarmerService {
             List<Images> farmImages = farm.getImages();
             for (Images image : farmImages) {
                 awsutils.deleteFilefromS3(image.getImg_url());
-
             }
             farmImages.clear();
             for (MultipartFile file : multipartFiles) {
@@ -116,7 +114,6 @@ public class FarmerServiceImpl implements FarmerService {
         List<Product> products = farm.getProduct();
         // looping through products
         for (Product product : products) {
-
             // first deleting related images as products are associated with images
             List<Images> productImages = product.getImages();
             for (Images image : productImages) {
@@ -125,7 +122,6 @@ public class FarmerServiceImpl implements FarmerService {
             // deleting product
             productRepository.deleteById(product.getId());
         }
-
         // deleting farm
         farmRepository.deleteById(id);
     }
@@ -184,31 +180,3 @@ public class FarmerServiceImpl implements FarmerService {
     }
 
 }
-
-// Garbage code for get Farm with id
-//
-//
-// try {
-// if(farm != null){
-// ArrayList responseList = new ArrayList<>();
-// responseList.add(farm.getName());
-// responseList.add(farm.getAddress());
-// responseList.add(farm.getLat());
-// responseList.add(farm.getLng());
-// String farmDetails="";
-// for(Object i:responseList){
-// farmDetails+= i.toString()+System.lineSeparator();
-// }
-// return farmDetails;
-
-// }
-
-// else{
-// return("Id is not present!");
-// }
-// }
-
-// catch (Exception e) {
-// e.printStackTrace();
-// return "Invalid Id";
-// }

@@ -7,7 +7,8 @@ import java.util.List;
 
 import com.example.backend.entities.Images;
 
-@Data
+@Getter
+@Setter
 public class GetFarmByIdResponse {
     private String name;
     private String Address;

@@ -12,9 +12,9 @@ import static org.mockito.Mockito.*;
 
 import com.example.backend.services.SubscriptionService;
 import com.example.backend.services.impl.SubscriptionServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -22,8 +22,12 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-@ExtendWith(MockitoExtension.class)
 public class SubscriptionServiceImplTest {
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Mock
     private ProductRepository productRepositoryMock;
