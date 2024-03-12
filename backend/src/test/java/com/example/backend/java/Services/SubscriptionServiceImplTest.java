@@ -19,6 +19,8 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,9 @@ public class SubscriptionServiceImplTest {
 
     @Mock
     private SubscriptionRepository subscriptionRepositoryMock;
+
+    @Mock
+    private Days daysMock;
 
     @Mock
     private UserRepository userRepositoryMock;
@@ -130,12 +135,12 @@ public class SubscriptionServiceImplTest {
     @Test
     public void testCronForMakeOrder() {
         Product product = new Product();
-        product.setPrice(Mockito.anyInt());
+        product.setPrice(100);
         List<Subscription> subscriptions = new ArrayList<>();
         Subscription subscription = new Subscription();
         subscription.setProduct(product);
         subscriptions.add(subscription);
-        when(subscriptionRepositoryMock.findByDays(Mockito.any())).thenReturn(subscriptions);
+        when(subscriptionRepositoryMock.findByDays(any())).thenReturn(subscriptions);
         subscriptionServiceImpl.CronForMakeOrder();
         Mockito.verify(orderRepositoryMock, Mockito.times(subscriptions.size())).save(Mockito.any(Order.class));
     }
