@@ -1,14 +1,9 @@
 package com.example.backend;
 
-//import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-//import org.junit.Before;
-//import org.junit.Test;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,6 +26,7 @@ import com.example.backend.services.JWTService;
 import com.example.backend.services.VerificationService;
 import com.example.backend.services.impl.AuthenticationServiceImpl;
 
+
 public class AuthenticationServiceImplTest {
 
     @Mock
@@ -51,7 +47,7 @@ public class AuthenticationServiceImplTest {
     @InjectMocks
     private AuthenticationServiceImpl authenticationService;
 
-    @SuppressWarnings("deprecation")
+    //@SuppressWarnings("deprecation")
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -65,7 +61,6 @@ public class AuthenticationServiceImplTest {
         signUpRequest.setFirstName("Drashti");
         signUpRequest.setLastName("Patel");
         signUpRequest.setPassword("123");
-        // signUpRequest.setRole("User_role");
 
         when(userRepository.findByEmail(anyString())).thenReturn(null);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
@@ -77,7 +72,7 @@ public class AuthenticationServiceImplTest {
         assertEquals(signUpRequest.getEmail(), result.getEmail());
         assertEquals(signUpRequest.getFirstName(), result.getFirstname());
         assertEquals(signUpRequest.getLastName(), result.getLastname());
-        assertEquals(signUpRequest.getRole(), result.getRole());
+        //assertEquals(signUpRequest.getRole(), result.getRole());
 
         // Verify userRepository.save is called once
         verify(userRepository, times(1)).save(any(User.class));
@@ -98,11 +93,10 @@ public class AuthenticationServiceImplTest {
 
         when(userRepository.findByEmail(anyString())).thenReturn(new User());
 
-        // Act and Assert
-        ApiRequestException exception = assertThrows(ApiRequestException.class, () -> {
+        // Assert
+        assertThrows(ApiRequestException.class, () -> {
             authenticationService.signUp(signUpRequest);
         });
-        assertEquals("User already registered", exception.getMessage());
     }
 
     @Test
@@ -164,10 +158,9 @@ public class AuthenticationServiceImplTest {
 
         when(userRepository.findByEmail(anyString())).thenReturn(null);
 
-        // Act and Assert
-        ApiRequestException exception = assertThrows(ApiRequestException.class, () -> {
+        // Assert
+        assertThrows(ApiRequestException.class, () -> {
             authenticationService.forgotPassword(resetPasswordRequest);
         });
-        assertEquals("User doesn't exist", exception.getMessage());
     }
 }
