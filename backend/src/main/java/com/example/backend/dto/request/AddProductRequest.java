@@ -3,9 +3,12 @@ package com.example.backend.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
-@Data
+@Getter
+@Setter
 public class AddProductRequest {
     @NotBlank(message = "name is required")
     private String productName;
