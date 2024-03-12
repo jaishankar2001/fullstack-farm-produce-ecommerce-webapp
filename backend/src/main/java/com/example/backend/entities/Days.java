@@ -3,7 +3,7 @@ package com.example.backend.entities;
 public enum Days {
     MONDAY,
     TUESDAY,
-    WEDNSDAY,
+    WEDNESDAY,
     THURSDAY,
     FRIDAY,
     SATURDAY,

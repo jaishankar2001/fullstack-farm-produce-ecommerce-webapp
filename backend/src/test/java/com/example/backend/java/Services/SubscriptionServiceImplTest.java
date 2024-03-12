@@ -130,12 +130,12 @@ public class SubscriptionServiceImplTest {
     @Test
     public void testCronForMakeOrder() {
         Product product = new Product();
-        product.setPrice(Mockito.anyInt());
+        product.setPrice(100);
         List<Subscription> subscriptions = new ArrayList<>();
         Subscription subscription = new Subscription();
         subscription.setProduct(product);
         subscriptions.add(subscription);
-        when(subscriptionRepositoryMock.findByDays(Mockito.any())).thenReturn(subscriptions);
+        when(subscriptionRepositoryMock.findByDays(any())).thenReturn(subscriptions);
         subscriptionServiceImpl.CronForMakeOrder();
         Mockito.verify(orderRepositoryMock, Mockito.times(subscriptions.size())).save(Mockito.any(Order.class));
     }

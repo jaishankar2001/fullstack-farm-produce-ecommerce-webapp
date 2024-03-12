@@ -77,7 +77,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscribeDays.add(Days.TUESDAY.name());
         }
         if (request.getWed() == 1) {
-            subscribeDays.add(Days.WEDNSDAY.name());
+            subscribeDays.add(Days.WEDNESDAY.name());
         }
         if (request.getThu() == 1) {
             subscribeDays.add(Days.THURSDAY.name());
@@ -107,7 +107,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     // @Scheduled(cron = "0 * * * * *") // running every minute
     // @Scheduled(cron = "* * * * * *") // every second
-    @Scheduled(cron = "55 23 * * *") // Runs everyday at 11:55 PM
+    @Scheduled(cron = "55 23 * * * *") // Runs everyday at 11:55 PM
     public void CronForMakeOrder() {
         DayOfWeek currentDayOfWeek = LocalDate.now().getDayOfWeek();
 
