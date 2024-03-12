@@ -19,8 +19,6 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +36,6 @@ public class SubscriptionServiceImplTest {
 
     @Mock
     private SubscriptionRepository subscriptionRepositoryMock;
-
-    @Mock
-    private Days daysMock;
 
     @Mock
     private UserRepository userRepositoryMock;
