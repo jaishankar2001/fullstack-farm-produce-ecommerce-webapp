@@ -6,6 +6,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class EditFarmRequest {
     @NotNull(message = "Farm ID is required")
     private int id;

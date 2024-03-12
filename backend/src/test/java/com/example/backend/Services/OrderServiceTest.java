@@ -15,9 +15,11 @@ import com.example.backend.entities.*;
 import com.example.backend.exception.ApiRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.backend.dto.response.OrderDto;
@@ -25,11 +27,7 @@ import com.example.backend.repository.OrderRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.impl.OrderServiceImpl;
 
-@SpringBootTest
 public class OrderServiceTest {
-    // @Autowired
-    // OrderService orderService;
-
     @Mock
     private UserRepository userRepository;
 
