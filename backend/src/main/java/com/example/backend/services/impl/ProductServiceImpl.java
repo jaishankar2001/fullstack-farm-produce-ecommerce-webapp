@@ -149,6 +149,7 @@ public class ProductServiceImpl implements ProductService {
             gpid.setUnit(product.getUnit());
             gpid.setPrebook(product.isPrebook());
             gpid.setProductCategory(product.getCategory());
+            gpid.setFarm(product.getFarm());
             
             for(Images images: product.getImages()){
                 gpid.addImage(images);

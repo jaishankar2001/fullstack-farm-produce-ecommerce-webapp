@@ -10,7 +10,6 @@ import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
 import Wallet from "../pages/Wallet/Wallet";
 import ProductListing from "../pages/ProductListing/ProductListing";
 import AddProduct from "../pages/Product/AddProduct";
-import ProductDetail from "../pages/ProductDetail/ProductDetail";
 import FarmerProductListing from "../pages/FarmerProductListing/FarmerProductListing";
 import FarmerProductDetail from "../pages/FarmerProductDetail/FarmerProductDetail";
 import FarmerFarms from "../pages/Farm/FarmerFarms";
@@ -19,6 +18,7 @@ import FarmEdit from "../pages/Farm/FarmEdit";
 import ProductEdit from "../pages/Product/ProductEdit";
 import ShowFarms from "../pages/Farm/ShowFarms";
 import OrderHistory from "../pages/OrderHistory/OrderHistory";
+import Farm from "../pages/Farm/Farm";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -73,6 +73,10 @@ export const Router = () => {
         {
           path: "/product/:id",
           element: <FarmerProductDetail />,
+        },
+        {
+          path: "/farm/:id",
+          element: <Farm />,
         },
         {
           path: "/farmer-farms",
