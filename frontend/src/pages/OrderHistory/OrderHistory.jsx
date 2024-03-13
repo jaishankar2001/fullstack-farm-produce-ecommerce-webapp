@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import moment from "moment";
 import "react-toastify/dist/ReactToastify.css";
-import DropzoneComponent from "../../components/DropzoneComponent";
 import api from "../../api/index";
-import Dropdown from "../../components/Dropdown";
-
 
 function OrderHistory() {
     const [orders, setOrders] = useState([]);
@@ -28,6 +24,7 @@ function OrderHistory() {
                         <thead>
                           <tr>
                           <th scope="col">Order Id#</th>
+                          <th scope="col">Order Date</th>
                             <th scope="col">Products</th>
                             <th scope="col">Name</th>
                             <th scope="col">Price</th>
@@ -42,6 +39,11 @@ function OrderHistory() {
                                      <tr>
                             <td>
                                     <p class="mb-0 mt-4 d-flex text-center">{index + 1}</p>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4 d-flex text-center"> {moment(order.orderDate).format(
+                                        "MM/DD/YYYY"
+                                      )}</p>
                                 </td>
                                 <th scope="row">
                                     <div class="d-flex align-items-center">
