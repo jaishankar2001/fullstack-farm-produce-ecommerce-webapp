@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                             request.requestMatchers("/api/auth/**").permitAll();
                             request.requestMatchers("/api/wallet/**").permitAll();
                             request.requestMatchers("/api/home/**").permitAll();
+                            request.requestMatchers("/api/products/all-products/**").permitAll();
                             request.anyRequest().authenticated();
                         })
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
