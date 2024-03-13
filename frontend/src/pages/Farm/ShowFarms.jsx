@@ -12,7 +12,6 @@ function ShowFarms(){
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [farmData, setFarmData] = useState([]);
-  let [number, setNumber] = useState(5);
   const [farmLoc, setFarmLoc] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState({
     lat: 44.6475811,
@@ -70,7 +69,7 @@ function ShowFarms(){
   }, [farmData]);
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [farmName]);
   const handleSubmit = (event) => {
     event.preventDefault();
     fetchData();
@@ -79,42 +78,26 @@ function ShowFarms(){
 
   return(
     <>
-    <div class="container topbar bg-primary py-4 px-4 rounded d-none d-lg-block">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white fw-bold">ecopick@gmail.com</a></small>
-                    </div>
-                    <div class="top-link pe-10 d-flex ">
-                        <a href="#"><small class="text-white mx-2 fw-bold">Home</small></a>
-                        <a href="#"><small class="text-white mx-2 fw-bold">Farms</small></a>
-                        <a href="#"><small class="text-white mx-2 fw-bold">Products</small></a>
-                        <a href="#"><small class="text-white mx-2 fw-bold">Contact</small></a>
-                    </div>
-                </div>
-            </div>
       <div className="container py-3">
       <ToastContainer />
-      <div className="row my-2">
-        <div className="col-md-6 offset-md-1 col-lg-4 offset-lg-4">
-          <div className="card border-0 shadow-sm">
-            <div className="card-body px-4">
-              <form className="row g-2" onSubmit={handleSubmit}>
-                <div className="col-md-12">
-                  <input
-                    className="form-control"
-                    placeholder="type the farm name here"
-                    value={farmName}
-                    onChange={(e) => setFarmName(e.target.value)}
-                  />
-                </div>
-                <div className="col-md-12 mt-4">
-                  <button
-                    type="submit"
-                    className="btn btn-primary w-100"
-                  >submit
-                  </button>
-                </div>
-              </form>
+      <div className="bg-secondary">
+        <div className="container">
+          <div className="row py-4 px-2">
+            <div className="col-lg-7">
+            <div className="col-lg-7">
+            <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search Farms..."
+                  value={farmName}
+                  onChange={(e) => setFarmName(e.target.value)}
+                />
+                <button className="btn btn-outline-primary" type="button" onClick={handleSubmit}>
+                  Search
+                </button>
+              </div>
+            </div>
             </div>
           </div>
         </div>
@@ -125,10 +108,10 @@ function ShowFarms(){
             <div class="tab-class text-center">
                 <div class="row g-2">
                     <div class="col-lg-4 text-start">
-                        <h1>Farms</h1>
+                        <h1>Explore Our Farms</h1>
                     </div>
                 </div>
-                <div class="tab-content">
+                <div class="tab-content mt-5">
                      <div id="tab-1" class="tab-pane fade show p-0 active ">
                         <div class="row g-4">
                             <div  class="col-lg-6">

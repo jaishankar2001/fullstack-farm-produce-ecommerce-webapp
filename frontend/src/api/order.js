@@ -8,3 +8,13 @@ export async function placeOrder(payload) {
       throw error;
     }
   }
+
+  export async function orderHistory() {
+    try {
+      const response = await api.get("/order/orderHistory");
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
