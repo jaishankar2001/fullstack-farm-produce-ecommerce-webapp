@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.example.backend.entities.Category;
+import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
 
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ public class ProductDto {
     private String unit;
     private CategoryDto category;
     private Category productCategory;
+    private Farms farm;
 
     @Value("${prebook:false}")
     private boolean prebook;

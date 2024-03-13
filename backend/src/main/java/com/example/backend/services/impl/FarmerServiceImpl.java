@@ -167,6 +167,7 @@ public class FarmerServiceImpl implements FarmerService {
             gfid.setAddress(farm.getAddress());
             gfid.setLat(farm.getLat());
             gfid.setLng(farm.getLng());
+            gfid.setDescription(farm.getDescription());
             for (Images images : farm.getImages()) {
                 gfid.fetchImage(images);
             }
