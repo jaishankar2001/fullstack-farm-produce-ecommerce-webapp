@@ -128,7 +128,7 @@ function ShowFarms(){
                                                     <h4>{farm.name}</h4>
                                                     <p>{farm.description}</p>
                                                     <div class="d-flex justify-content-center flex-lg-wrap">
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Visit the farm</a>
+                                                        <a href={`/farm/${farm.id}`} class="btn border border-secondary rounded-pill px-3 text-primary"> Visit the farm</a>
                                                     </div>
                                                 </div>
                                             </div>

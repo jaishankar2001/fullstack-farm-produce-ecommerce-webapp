@@ -14,6 +14,7 @@ public class GetFarmByIdResponse {
     private String Address;
     private double lat;
     private double lng;
+    private String Description;
     private List<ImageDto> images = new ArrayList<>();
 
     public void fetchImage(Images image) {

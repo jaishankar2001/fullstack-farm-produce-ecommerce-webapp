@@ -75,7 +75,7 @@ function FarmerProductDetail() {
   const onBuyProduct = async () => {
     try{
       const response = await api.order.placeOrder({
-        farm_id: 2,
+        farm_id: product?.farm?.id,
         product_id: id,
         quantity: quantity,
         orderPaymentMethod: "Wallet"
