@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import api from '../../api/index';
 import Layout from '../../common/Layout/Layout';
 
 function ForgotPassword() {
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -21,12 +22,22 @@ function ForgotPassword() {
       // Navigate to desired location upon successful login
       navigate("/verify-email");
     } catch (error) {
-      console.log(error);
+      console.log("Errrorr?", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
     }
   };
 
   return (
     <div className="container py-3">
+      <ToastContainer />
       <div className="row my-4">
         <div className="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
           <div className="card border-0 shadow-sm">

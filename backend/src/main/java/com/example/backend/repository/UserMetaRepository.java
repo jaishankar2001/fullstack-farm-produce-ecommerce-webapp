@@ -9,4 +9,6 @@ import com.example.backend.entities.UserMeta;
 @Repository
 public interface UserMetaRepository extends JpaRepository<UserMeta, Integer>{
     UserMeta findByUser(User id);
+    UserMeta findById(int userId);
+
 }

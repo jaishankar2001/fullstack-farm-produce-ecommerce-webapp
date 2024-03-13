@@ -9,6 +9,7 @@ import logo from "./logo.png";
 import farm1 from "./Farm1.jpg";
 import CarousalImage from "./carousal_img.png";
 import FarmCarousal from "./farm_carousal.jpg";
-import EmailVerification from './EmailVerification.png'
+import EmailVerification from './EmailVerification.png';
+import User from './user.png';
 
-export { DashboardImage, BannerImage, CAT1, CAT2, CAT3, CAT4, background_1, logo, farm1, CarousalImage, FarmCarousal, EmailVerification};
+export { DashboardImage, BannerImage, CAT1, CAT2, CAT3, CAT4, background_1, logo, farm1, CarousalImage, FarmCarousal, EmailVerification, User};
