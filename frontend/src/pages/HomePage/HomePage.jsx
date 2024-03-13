@@ -46,7 +46,7 @@ export const HomePage = () => {
             <a href="#">
               <small class="text-white mx-2 fw-bold">Home</small>
             </a>
-            <a href="#">
+            <a href="/show-farms">
               <small class="text-white mx-2 fw-bold">Farms</small>
             </a>
             <a href="/product-listing">

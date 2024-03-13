@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import api from "../../api/index";
 import QuantitySelector from "../../components/QuantitySelector";
+import OrderConfirmationModal from "../../components/OrderConfirmationModal";
 
 function FarmerProductDetail() {
   const images = [2, 4, 6, 8, 1];
@@ -15,6 +16,7 @@ function FarmerProductDetail() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [product, setProduct] = useState();
   const [quantity, setQuantity] = useState(1);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
@@ -25,6 +27,12 @@ function FarmerProductDetail() {
   };
 
   const previousPath = location.state && location.state.previousPath;
+      
+  const handleConfirmOrder = () => {
+    onBuyProduct();
+    setIsConfirmationModalOpen(false);
+  };
+
 
   useEffect(() => {
     api.products
@@ -39,6 +47,10 @@ function FarmerProductDetail() {
 
   const closeModal = () => {
     setModalIsOpen(false);
+  };
+
+  const openOrderConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
   };
 
   const customStyles = {
@@ -68,7 +80,8 @@ function FarmerProductDetail() {
       orderPaymentMethod: "Wallet"
     });
     if(response){
-      navigate("/product-listing")
+      toast.success("Order confirmed successfully!");
+      navigate("/order-history")
     }
   }
 
@@ -192,7 +205,7 @@ function FarmerProductDetail() {
                     <>
                       <button
                         className="btn btn-primary px-md-4 col col-md-auto me-2"
-                        onClick={onBuyProduct}
+                        onClick={openOrderConfirmationModal}
                       >
                         Buy now
                       </button>
@@ -230,6 +243,13 @@ function FarmerProductDetail() {
       <br />
       <br />
       <br />
+      <OrderConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        onConfirm={handleConfirmOrder}
+        product={product}
+        quantity={quantity}
+      />
     </div>
   );
 }
