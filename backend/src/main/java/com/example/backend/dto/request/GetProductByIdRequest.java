@@ -1,7 +1,8 @@
 package com.example.backend.dto.request;
 import lombok.*;
 
-@Data
+@Setter
+@Getter
 public class GetProductByIdRequest {
     private int productId;
 }

@@ -2,7 +2,8 @@ package com.example.backend.dto.request;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 public class GetFarmByIdRequest {
     private int farmId;
 }
