@@ -8,8 +8,12 @@ import java.util.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.example.backend.dto.request.ProductSubscribeRequest;
+import com.example.backend.dto.response.GetSubscriptionResponse;
+import com.example.backend.dto.response.ProductDto;
+import com.example.backend.dto.response.ProductSubscriptionResponse;
 import com.example.backend.entities.Days;
 import com.example.backend.entities.Farms;
+import com.example.backend.entities.Images;
 import com.example.backend.entities.Order;
 import com.example.backend.entities.OrderType;
 import com.example.backend.entities.Product;
@@ -109,6 +113,52 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         CronForMakeOrder();
     }
 
+    @Override
+    public List<GetSubscriptionResponse> getOwnSubscription(Principal principal) {
+        User user = userRepository.findByEmail(principal.getName());
+        List<Subscription> subscriptions = subscriptionRepository.findByUser(user);
+        System.out.println(subscriptions.size());
+        List<GetSubscriptionResponse> responses = new ArrayList<>();
+        for (Subscription subscription : subscriptions) {
+            Product product = subscription.getProduct();
+
+            boolean productAlreadyExists = false;
+            for (GetSubscriptionResponse response : responses) {
+                if (response.getProductId() == product.getId()) {
+                    ArrayList<String> days = response.getDays();
+                    days.add(subscription.getDays().toString());
+                    response.setDays(days);
+                    productAlreadyExists = true;
+                    break;
+                }
+            }
+
+            if (!productAlreadyExists) {
+                GetSubscriptionResponse generatedResponse = new GetSubscriptionResponse();
+                ProductSubscriptionResponse productResponse = new ProductSubscriptionResponse();
+                productResponse.setProductName(product.getProductName());
+                productResponse.setProductDescription(product.getProductDescription());
+                productResponse.setPrice(product.getPrice());
+                productResponse.setStock(product.getStock());
+                productResponse.setUnit(product.getUnit());
+
+                for (Images images : product.getImages()) {
+                    productResponse.addImage(images);
+                }
+
+                generatedResponse.setName(subscription.getName());
+                ArrayList<String> days = new ArrayList<>();
+                days.add(subscription.getDays().toString());
+                generatedResponse.setDays(days);
+                generatedResponse.setProductId(product.getId());
+                generatedResponse.setProduct(productResponse);
+                generatedResponse.setSubscriptionDate(subscription.getSubscriptionDate());
+                responses.add(generatedResponse);
+            }
+        }
+        return responses;
+    }
+
     // @Scheduled(cron = "0 * * * * *") // running every minute
     // @Scheduled(cron = "* * * * * *") // every second
     @Scheduled(cron = "55 23 * * * *") // Runs everyday at 11:55 PM
@@ -127,8 +177,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             System.out.println(userMeta.getWallet_balance());
             Product product = subscription.getProduct();
             if (userMeta.getWallet_balance() < product.getPrice()) {
-                System.out.println("Can not make order, user does not have balance");
-                return;
+                throw new ApiRequestException("Can not make order, user does not have balance");
             } else {
                 Order order = new Order();
                 order.setUser(subscription.getUser());

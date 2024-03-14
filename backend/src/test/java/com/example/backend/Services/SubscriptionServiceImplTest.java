@@ -1,6 +1,7 @@
 package com.example.backend.Services;
 
 import com.example.backend.dto.request.ProductSubscribeRequest;
+import com.example.backend.dto.response.GetSubscriptionResponse;
 import com.example.backend.entities.*;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.*;
@@ -132,17 +133,85 @@ public class SubscriptionServiceImplTest {
     }
 
     @Test
-    public void testCronForMakeOrder() {
+    public void testCronForMakeOrderSuccess() {
+        UserMeta mockuserMeta = new UserMeta();
+        mockuserMeta.setWallet_balance(100);
+        User mockUser = new User();
+        mockUser.setEmail("user@example.com");
+        mockUser.setUserMeta(mockuserMeta);
+
         Product product = new Product();
-        product.setPrice(100);
+        product.setPrice(10);
         List<Subscription> subscriptions = new ArrayList<>();
         Subscription subscription = new Subscription();
         subscription.setProduct(product);
+        subscription.setUser(mockUser);
         subscriptions.add(subscription);
+
         when(subscriptionRepositoryMock.findByDays(any())).thenReturn(subscriptions);
         subscriptionServiceImpl.CronForMakeOrder();
         Mockito.verify(orderRepositoryMock,
                 Mockito.times(subscriptions.size())).save(Mockito.any(Order.class));
+    }
+
+    @Test
+    public void testGetOwnSubscription() {
+        User mockUser = new User();
+        mockUser.setEmail("user@example.com");
+
+        // Mock Principal
+        Principal mockPrincipal = mock(Principal.class);
+        when(mockPrincipal.getName()).thenReturn(mockUser.getEmail());
+
+        // Mock repository behavior
+        when(userRepositoryMock.findByEmail(mockUser.getEmail())).thenReturn(mockUser);
+
+        Images image1 = new Images();
+        ArrayList<Images> imgArr = new ArrayList<>();
+        imgArr.add(image1);
+
+        Product mockProduct1 = new Product();
+        mockProduct1.setId(1);
+        mockProduct1.setProductName("Product 1");
+        mockProduct1.setProductDescription("Description 1");
+        mockProduct1.setImages(imgArr);
+        // Set other product properties
+
+        Product mockProduct2 = new Product();
+        mockProduct2.setId(2);
+        mockProduct2.setProductName("Product 2");
+        mockProduct2.setProductDescription("Description 2");
+        mockProduct2.setImages(imgArr);
+        // Set other product properties
+
+        Subscription mockSubscription1 = new Subscription();
+        mockSubscription1.setName(SubscriptionName.CUSTOM);
+        mockSubscription1.setDays(Days.MONDAY);
+        mockSubscription1.setProduct(mockProduct1);
+
+        Subscription mockSubscription2 = new Subscription();
+        mockSubscription2.setName(SubscriptionName.CUSTOM);
+        mockSubscription2.setDays(Days.MONDAY);
+        mockSubscription2.setProduct(mockProduct2);
+
+        Subscription mockSubscription3 = new Subscription();
+        mockSubscription3.setName(SubscriptionName.CUSTOM);
+        mockSubscription3.setDays(Days.TUESDAY);
+        mockSubscription3.setProduct(mockProduct2);
+
+        List<Subscription> mockSubscriptions = new ArrayList<>();
+        mockSubscriptions.add(mockSubscription1);
+        mockSubscriptions.add(mockSubscription2);
+        mockSubscriptions.add(mockSubscription3);
+
+        when(subscriptionRepositoryMock.findByUser(mockUser)).thenReturn(mockSubscriptions);
+
+        // Call the method under test
+        List<GetSubscriptionResponse> responses = subscriptionServiceImpl.getOwnSubscription(mockPrincipal);
+
+        // Assertions
+        assertEquals(2, responses.size()); // Expecting two subscriptions
+
     }
 
 }
