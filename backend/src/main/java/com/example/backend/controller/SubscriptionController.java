@@ -11,6 +11,8 @@ import java.security.Principal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/subscribe")
@@ -23,6 +25,12 @@ public class SubscriptionController {
     public ResponseEntity<String> subscribeProduct(@RequestBody ProductSubscribeRequest request, Principal principal) {
         subscriptionService.subscribeProduct(request, principal);
         return ResponseEntity.ok("Subscribed to product successfully!");
+    }
+
+    @GetMapping("/run-cron")
+    public ResponseEntity<String> getMethodName() {
+        subscriptionService.runCron();
+        return ResponseEntity.ok("cronjob run successfully!");
     }
 
 }
