@@ -105,6 +105,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
+    public void runCron() {
+        CronForMakeOrder();
+    }
+
     // @Scheduled(cron = "0 * * * * *") // running every minute
     // @Scheduled(cron = "* * * * * *") // every second
     @Scheduled(cron = "55 23 * * * *") // Runs everyday at 11:55 PM
@@ -118,18 +122,29 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         // creating order for all upcoming subscription
         for (Subscription subscription : upcomingSubscriptions) {
+            User user = subscription.getUser();
+            UserMeta userMeta = user.getUserMeta();
+            System.out.println(userMeta.getWallet_balance());
             Product product = subscription.getProduct();
-            Order order = new Order();
-            order.setUser(subscription.getUser());
-            order.setProduct(subscription.getProduct());
-            order.setFarm(subscription.getFarm());
-            order.setOrderDate(LocalDateTime.now());
-            order.setOrderValue(product.getPrice());
-            order.setQuantity(1);
-            order.setOrderPaymentMethod("Wallet");
-            order.setOrderType(OrderType.SUBSCRIPTION);
-            order.setSubscription(subscription);
-            orderRepository.save(order);
+            if (userMeta.getWallet_balance() < product.getPrice()) {
+                System.out.println("Can not make order, user does not have balance");
+                return;
+            } else {
+                Order order = new Order();
+                order.setUser(subscription.getUser());
+                order.setProduct(subscription.getProduct());
+                order.setFarm(subscription.getFarm());
+                order.setOrderDate(LocalDateTime.now());
+                order.setOrderValue(product.getPrice());
+                order.setQuantity(1);
+                order.setOrderPaymentMethod("Wallet");
+                order.setOrderType(OrderType.SUBSCRIPTION);
+                order.setSubscription(subscription);
+                orderRepository.save(order);
+                userMeta.setWallet_balance(userMeta.getWallet_balance() - product.getPrice());
+                userMetaRepository.save(userMeta);
+            }
+
         }
     }
 
