@@ -6,7 +6,6 @@ import java.util.UUID;
 import com.example.backend.entities.VerificationType;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserMeta;

@@ -22,24 +22,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeServiceImpl implements HomeService {
 
-    private final FarmRepository farmRepository;
-    private final ProductRepository productRepository;
+        private final FarmRepository farmRepository;
+        private final ProductRepository productRepository;
 
-    @Override
-    public HomeResponse getHomeMeta() {
-        List<Farms> topFarms = farmRepository.findTop8ByOrderByIdDesc();
-        List<FarmDto> farms = topFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
+        @Override
+        public HomeResponse getHomeMeta() {
+                List<Farms> topFarms = farmRepository.findTop8ByOrderByIdDesc();
+                List<FarmDto> farms = topFarms.stream().map(ResponseUtils::convertFarmResponse)
+                                .collect(Collectors.toList());
 
-        List<Product> latestProducts = productRepository.findTop8ByOrderByIdDesc();
+                List<Product> latestProducts = productRepository.findTop8ByOrderByIdDesc();
 
-        Stream<Product> productStream = latestProducts.stream();
-        Stream<ProductDto> productDtoStream = productStream.map(ResponseUtils::convertProductResponse);
-        List<ProductDto> products = productDtoStream.collect(Collectors.toList());
+                Stream<Product> productStream = latestProducts.stream();
+                Stream<ProductDto> productDtoStream = productStream.map(ResponseUtils::convertProductResponse);
+                List<ProductDto> products = productDtoStream.collect(Collectors.toList());
 
-        HomeResponse homeResponse = new HomeResponse();
-        homeResponse.setFarms(farms);
-        homeResponse.setProducts(products);
-        return homeResponse;
-    }
+                HomeResponse homeResponse = new HomeResponse();
+                homeResponse.setFarms(farms);
+                homeResponse.setProducts(products);
+                return homeResponse;
+        }
 
 }

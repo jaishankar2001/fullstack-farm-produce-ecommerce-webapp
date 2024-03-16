@@ -3,7 +3,6 @@ package com.example.backend.services.impl;
 import com.example.backend.repository.WalletRepository;
 import com.example.backend.services.WalletService;
 import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 
