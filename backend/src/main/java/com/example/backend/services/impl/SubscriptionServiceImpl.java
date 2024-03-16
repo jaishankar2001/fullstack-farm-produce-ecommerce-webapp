@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
 
+    static final int SUBSCTRING_END_INDEX = 3;
     private final UserRepository userRepository;
     private final UserMetaRepository userMetaRepository;
     private final ProductRepository productRepository;
@@ -72,29 +73,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             throw new ApiRequestException("You do not have sufficient balance to buy this product");
         }
 
-        List<String> subscribeDays = new ArrayList<>();
-
-        if (request.getMon() == 1) {
-            subscribeDays.add(Days.MONDAY.name());
-        }
-        if (request.getTue() == 1) {
-            subscribeDays.add(Days.TUESDAY.name());
-        }
-        if (request.getWed() == 1) {
-            subscribeDays.add(Days.WEDNESDAY.name());
-        }
-        if (request.getThu() == 1) {
-            subscribeDays.add(Days.THURSDAY.name());
-        }
-        if (request.getFri() == 1) {
-            subscribeDays.add(Days.FRIDAY.name());
-        }
-        if (request.getSat() == 1) {
-            subscribeDays.add(Days.SATURDAY.name());
-        }
-        if (request.getSun() == 1) {
-            subscribeDays.add(Days.SUNDAY.name());
-        }
+        List<String> subscribeDays = getSubScribedDays(request);
 
         for (String day : subscribeDays) {
             Subscription subscription = new Subscription();
@@ -117,7 +96,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public List<GetSubscriptionResponse> getOwnSubscription(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
         List<Subscription> subscriptions = subscriptionRepository.findByUser(user);
-        System.out.println(subscriptions.size());
         List<GetSubscriptionResponse> responses = new ArrayList<>();
         for (Subscription subscription : subscriptions) {
             Product product = subscription.getProduct();
@@ -174,7 +152,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         for (Subscription subscription : upcomingSubscriptions) {
             User user = subscription.getUser();
             UserMeta userMeta = user.getUserMeta();
-            System.out.println(userMeta.getWallet_balance());
             Product product = subscription.getProduct();
             if (userMeta.getWallet_balance() < product.getPrice()) {
                 throw new ApiRequestException("Can not make order, user does not have balance");
@@ -197,4 +174,24 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
+    public List<String> getSubScribedDays(ProductSubscribeRequest request) {
+        List<String> subscribeDays = new ArrayList<>();
+
+        for (Days day : Days.values()) {
+            try {
+                // Get the field corresponding to the day using reflection
+                String firstchar = day.name().substring(0, 1).toUpperCase();
+                String remainingChar = day.name().substring(1, SUBSCTRING_END_INDEX).toLowerCase();
+                String methodName = "get" + firstchar + remainingChar;
+                int fieldValue = (int) request.getClass().getMethod(methodName).invoke(request);
+
+                if (fieldValue == 1) {
+                    subscribeDays.add(day.name());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return subscribeDays;
+    }
 }

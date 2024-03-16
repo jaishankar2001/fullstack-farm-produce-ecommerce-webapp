@@ -3,7 +3,6 @@ package com.example.backend.services.impl;
 import com.example.backend.repository.WalletRepository;
 import com.example.backend.services.WalletService;
 import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 
@@ -27,6 +26,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class WalletServiceImpl implements WalletService {
 
+    static final int PARSE_AMOUNT = 100;
     private final WalletRepository walletRepository;
     private final UserMetaRepository userMeta;
     private final UserRepository userRepository;
@@ -70,8 +70,6 @@ public class WalletServiceImpl implements WalletService {
     public String createPaymentIntent(String amount, Principal principal) {
         try {
 
-            System.out.println("GERR?");
-            System.out.println(principal.getName());
             String successURL = APIendpoint + "/wallet/topup?amount=" + Double.parseDouble(amount)
                     + "&email="
                     + principal.getName();
@@ -90,7 +88,7 @@ public class WalletServiceImpl implements WalletService {
                             .setPriceData(
                                     SessionCreateParams.LineItem.PriceData.builder()
                                             .setCurrency("cad")
-                                            .setUnitAmount((long) Integer.parseInt(amount) * 100)
+                                            .setUnitAmount((long) Integer.parseInt(amount) * PARSE_AMOUNT)
                                             .setProductData(
                                                     SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                             .setName("Ecopick Wallet")

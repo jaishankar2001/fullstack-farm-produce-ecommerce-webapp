@@ -30,6 +30,7 @@ import java.io.IOException;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
+    static final int START_INDEX = 7;
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, HttpServletResponse response,
@@ -51,7 +52,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
-            jwt = authHeader.substring(7);
+            jwt = authHeader.substring(START_INDEX);
             userEmail = jwtService.extractUserName(jwt);
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
