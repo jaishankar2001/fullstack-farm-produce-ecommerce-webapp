@@ -40,8 +40,13 @@ public class OrderServiceTest {
     private User mockUser;
     private List<Order> mockOrders;
 
+    static final double ORDER_VALUE = 100.0;
+    static final int ORDER_QUANTITY = 2;
+
     @BeforeEach
     void setUp() {
+        int orderId = 1;
+        int productid = 1;
         MockitoAnnotations.openMocks(this);
 
         orderService = new OrderServiceImpl(userRepository, null, null, null, orderRepository, null);
@@ -50,13 +55,13 @@ public class OrderServiceTest {
 
         mockOrders = new ArrayList<>();
         Order order1 = new Order();
-        order1.setId(1);
+        order1.setId(orderId);
 
         Images image1 = new Images();
         ArrayList<Images> imgArr = new ArrayList<>();
         imgArr.add(image1);
         Product product = new Product();
-        product.setId(1);
+        product.setId(productid);
         product.setProductName("Test Product");
         product.setProductDescription("Test Product Description");
         product.setImages(imgArr);
@@ -68,8 +73,8 @@ public class OrderServiceTest {
         order1.setProduct(product);
         order1.setFarm(farm);
         order1.setOrderDate(LocalDateTime.now());
-        order1.setOrderValue(100.0);
-        order1.setQuantity(2);
+        order1.setOrderValue(ORDER_VALUE);
+        order1.setQuantity(ORDER_QUANTITY);
 
         mockOrders.add(order1);
 
@@ -77,7 +82,7 @@ public class OrderServiceTest {
 
     @Test
     public void testOrderHistory() {
-
+        int orderId = 1;
         when(userRepository.findByEmail(anyString())).thenReturn(mockUser);
         when(orderRepository.findByUser(any(User.class))).thenReturn(mockOrders);
 
@@ -87,12 +92,12 @@ public class OrderServiceTest {
         assertEquals(mockOrders.size(), orderDtoList.size());
         OrderDto orderDto = orderDtoList.get(0);
         assertTrue(orderService.orderHistory(mockPrincipal) instanceof List);
-        assertEquals(Long.valueOf(1), orderDto.getId());
+        assertEquals(Long.valueOf(orderId), orderDto.getId());
         assertEquals("Test Product", orderDto.getProductName());
         assertEquals("Test Product Description", orderDto.getProductDescription());
         assertEquals("Test Farm", orderDto.getFarmName());
-        assertEquals(Double.valueOf(100.0), orderDto.getOrderValue());
-        assertEquals(Integer.valueOf(2), orderDto.getQuantity());
+        assertEquals(Double.valueOf(ORDER_VALUE), orderDto.getOrderValue());
+        assertEquals(Integer.valueOf(ORDER_QUANTITY), orderDto.getQuantity());
     }
 
     @Test

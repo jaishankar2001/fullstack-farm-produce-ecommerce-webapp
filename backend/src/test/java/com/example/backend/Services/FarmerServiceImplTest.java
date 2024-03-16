@@ -41,6 +41,16 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class FarmerServiceImplTest {
+    static final double LATITUDE = 123.456;
+    static final double LONGITUDE = 789.012;
+    static final double LATITUDE_SET = 15.0;
+    static final double LONGITUDE_SET = 5.0;
+    static final int SECOND_FARM_ID = 2;
+    static final int EXPECTED_RESULT_SIZE = 2;
+    static final int GENERATE_NUMBER_OF_FARMS = 2;
+    static final int GENERATE_ALL_NUMBER_OF_FARMS = 3;
+    static final int EXPECTED_RESULT_SIZE_ALL_FARM = 3;
+
     @BeforeEach
     public void Setup() {
         MockitoAnnotations.openMocks(this);
@@ -84,8 +94,8 @@ public class FarmerServiceImplTest {
         when(farmRepositoryMock.findByUser(any(User.class))).thenReturn(userFarms);
 
         MultipartFile[] multipartFiles = {
-                new MockMultipartFile("file1", "file1.jpg", "image/jpeg", new byte[0]),
-                new MockMultipartFile("file2", "file2.jpg", "image/jpeg", new byte[0])
+                new MockMultipartFile("file1", new byte[0]),
+                new MockMultipartFile("file2", new byte[0])
         };
         when(awsutilsMock.uploadFileToS3(any(MultipartFile.class), anyString(), anyInt())).thenReturn("dummy-url");
 
@@ -98,7 +108,8 @@ public class FarmerServiceImplTest {
 
     @Test
     public void testEditFarm() {
-        EditFarmRequest farmRequest = new EditFarmRequest(1, "New Name", "New Address", "New Description", 10.0, 20.0);
+        EditFarmRequest farmRequest = new EditFarmRequest(1, "New Name", "New Address", "New Description", LATITUDE,
+                LONGITUDE);
         MultipartFile[] multipartFiles = { new MockMultipartFile("file1", "file1.jpg", "image/jpeg", new byte[0]) };
         Principal principal = mock(Principal.class);
         when(principal.getName()).thenReturn("testuser@example.com");
@@ -107,8 +118,8 @@ public class FarmerServiceImplTest {
         existingFarm.setId(1);
         existingFarm.setName("Old Name");
         existingFarm.setAddress("Old Address");
-        existingFarm.setLng(5.0);
-        existingFarm.setLat(15.0);
+        existingFarm.setLng(LATITUDE_SET);
+        existingFarm.setLat(LONGITUDE_SET);
         existingFarm.setDescription("Old Description");
         Images image = new Images();
         image.setImg_url("image_url.jpg");
@@ -127,8 +138,8 @@ public class FarmerServiceImplTest {
         assertEquals("Farm details edited successfully", result);
         assertEquals(farmRequest.getName(), existingFarm.getName());
         assertEquals(farmRequest.getAddress(), existingFarm.getAddress());
-        assertEquals(farmRequest.getLng(), existingFarm.getLng(), 0.001);
-        assertEquals(farmRequest.getLat(), existingFarm.getLat(), 0.001);
+        assertEquals(farmRequest.getLng(), existingFarm.getLng());
+        assertEquals(farmRequest.getLat(), existingFarm.getLat());
         assertEquals(farmRequest.getDescription(), existingFarm.getDescription());
         verify(awsutilsMock).deleteFilefromS3(eq("image_url.jpg"));
     }
@@ -158,7 +169,7 @@ public class FarmerServiceImplTest {
         farm1.setImages(images);
 
         Farms farm2 = new Farms();
-        farm2.setId(2);
+        farm2.setId(SECOND_FARM_ID);
         farm2.setImages(images);
         List<Farms> userFarms = List.of(farm1, farm2);
         FarmerOwnFarmRequest farmerOwnFarmRequest = new FarmerOwnFarmRequest();
@@ -168,7 +179,7 @@ public class FarmerServiceImplTest {
         //
         List<FarmDto> result = farmerServiceMock.getFarms(farmerOwnFarmRequest, principal);
         // // Assert
-        assertEquals(2, result.size());
+        assertEquals(EXPECTED_RESULT_SIZE, result.size());
     }
 
     @Test
@@ -189,8 +200,8 @@ public class FarmerServiceImplTest {
         farm.setId(1);
         farm.setName("Farm Name");
         farm.setAddress("Farm Address");
-        farm.setLat(123.456);
-        farm.setLng(789.012);
+        farm.setLat(LATITUDE);
+        farm.setLng(LONGITUDE);
         farm.setImages(images);
 
         List<Farms> userFarms = List.of(farm);
@@ -208,20 +219,23 @@ public class FarmerServiceImplTest {
     @Test
     public void testGetAllFarmsWithSearch() {
         String farmName = "Farm 1";
-        List<Farms> matchingFarms = createFarmsList(2); // Create a list of 2 farms with the provided name
+        List<Farms> matchingFarms = createFarmsList(GENERATE_NUMBER_OF_FARMS); // Create a list of 2 farms with the
+                                                                               // provided
         when(farmRepositoryMock.findByNameIgnoreCaseContaining(farmName)).thenReturn(matchingFarms);
 
         // Act
         List<FarmDto> result = farmerServiceMock.getAllFarms(farmName);
 
         // Assert
-        assertEquals(2, result.size()); //
+        assertEquals(EXPECTED_RESULT_SIZE, result.size()); //
     }
 
     @Test
     public void testGetAllFarmsWithNullSearch() {
         String farmName = "Farm 1";
-        List<Farms> matchingFarms = createFarmsList(2); // Create a list of 2 farms with the provided name
+        List<Farms> matchingFarms = createFarmsList(GENERATE_NUMBER_OF_FARMS); // Create a list of 2 farms with the
+                                                                               // provided
+        // name
         when(farmRepositoryMock.findByNameIgnoreCaseContaining(farmName)).thenReturn(new ArrayList<>());
         when(farmRepositoryMock.findAll()).thenReturn(matchingFarms);
 
@@ -229,20 +243,22 @@ public class FarmerServiceImplTest {
         List<FarmDto> result = farmerServiceMock.getAllFarms(farmName);
 
         // Assert
-        assertEquals(2, result.size()); //
+        assertEquals(EXPECTED_RESULT_SIZE, result.size()); //
     }
 
     @Test
     public void testGetAllFarmsWithoutSearch() {
         String farmName = "";
-        List<Farms> matchingFarms = createFarmsList(3); // Create a list of 2 farms with the provided name
+        List<Farms> matchingFarms = createFarmsList(GENERATE_ALL_NUMBER_OF_FARMS); // Create a list of 2 farms with the
+                                                                                   // provided
+        // name
         when(farmRepositoryMock.findAll()).thenReturn(matchingFarms);
 
         // Act
         List<FarmDto> result = farmerServiceMock.getAllFarms(farmName);
 
         // Assert
-        assertEquals(3, result.size()); //
+        assertEquals(EXPECTED_RESULT_SIZE_ALL_FARM, result.size()); //
     }
 
     @Test
@@ -265,8 +281,8 @@ public class FarmerServiceImplTest {
         farm.setId(farmId);
         farm.setName("Farm Name");
         farm.setAddress("Farm Address");
-        farm.setLat(123.456);
-        farm.setLng(789.012);
+        farm.setLat(LATITUDE);
+        farm.setLng(LONGITUDE);
         farm.setImages(images);
 
         when(farmRepositoryMock.findById(farmId)).thenReturn(farm);
@@ -278,8 +294,8 @@ public class FarmerServiceImplTest {
         assertNotNull(result);
         assertEquals("Farm Name", result.getName());
         assertEquals("Farm Address", result.getAddress());
-        assertEquals(123.456, result.getLat(), 0.001);
-        assertEquals(789.012, result.getLng(), 0.001);
+        assertEquals(LATITUDE, result.getLat());
+        assertEquals(LONGITUDE, result.getLng());
         assertEquals(1, result.getImages().size());
     }
 
@@ -320,9 +336,11 @@ public class FarmerServiceImplTest {
         farmerServiceMock.deleteFarm(anyInt());
 
         // Assert
-        verify(productRepositoryMock, times(2)).deleteById(anyInt()); // Verify product deletion
-        verify(imagesRepositoryMock, times(2)).deleteById(anyInt()); // Verify image deletion (each product may have
-                                                                     // multiple images)
+        verify(productRepositoryMock, times(EXPECTED_RESULT_SIZE)).deleteById(anyInt()); // Verify product
+                                                                                         // deletion
+        verify(imagesRepositoryMock, times(EXPECTED_RESULT_SIZE)).deleteById(anyInt()); // Verify image deletion
+                                                                                        // (each product may have
+        // multiple images)
         verify(farmRepositoryMock, times(1)).deleteById(anyInt()); // Verify farm deletion
     }
 

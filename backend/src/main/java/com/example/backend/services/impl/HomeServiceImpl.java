@@ -2,6 +2,7 @@ package com.example.backend.services.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -30,8 +31,10 @@ public class HomeServiceImpl implements HomeService {
         List<FarmDto> farms = topFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
 
         List<Product> latestProducts = productRepository.findTop8ByOrderByIdDesc();
-        List<ProductDto> products = latestProducts.stream().map(ResponseUtils::convertProductResponse)
-                .collect(Collectors.toList());
+
+        Stream<Product> productStream = latestProducts.stream();
+        Stream<ProductDto> productDtoStream = productStream.map(ResponseUtils::convertProductResponse);
+        List<ProductDto> products = productDtoStream.collect(Collectors.toList());
 
         HomeResponse homeResponse = new HomeResponse();
         homeResponse.setFarms(farms);

@@ -24,6 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriptionServiceImplTest {
+    static final int PRODUCT_ID = 100;
+    static final int PRODUCT_PRICE = 100;
+    static final int PRODUCT_PRICE_FOR_CRON = 10;
+    static final int SECOND_PRODUCT_ID = 2;
+    static final int AMOUNT_ADD_WALLET = 100;
+    static final int EXPECTED_NUMBER_OF_CALLS = 7;
+    static final int EXPECTED_SUBSCRIPTION = 2;
 
     @BeforeEach
     public void setUp() {
@@ -54,8 +61,8 @@ public class SubscriptionServiceImplTest {
     @Test
     public void testProductNull() {
         ProductSubscribeRequest request = new ProductSubscribeRequest();
-        request.setProduct_id(100);
-        when(productRepositoryMock.findById(100)).thenReturn(null);
+        request.setProduct_id(PRODUCT_ID);
+        when(productRepositoryMock.findById(PRODUCT_ID)).thenReturn(null);
         assertThrows(ApiRequestException.class,
                 () -> subscriptionServiceImpl.subscribeProduct(request, mock(Principal.class)));
 
@@ -90,7 +97,7 @@ public class SubscriptionServiceImplTest {
     public void testUserDoesNotHaveEnoughBalance() {
         ProductSubscribeRequest request = new ProductSubscribeRequest();
         Product product = new Product();
-        product.setPrice(100);
+        product.setPrice(PRODUCT_PRICE);
         when(productRepositoryMock.findById(anyInt())).thenReturn(product);
         when(farmRepositoryMock.findById(anyInt())).thenReturn(new Farms());
         Principal principal = mock(Principal.class);
@@ -115,7 +122,7 @@ public class SubscriptionServiceImplTest {
         request.setSat(1);
         request.setSun(1);
         Product product = new Product();
-        product.setPrice(100);
+        product.setPrice(PRODUCT_PRICE);
 
         when(productRepositoryMock.findById(anyInt())).thenReturn(product);
         when(farmRepositoryMock.findById(anyInt())).thenReturn(new Farms());
@@ -126,22 +133,22 @@ public class SubscriptionServiceImplTest {
         when(subscriptionRepositoryMock.findAllByUserIdAndProductId(anyInt(), anyInt())).thenReturn(subscriptions);
 
         UserMeta userMeta = new UserMeta();
-        userMeta.setWallet_balance(product.getPrice() + 100);
+        userMeta.setWallet_balance(product.getPrice() + AMOUNT_ADD_WALLET);
         when(userMetaRepositoryMock.findByUser(any())).thenReturn(userMeta);
         subscriptionServiceImpl.subscribeProduct(request, principal);
-        verify(subscriptionRepositoryMock, times(7)).save(any(Subscription.class));
+        verify(subscriptionRepositoryMock, times(EXPECTED_NUMBER_OF_CALLS)).save(any(Subscription.class));
     }
 
     @Test
     public void testCronForMakeOrderSuccess() {
         UserMeta mockuserMeta = new UserMeta();
-        mockuserMeta.setWallet_balance(100);
+        mockuserMeta.setWallet_balance(AMOUNT_ADD_WALLET);
         User mockUser = new User();
         mockUser.setEmail("user@example.com");
         mockUser.setUserMeta(mockuserMeta);
 
         Product product = new Product();
-        product.setPrice(10);
+        product.setPrice(PRODUCT_PRICE_FOR_CRON);
         List<Subscription> subscriptions = new ArrayList<>();
         Subscription subscription = new Subscription();
         subscription.setProduct(product);
@@ -178,7 +185,7 @@ public class SubscriptionServiceImplTest {
         // Set other product properties
 
         Product mockProduct2 = new Product();
-        mockProduct2.setId(2);
+        mockProduct2.setId(SECOND_PRODUCT_ID);
         mockProduct2.setProductName("Product 2");
         mockProduct2.setProductDescription("Description 2");
         mockProduct2.setImages(imgArr);
@@ -210,7 +217,7 @@ public class SubscriptionServiceImplTest {
         List<GetSubscriptionResponse> responses = subscriptionServiceImpl.getOwnSubscription(mockPrincipal);
 
         // Assertions
-        assertEquals(2, responses.size()); // Expecting two subscriptions
+        assertEquals(EXPECTED_SUBSCRIPTION, responses.size()); // Expecting two subscriptions
 
     }
 

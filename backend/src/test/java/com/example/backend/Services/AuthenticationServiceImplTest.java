@@ -28,6 +28,8 @@ import com.example.backend.services.impl.AuthenticationServiceImpl;
 
 public class AuthenticationServiceImplTest {
 
+    static final int WALLET_BALANCE = 100;
+
     @Mock
     private UserRepository userRepository;
 
@@ -112,7 +114,7 @@ public class AuthenticationServiceImplTest {
 
         UserMeta userMeta = new UserMeta();
         userMeta.setVerified(true);
-        userMeta.setWallet_balance(100.0); // Set any desired value
+        userMeta.setWallet_balance(WALLET_BALANCE); // Set any desired value
 
         when(userMetaRepository.findByUser(any(User.class))).thenReturn(userMeta);
 

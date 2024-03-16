@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 public class CategoryServiceImplTest {
+    static final int EXPECTED_LIST_CATEGORIES = 2;
     @Mock
     private CategoryRepository categoryRepositoryMock;
 
@@ -33,6 +34,6 @@ public class CategoryServiceImplTest {
         mockCategories.add(new Category());
         when(categoryRepositoryMock.findAll()).thenReturn(mockCategories);
         List<Category> categories = categoryService.listcategories();
-        assertEquals(2, categories.size());
+        assertEquals(EXPECTED_LIST_CATEGORIES, categories.size());
     }
 }

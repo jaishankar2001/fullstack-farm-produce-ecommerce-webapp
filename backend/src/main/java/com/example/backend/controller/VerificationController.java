@@ -25,22 +25,8 @@ public class VerificationController {
             @RequestParam("type") String type,
             @RequestParam(value = "newPassword", required = false) String newPassword) {
 
-        try {
-            VerificationType verificationType = VerificationType.valueOf(type);
-
-            switch (verificationType) {
-                case VerifyEmail:
-                    verificationService.verify(code, email);
-                    return ResponseEntity.ok("User verified succesfully");
-                case ResetPassword:
-                    verificationService.resetPassword(code, email, newPassword);
-                    return ResponseEntity.ok("Password reset succesfully");
-                default:
-                    throw new ApiRequestException("Invalid type");
-            }
-        } catch (IllegalArgumentException e) {
-            throw new ApiRequestException("Invalid type");
-        }
+        String message = verificationService.verifyAndUpdate(code, email, newPassword, type);
+        return ResponseEntity.ok(message);
 
     }
 }

@@ -2,10 +2,7 @@ package com.example.backend.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-import com.example.backend.entities.Days;
 import com.example.backend.entities.SubscriptionName;
-
 import lombok.Getter;
 import lombok.Setter;
 

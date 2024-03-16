@@ -49,7 +49,6 @@ public class ResponseUtils {
         }
 
         long afterS3 = System.nanoTime();
-        System.out.println("Time AFTERR IMAGES DTOOOOO: " + (afterS3 - startTime) / 1e6 + " milliseconds");
         if (category != null) {
             CategoryDto categoryDto = new CategoryDto();
             categoryDto.setId(category.getId());
