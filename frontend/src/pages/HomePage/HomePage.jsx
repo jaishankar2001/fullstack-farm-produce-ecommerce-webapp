@@ -142,8 +142,8 @@ export const HomePage = () => {
                         {homeFarms.length > 0 &&
                           homeFarms.map((farm) => {
                             return (
-                              <div class="col-md-6 col-lg-4 col-xl-3 shadow lg ">
-                                <div class="hoverable">
+                              <div class="col-md-6 col-lg-4 col-xl-3">
+                                <div class="hoverable shadow h-100 bg-white">
                                   <div class="rounded position-relative fruite-item">
                                     <div class="fruite-img">
                                       {farm.images && (

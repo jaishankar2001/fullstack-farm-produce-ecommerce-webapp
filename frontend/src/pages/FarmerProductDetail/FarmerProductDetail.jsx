@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import api from "../../api/index";
 import QuantitySelector from "../../components/QuantitySelector";
 import OrderConfirmationModal from "../../components/OrderConfirmationModal";
+import SubscriptionModal from "../../components/SubscriptionModal";
 
 function FarmerProductDetail() {
   const images = [2, 4, 6, 8, 1];
@@ -17,6 +18,7 @@ function FarmerProductDetail() {
   const [product, setProduct] = useState();
   const [quantity, setQuantity] = useState(1);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
 
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
@@ -32,7 +34,7 @@ function FarmerProductDetail() {
     onBuyProduct();
     setIsConfirmationModalOpen(false);
   };
-
+console.log(product);
 
   useEffect(() => {
     api.products
@@ -51,6 +53,10 @@ function FarmerProductDetail() {
 
   const openOrderConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
+  };
+
+  const closeSubscriptionModal = () => {
+    setIsSubscriptionModalOpen(false);
   };
 
   const customStyles = {
@@ -72,6 +78,17 @@ function FarmerProductDetail() {
     closeModal();
   };
 
+
+  const onSubscribeProduct = async (subscriptionData) => {
+    try {
+      const response = await api.subscription.placeSubscription(subscriptionData);
+      toast.success("Subscription placed successfully!");
+      navigate("/farmer-products");
+    } catch (error) {
+  
+    }
+    closeSubscriptionModal();
+  };
   const onBuyProduct = async () => {
     try{
       const response = await api.order.placeOrder({
@@ -226,9 +243,9 @@ function FarmerProductDetail() {
 
                       <button
                         className="btn btn-outline-primary col col-md-auto"
-                        onClick={openModal}
+                        onClick={() => setIsSubscriptionModalOpen(true)}
                       >
-                        &nbsp;Pre-book Now
+                        &nbsp;Subscribe
                       </button>
                     </>
                   )}
@@ -264,6 +281,13 @@ function FarmerProductDetail() {
         product={product}
         quantity={quantity}
       />
+      <SubscriptionModal 
+         isOpen={isSubscriptionModalOpen}
+         onClose={closeSubscriptionModal}
+         onConfirm={onSubscribeProduct}
+         product={product}
+         productId={parseInt(id)}
+         />
     </div>
   );
 }
