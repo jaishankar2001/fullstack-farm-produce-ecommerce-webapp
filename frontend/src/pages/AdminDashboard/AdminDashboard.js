@@ -1,6 +1,5 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import moment from "moment";
 
 const AdminDashboard = () => {
   return (
@@ -57,6 +56,7 @@ const AdminDashboard = () => {
                 <div class="row">
                     <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-1">
+                                <div class="hoverable">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
@@ -68,6 +68,7 @@ const AdminDashboard = () => {
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +132,7 @@ const AdminDashboard = () => {
                         </div>
                     </div>
                     <div class="row">
-                            <div class="card col-xl-5 shadow mb-4">
+                            <div class="card col-xl-5 col-md-6 shadow m-2 mb-4">
                                 <div class="card-header py-3 mb-2">
                                     <h6 class="m-0 font-weight-bold text-primary">Sales</h6>
                                 </div>
@@ -139,7 +140,7 @@ const AdminDashboard = () => {
                     </div>
 
                     <div class="row">
-                    <div class="card col-xl-5 shadow mb-4 ml-1">
+                    <div class="card col-xl-5 shadow m-2 mb-4">
                         <div class="card-header py-3 mb-2">
                             <h6 class="m-0 font-weight-bold text-primary mb-3">List of Users</h6>
                             <div class="table-responsive">
@@ -149,6 +150,7 @@ const AdminDashboard = () => {
                                 <th scope="col">User ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email ID</th>
+                                <th scope="col">Wallet Balance</th>
                                 <th scope="col">Role</th>
                                 </tr>
                                 </thead>
@@ -156,7 +158,7 @@ const AdminDashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="card col-xl-6 shadow mb-4 ml-1">
+                    <div class="card col-xl-6 shadow m-2 mb-4">
                         <div class="card-header py-3 mb-2">
                             <h6 class="m-0 font-weight-bold text-primary mb-3">List of Farms</h6>
                             <div class="table-responsive">
@@ -176,7 +178,7 @@ const AdminDashboard = () => {
                 </div>
 
                 <div class="row">
-                    <div class="card col-xl-12 shadow mb-4">
+                    <div class="card col-xl-12 shadow m-2 mb-4">
                         <div class="card-header py-2 mb-2">
                             <h6 class="m-0 font-weight-bold text-primary mb-3">Orders</h6>
                             <div class="table-responsive">
@@ -190,6 +192,7 @@ const AdminDashboard = () => {
                                     <th scope="col">Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
+                                    <th scope="col">Payment Status</th>
                                 </tr>
                                 </thead>
                             </table>
