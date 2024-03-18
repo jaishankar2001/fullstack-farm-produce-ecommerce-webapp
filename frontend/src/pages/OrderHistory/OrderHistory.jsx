@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import moment from "moment";
+import { useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../../api/index";
 
@@ -41,7 +41,7 @@ function OrderHistory() {
                                     <p class="mb-0 mt-4 d-flex text-center">{index + 1}</p>
                                 </td>
                                 <td>
-                                    <p class="mb-0 mt-4 d-flex text-center"> {moment(order.orderDate).format(
+                                    <p class="mb-0 mt-4 d-flex align-items-center">{moment(order.orderDate).format(
                                         "MM/DD/YYYY"
                                       )}</p>
                                 </td>

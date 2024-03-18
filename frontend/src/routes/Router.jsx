@@ -1,24 +1,25 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "../common/Layout/Layout";
+import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
 import AddFarm from "../pages/Farm/AddFarm";
+import Farm from "../pages/Farm/Farm";
+import FarmDetail from "../pages/Farm/FarmDetail";
+import FarmEdit from "../pages/Farm/FarmEdit";
+import FarmerFarms from "../pages/Farm/FarmerFarms";
+import ShowFarms from "../pages/Farm/ShowFarms";
+import FarmerProductDetail from "../pages/FarmerProductDetail/FarmerProductDetail";
+import FarmerProductListing from "../pages/FarmerProductListing/FarmerProductListing";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import { HomePage } from "../pages/HomePage/HomePage";
 import LoginPage from "../pages/LoginPage/LoginPage";
+import OrderHistory from "../pages/OrderHistory/OrderHistory";
+import AddProduct from "../pages/Product/AddProduct";
+import ProductEdit from "../pages/Product/ProductEdit";
+import ProductListing from "../pages/ProductListing/ProductListing";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import SignUp from "../pages/SignUpPage/SignUpPage";
 import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
 import Wallet from "../pages/Wallet/Wallet";
-import ProductListing from "../pages/ProductListing/ProductListing";
-import AddProduct from "../pages/Product/AddProduct";
-import FarmerProductListing from "../pages/FarmerProductListing/FarmerProductListing";
-import FarmerProductDetail from "../pages/FarmerProductDetail/FarmerProductDetail";
-import FarmerFarms from "../pages/Farm/FarmerFarms";
-import FarmDetail from "../pages/Farm/FarmDetail";
-import FarmEdit from "../pages/Farm/FarmEdit";
-import ProductEdit from "../pages/Product/ProductEdit";
-import ShowFarms from "../pages/Farm/ShowFarms";
-import OrderHistory from "../pages/OrderHistory/OrderHistory";
-import Farm from "../pages/Farm/Farm";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -101,6 +102,10 @@ export const Router = () => {
         {
           path: "/order-history",
           element: <OrderHistory />,
+        },
+        {
+          path: "/Admin-dashboard",
+          element: <AdminDashboard />,
         },
       ],
     },
