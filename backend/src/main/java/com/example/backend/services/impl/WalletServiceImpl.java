@@ -39,15 +39,6 @@ public class WalletServiceImpl implements WalletService {
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
 
-    public double checkBalance(int userId) {
-        UserMeta walletBalanceById = userMeta.findById(userId);
-        double myBalance = 0.0;
-        if (walletBalanceById != null) {
-            myBalance = walletBalanceById.getWallet_balance();
-        }
-        return myBalance;
-    }
-
     public void addMoney(String email, double amount) {
         // Retrieving the user's wallet info.
         User user = userRepository.findByEmail(email);
@@ -107,6 +98,7 @@ public class WalletServiceImpl implements WalletService {
     public List<Wallet> gethistory(Principal principal) {
         try {
             User user = userRepository.findByEmail(principal.getName());
+            System.out.println("Heree" + user);
             List<Wallet> wallet = walletRepository.findAllByUserId(user.getId(),
                     Sort.by(Sort.Direction.DESC, "createdAt"));
             return wallet;
