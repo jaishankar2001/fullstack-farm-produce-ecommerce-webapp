@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HomeServiceImplTest {
 
+    static final int EXPECTED_LIST_RESULT = 8;
     @Mock
     private FarmRepository farmRepositoryMock;
 
@@ -44,7 +45,7 @@ public class HomeServiceImplTest {
         List<Images> images = new ArrayList<>();
         images.add(image);
 
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= EXPECTED_LIST_RESULT; i++) {
             Farms farm = new Farms();
             farm.setId(i);
             farm.setImages(images);
@@ -53,7 +54,7 @@ public class HomeServiceImplTest {
         when(farmRepositoryMock.findTop8ByOrderByIdDesc()).thenReturn(mockedFarms);
 
         List<Product> mockedProducts = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= EXPECTED_LIST_RESULT; i++) {
             Product product = new Product();
             product.setId(i);
             product.setImages(images);
@@ -65,8 +66,8 @@ public class HomeServiceImplTest {
         HomeResponse homeResponse = homeService.getHomeMeta();
 
         // Assert
-        assertEquals(8, homeResponse.getFarms().size());
-        assertEquals(8, homeResponse.getProducts().size());
+        assertEquals(EXPECTED_LIST_RESULT, homeResponse.getFarms().size());
+        assertEquals(EXPECTED_LIST_RESULT, homeResponse.getProducts().size());
 
         verify(farmRepositoryMock, times(1)).findTop8ByOrderByIdDesc();
         verify(productRepositoryMock, times(1)).findTop8ByOrderByIdDesc();

@@ -29,6 +29,9 @@ import static org.mockito.Mockito.*;
 
 public class WalletServiceImplTest {
 
+
+    static final int INITIAL_BALANCE = 100;
+    static final int ADDED_AMOUNT = 50;
     @Value("${stripe.apikey}")
     private String stripeAPI;
 
@@ -52,11 +55,9 @@ public class WalletServiceImplTest {
     @Test
     public void testUpdateBalance_Success() {
         String email = "test@example.com";
-        double initialBalance = 100.0;
-        double amountToAdd = 50.0;
 
         UserMeta userMeta = new UserMeta();
-        userMeta.setWallet_balance(initialBalance);
+        userMeta.setWallet_balance(INITIAL_BALANCE);
         User user = new User();
         user.setEmail(email);
         user.setUserMeta(userMeta);
@@ -66,10 +67,10 @@ public class WalletServiceImplTest {
 
         // Act
 //        UserService userService = new UserService(userRepository, userMetaRepository, walletRepository);
-        walletService.addMoney(email, amountToAdd);
+        walletService.addMoney(email, ADDED_AMOUNT);
 
         // Assert
-        assertEquals(initialBalance + amountToAdd, userMeta.getWallet_balance()); // Assuming a delta of 0.01 for double comparison
+        assertEquals(INITIAL_BALANCE + ADDED_AMOUNT, userMeta.getWallet_balance()); // Assuming a delta of 0.01 for double comparison
         verify(userRepositoryMock, times(1)).findByEmail(email);
         verify(userMetaRepositoryMock, times(1)).save(any(UserMeta.class));
         verify(walletRepositoryMock, times(1)).save(any(Wallet.class));
@@ -86,7 +87,7 @@ public class WalletServiceImplTest {
         when(userRepositoryMock.findByEmail(email)).thenReturn(user);
 
         // Act
-        walletService.addMoney(email, 50.0);
+        walletService.addMoney(email, ADDED_AMOUNT);
 
         // Assert
         verify(userRepositoryMock, times(1)).findByEmail(email);
