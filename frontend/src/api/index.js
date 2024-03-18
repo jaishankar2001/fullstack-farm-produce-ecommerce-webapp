@@ -5,6 +5,7 @@ import * as productApi from "./products";
 import * as homeApi from "./home";
 import * as categoryApi from './category';
 import * as orderApi from './order';
+import * as subscriptionApi from './subscription';
 
 const api = {
   auth: authApi,
@@ -13,7 +14,8 @@ const api = {
   products: productApi,
   home: homeApi,
   category: categoryApi,
-  order: orderApi
+  order: orderApi,
+  subscription: subscriptionApi
 };
 
 export default api;
