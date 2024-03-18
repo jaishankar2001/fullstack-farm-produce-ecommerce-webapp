@@ -1,4 +1,5 @@
 package com.example.backend.Services;
+
 import static org.mockito.Mockito.*;
 import com.example.backend.services.impl.EmailServiceImplementation;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ public class EmailServiceImplTest {
     private JavaMailSender JavaMailSenderMock;
 
     @InjectMocks
-    private EmailServiceImplementation emailServiceImplementationTest;
+    private EmailServiceImplementation emailTest;
 
     @Test
     public void testSendEmailSuccess() {
@@ -27,7 +28,7 @@ public class EmailServiceImplTest {
         String subject = "Verify your email";
         String body = "Please click on this link to verify your email";
 
-        emailServiceImplementationTest.sendEmail(to, subject, body);
+        emailTest.sendEmail(to, subject, body);
 
         verify(JavaMailSenderMock).send(any(SimpleMailMessage.class));
     }

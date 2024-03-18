@@ -26,3 +26,12 @@ export async function deleteFarm(id) {
     throw error;
   }
 }
+
+export async function getFarmById(id) {
+  try {
+    const response = await api.get(`/farmer/getFarm/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

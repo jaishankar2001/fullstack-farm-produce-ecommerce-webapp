@@ -53,6 +53,10 @@ public class OrderServiceImpl implements OrderService {
             throw new ApiRequestException("Farm not found");
         }
 
+        if (orderRequest.getQuantity() > product.getStock()) {
+            throw new ApiRequestException("Order cannot have more quantity than total stock");
+        }
+
         double product_price = product.getPrice();
         double total_price = product_price * orderRequest.getQuantity();
 
@@ -64,6 +68,7 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         order.setProduct(product);
         order.setFarm(farm);
+        order.setQuantity(orderRequest.getQuantity());
         order.setOrderDate(LocalDateTime.now());
         order.setOrderValue(total_price);
         order.setOrderPaymentMethod("Wallet");
@@ -78,20 +83,22 @@ public class OrderServiceImpl implements OrderService {
         userDetails.setWallet_balance(userDetails.getWallet_balance() - total_price);
         userMetaRepository.save(userDetails);
 
+        product.setStock(product.getStock() - orderRequest.getQuantity());
+        productRepository.save(product);
     }
 
     @Override
     public List<OrderDto> orderHistory(Principal principal) {
         // Order order = new Order();
         User user = userRepository.findByEmail(principal.getName());
-        ArrayList <OrderDto> orderDtoList = new ArrayList<>();
+        ArrayList<OrderDto> orderDtoList = new ArrayList<>();
         // UserMeta userDetails = userMetaRepository.findByUser(user);
-        if(user == null){
+        if (user == null) {
             throw new ApiRequestException("User not Found");
         }
-        
+
         List<Order> orders = orderRepository.findByUser(user);
-        for(Order orderPlaced: orders){
+        for (Order orderPlaced : orders) {
             OrderDto orderDto = new OrderDto();
             orderDto.setId(orderPlaced.getId());
             orderDto.setProduct(orderPlaced.getProduct());
@@ -104,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
             orderDto.setQuantity(orderPlaced.getQuantity());
             orderDto.setOrderPaymentMethod(orderPlaced.getOrderPaymentMethod());
 
-            for(Images image: orderPlaced.getProduct().getImages()){
+            for (Images image : orderPlaced.getProduct().getImages()) {
                 orderDto.addImage(image);
             }
             orderDtoList.add(orderDto);

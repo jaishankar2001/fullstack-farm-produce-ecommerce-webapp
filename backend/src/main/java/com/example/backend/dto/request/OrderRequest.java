@@ -17,7 +17,5 @@ public class OrderRequest {
     @NotNull(message = "product id is required")
     private int product_id;
     @NotNull(message = "Quantity is required")
-    private double quantity;
-    @NotBlank(message = "paymentmethod is required")
-    private String orderPaymentMethod;
+    private int quantity;
 }

@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 public class ApiException {
     private final String message;
-    // private final Throwable throwable;
     private final HttpStatus httpStatus;
     private final ZonedDateTime timestamp;
 
