@@ -5,6 +5,7 @@ import com.example.backend.dto.request.ResetPasswordRequest;
 import com.example.backend.dto.request.SignInRequest;
 import com.example.backend.dto.request.SignUpRequest;
 import com.example.backend.dto.response.JwtAuthenticationResponse;
+import com.example.backend.dto.response.LoginResponse;
 import com.example.backend.entities.User;
 
 public interface AuthenticationService {
@@ -12,7 +13,7 @@ public interface AuthenticationService {
 
     String forgotPassword(ResetPasswordRequest resetPasswordRequest);
 
-    JwtAuthenticationResponse signIn(SignInRequest signInRequest);
+    LoginResponse signIn(SignInRequest signInRequest);
 
     JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 }

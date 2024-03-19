@@ -1,6 +1,5 @@
 package com.example.backend.services.impl;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.backend.entities.User;
 import com.example.backend.repository.UserRepository;
-import java.util.*;
 import lombok.RequiredArgsConstructor;
 
 @Service

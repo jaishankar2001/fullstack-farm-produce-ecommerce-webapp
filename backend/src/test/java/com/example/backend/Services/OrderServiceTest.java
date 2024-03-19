@@ -1,0 +1,108 @@
+package com.example.backend.Services;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.backend.entities.*;
+import com.example.backend.exception.ApiRequestException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import com.example.backend.dto.response.OrderDto;
+import com.example.backend.repository.OrderRepository;
+import com.example.backend.repository.UserRepository;
+import com.example.backend.services.impl.OrderServiceImpl;
+
+public class OrderServiceTest {
+        @Mock
+        private UserRepository userRepository;
+
+        @Mock
+        private OrderRepository orderRepository;
+
+        @Mock
+        private OrderServiceImpl orderService;
+
+        private User mockUser;
+        private List<Order> mockOrders;
+
+        static final double ORDER_VALUE = 100.0;
+        static final int ORDER_QUANTITY = 2;
+
+        @BeforeEach
+        void setUp() {
+                int orderId = 1;
+                int productid = 1;
+                MockitoAnnotations.openMocks(this);
+
+                orderService = new OrderServiceImpl(userRepository, null, null, null, orderRepository, null);
+                mockUser = new User();
+                mockUser.setEmail("test@example.com");
+
+                mockOrders = new ArrayList<>();
+                Order order1 = new Order();
+                order1.setId(orderId);
+
+                Images image1 = new Images();
+                ArrayList<Images> imgArr = new ArrayList<>();
+                imgArr.add(image1);
+                Product product = new Product();
+                product.setId(productid);
+                product.setProductName("Test Product");
+                product.setProductDescription("Test Product Description");
+                product.setImages(imgArr);
+
+                Farms farm = new Farms();
+                farm.setId(1);
+                farm.setName("Test Farm");
+
+                order1.setProduct(product);
+                order1.setFarm(farm);
+                order1.setOrderDate(LocalDateTime.now());
+                order1.setOrderValue(ORDER_VALUE);
+                order1.setQuantity(ORDER_QUANTITY);
+
+                mockOrders.add(order1);
+
+        }
+
+        @Test
+        public void testOrderHistory() {
+                int orderId = 1;
+                when(userRepository.findByEmail(anyString())).thenReturn(mockUser);
+                when(orderRepository.findByUser(any(User.class))).thenReturn(mockOrders);
+
+                Principal mockPrincipal = () -> "test@example.com";
+                List<OrderDto> orderDtoList = orderService.orderHistory(mockPrincipal);
+
+                assertEquals(mockOrders.size(), orderDtoList.size());
+                OrderDto orderDto = orderDtoList.get(0);
+                assertTrue(orderService.orderHistory(mockPrincipal) instanceof List);
+                assertEquals(Long.valueOf(orderId), orderDto.getId());
+                assertEquals("Test Product", orderDto.getProductName());
+                assertEquals("Test Product Description", orderDto.getProductDescription());
+                assertEquals("Test Farm", orderDto.getFarmName());
+                assertEquals(Double.valueOf(ORDER_VALUE), orderDto.getOrderValue());
+                assertEquals(Integer.valueOf(ORDER_QUANTITY), orderDto.getQuantity());
+        }
+
+        @Test
+        public void testWhenUSerNotPresent() {
+                when(userRepository.findByEmail(anyString())).thenReturn(null);
+                when(orderRepository.findByUser(any(User.class))).thenReturn(new ArrayList<>());
+                Principal mockNullPrincipal = mock(Principal.class);
+                when(mockNullPrincipal.getName()).thenReturn(null);
+                assertThrows(ApiRequestException.class, () -> orderService.orderHistory(mockNullPrincipal),
+                                "User not Found");
+
+        }
+}
