@@ -221,4 +221,70 @@ public class SubscriptionServiceImplTest {
 
         }
 
+        @Test
+        public void testGetSubscribedProduct() {
+                User mockUser = new User();
+                mockUser.setEmail("user@example.com");
+
+                // Mock Principal
+                Principal mockPrincipal = mock(Principal.class);
+                when(mockPrincipal.getName()).thenReturn(mockUser.getEmail());
+
+                // Mock repository behavior
+                when(userRepositoryMock.findByEmail(mockUser.getEmail())).thenReturn(mockUser);
+
+                Images image1 = new Images();
+                ArrayList<Images> imgArr = new ArrayList<>();
+                imgArr.add(image1);
+
+                Product mockProduct1 = new Product();
+                mockProduct1.setId(1);
+                mockProduct1.setProductName("Product 1");
+                mockProduct1.setProductDescription("Description 1");
+                mockProduct1.setImages(imgArr);
+                // Set other product properties
+
+                Product mockProduct2 = new Product();
+                mockProduct2.setId(SECOND_PRODUCT_ID);
+                mockProduct2.setProductName("Product 2");
+                mockProduct2.setProductDescription("Description 2");
+                mockProduct2.setImages(imgArr);
+                // Set other product properties
+
+                Subscription mockSubscription1 = new Subscription();
+                mockSubscription1.setName(SubscriptionName.CUSTOM);
+                mockSubscription1.setDays(Days.MONDAY);
+                mockSubscription1.setProduct(mockProduct1);
+
+                Subscription mockSubscription2 = new Subscription();
+                mockSubscription2.setName(SubscriptionName.CUSTOM);
+                mockSubscription2.setDays(Days.MONDAY);
+                mockSubscription2.setProduct(mockProduct2);
+
+                Subscription mockSubscription3 = new Subscription();
+                mockSubscription3.setName(SubscriptionName.CUSTOM);
+                mockSubscription3.setDays(Days.TUESDAY);
+                mockSubscription3.setProduct(mockProduct2);
+
+                List<Subscription> mockSubscriptions = new ArrayList<>();
+                mockSubscriptions.add(mockSubscription1);
+                mockSubscriptions.add(mockSubscription2);
+                mockSubscriptions.add(mockSubscription3);
+
+                Farms farm = new Farms();
+                farm.setSubscriptions(mockSubscriptions);
+                List<Farms> farms = new ArrayList<>();
+                farms.add(farm);
+                mockUser.setFarms(farms);
+
+                when(subscriptionRepositoryMock.findByUser(mockUser)).thenReturn(mockSubscriptions);
+
+                // Call the method under test
+                List<GetSubscriptionResponse> responses = subscriptionServiceImpl.getMySubscribedProduct(mockPrincipal);
+
+                // Assertions
+                assertEquals(EXPECTED_SUBSCRIPTION, responses.size()); // Expecting two subscriptions
+
+        }
+
 }
