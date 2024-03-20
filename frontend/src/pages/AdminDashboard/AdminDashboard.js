@@ -1,7 +1,42 @@
-import React from 'react';
+import 'chart.js/auto';
+import React, { useRef } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { Bar } from "react-chartjs-2";
 
 const AdminDashboard = () => {
+// 
+const ref = useRef();
+const data = {
+    labels: ['Dec','Jan', 'Feb', 'Mar'],
+    datasets: [
+      {
+        label: 'Sales',
+        data: [33, 53, 85, 41],
+        fill: true,
+        backgroundColor: '#2e5d3f',
+        borderColor: '#2e5d3f',
+      }
+    ],
+  };
+const data1 = {
+    labels: ['Dec','Jan', 'Feb', 'Mar'],
+    datasets: [
+      {
+        label: 'Sales',
+        data: [62, 29, 45, 86],
+        fill: true,
+        backgroundColor: '#2e5d3f',
+        borderColor: '#2e5d3f',
+      }
+    ],
+  };
+const options = {
+    scales: {
+        xAxes: [{
+            barPercentage: 0.4
+        }]
+    }
+}
   return (
     <Container fluid className="bg-light">
       <Row>
@@ -50,7 +85,7 @@ const AdminDashboard = () => {
           <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
                         <h1 class="h3 mb-0 text-gray-800"> Admin Dashboard</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                          <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                          <i class="fas fa-download fa-sm text-white-50"></i> Run schedule for subscription</a>
                     </div>
 
                 <div class="row">
@@ -132,15 +167,23 @@ const AdminDashboard = () => {
                         </div>
                     </div>
                     <div class="row">
-                            <div class="card col-xl-5 col-md-6 shadow m-2 mb-4">
+                            <div class="card col-xl-5 col-md-6 shadow m-3 mb-4">
                                 <div class="card-header py-3 mb-2">
-                                    <h6 class="m-0 font-weight-bold text-primary">Sales</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Order Sales</h6>
+                                    <Bar ref={ref} data={data} options={options} />
+                                </div>
+                            </div>
+
+                            <div class="card col-xl-5 col-md-6 shadow m-3 mb-4">
+                                <div class="card-header py-3 mb-2">
+                                    <h6 class="m-0 font-weight-bold text-primary">Subscription Sales</h6>
+                                    <Bar ref={ref} data={data1} options={options} />
                                 </div>
                             </div>
                     </div>
 
                     <div class="row">
-                    <div class="card col-xl-5 shadow m-2 mb-4">
+                    <div class="card col-xl-5 shadow m-3 mb-4 ">
                         <div class="card-header py-3 mb-2">
                             <h6 class="m-0 font-weight-bold text-primary mb-3">List of Users</h6>
                             <div class="table-responsive">
@@ -150,15 +193,36 @@ const AdminDashboard = () => {
                                 <th scope="col">User ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email ID</th>
-                                <th scope="col">Wallet Balance</th>
+                                <th scope="col">Balance</th>
                                 <th scope="col">Role</th>
                                 </tr>
                                 </thead>
+                                <tbody>
+                                <td>01</td>
+                                <td>Drashti</td>
+                                <td>drashti@dal.ca</td>
+                                <td>100</td>
+                                <td>Customer</td>
+                                </tbody>
+                                <tbody>
+                                <td>02</td>
+                                <td>Nikita</td>
+                                <td>Nikita@dal.ca</td>
+                                <td>150</td>
+                                <td>Farmer</td>
+                                </tbody>
+                                <tbody>
+                                <td>03</td>
+                                <td>Tanuj</td>
+                                <td>Tanuj@dal.ca</td>
+                                <td>200</td>
+                                <td>Customer</td>
+                                </tbody>
                             </table>
                             </div>
                         </div>
                     </div>
-                    <div class="card col-xl-6 shadow m-2 mb-4">
+                    <div class="card col-xl-6 shadow m-3 mb-4">
                         <div class="card-header py-3 mb-2">
                             <h6 class="m-0 font-weight-bold text-primary mb-3">List of Farms</h6>
                             <div class="table-responsive">
@@ -171,6 +235,12 @@ const AdminDashboard = () => {
                                 <th scope="col">Owner Email</th>
                                 </tr>
                                 </thead>
+                                <tbody>
+                                <td>01</td>
+                                <td>Wonderland</td>
+                                <td>Nikita</td>
+                                <td>Nikita@dal.ca</td>
+                                </tbody>
                             </table>
                             </div>
                         </div>
@@ -187,7 +257,6 @@ const AdminDashboard = () => {
                                 <tr>
                                     <th scope="col">Order Id#</th>
                                     <th scope="col">Order Date</th>
-                                    <th scope="col">Products</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Price</th>
                                     <th scope="col">Quantity</th>
@@ -195,6 +264,24 @@ const AdminDashboard = () => {
                                     <th scope="col">Payment Status</th>
                                 </tr>
                                 </thead>
+                                <tbody>
+                                    <td>01</td>
+                                    <td>03/16/2024</td>
+                                    <td>Spinach</td>
+                                    <td>5$</td>
+                                    <td>3 lb</td>
+                                    <td>15$</td>
+                                    <td>Success</td>
+                                </tbody>
+                                <tbody>
+                                    <td>02</td>
+                                    <td>03/03/2024</td>
+                                    <td>Milk</td>
+                                    <td>8$</td>
+                                    <td>2 litre</td>
+                                    <td>16$</td>
+                                    <td>Success</td>
+                                </tbody>
                             </table>
                             </div>
                         </div>
