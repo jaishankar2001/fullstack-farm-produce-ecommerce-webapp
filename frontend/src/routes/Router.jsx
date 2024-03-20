@@ -19,6 +19,7 @@ import ProductEdit from "../pages/Product/ProductEdit";
 import ShowFarms from "../pages/Farm/ShowFarms";
 import OrderHistory from "../pages/OrderHistory/OrderHistory";
 import Farm from "../pages/Farm/Farm";
+import SubscriptionHistory from "../pages/Subscription/SubscriptionHistory";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -101,6 +102,10 @@ export const Router = () => {
         {
           path: "/order-history",
           element: <OrderHistory />,
+        },
+        {
+          path: "/my-subscriptions",
+          element: <SubscriptionHistory />,
         },
       ],
     },

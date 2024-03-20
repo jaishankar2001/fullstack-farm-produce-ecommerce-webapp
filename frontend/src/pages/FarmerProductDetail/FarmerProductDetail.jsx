@@ -73,7 +73,7 @@ console.log(product);
   const onDeleteProduct = async () => {
     const response = await api.products.deleteProduct(id);
     toast.success("Product deleted successfully!");
-    navigate("/farmer-products");
+    navigate("/product-listing");
 
     closeModal();
   };
