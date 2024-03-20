@@ -8,3 +8,12 @@ export async function placeSubscription(payload) {
       throw error;
     }
   }
+
+  export async function subscriptionHistory() {
+    try {
+      const response = await api.get("/subscribe/my-subscription");
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
