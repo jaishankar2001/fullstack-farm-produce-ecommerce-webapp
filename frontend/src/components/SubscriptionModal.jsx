@@ -1,53 +1,89 @@
-import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 
-const SubscriptionModal = ({ isOpen, onClose, onConfirm, product, productId }) => {
-  const [subscription, setSubscription] = useState('weekdays');
+const SubscriptionModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  product,
+  productId,
+}) => {
+  const [subscription, setSubscription] = useState("weekdays");
   const [customDays, setCustomDays] = useState([]);
 
   const handleSubscriptionChange = (event) => {
     setSubscription(event.target.value);
-    if (event.target.value !== 'custom') {
+    if (event.target.value !== "custom") {
       setCustomDays([]);
     }
   };
 
   const handleDayToggle = (day) => {
     setCustomDays((prevDays) =>
-      prevDays.includes(day) ? prevDays.filter(d => d !== day) : [...prevDays, day]
+      prevDays.includes(day)
+        ? prevDays.filter((d) => d !== day)
+        : [...prevDays, day]
     );
   };
+
   const handleSubmit = () => {
     let payload = {
       product_id: productId,
       farm_id: product?.farm?.id,
     };
-  
-    if (subscription === 'custom') {
+    let daysPayload = {
+      name: "WEEKDAYS",
+      mon: 1,
+      tue: 1,
+      wed: 1,
+      thu: 1,
+      fri: 1,
+      sat: 0,
+      sun: 0,
+    };
+
+    if (subscription === "custom") {
       // Initialize all days with 0
-      const daysPayload = {
-        name: 'CUSTOM',
-        monday: 0, tuesday: 0, wednesday: 0, thursday: 0, friday: 0, saturday: 0, sunday: 0
+      daysPayload = {
+        name: "CUSTOM",
+        mon: 0,
+        tue: 0,
+        wed: 0,
+        thu: 0,
+        fri: 0,
+        sat: 0,
+        sun: 0,
       };
-  
+
       // Update selected days to 1
-      customDays.forEach(day => {
+      customDays.forEach((day) => {
         daysPayload[day.toLowerCase()] = 1;
       });
-  
+
       payload = {
         ...payload,
         ...daysPayload,
       };
-    } else {
-      payload = {
-        ...payload,
-        name: subscription.toUpperCase(),
+    } else if (subscription === "weekdays") {
+      daysPayload = {
+        name: "WEEKENDS",
+        mon: 0,
+        tue: 0,
+        wed: 0,
+        thu: 0,
+        fri: 0,
+        sat: 1,
+        sun: 1,
       };
     }
-  
+
+    payload = {
+      ...payload,
+      ...daysPayload,
+    };
+
     onConfirm(payload);
-    onClose();
+    // onClose();
   };
 
   return (
@@ -57,42 +93,50 @@ const SubscriptionModal = ({ isOpen, onClose, onConfirm, product, productId }) =
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Check 
+          <Form.Check
             type="radio"
             id="weekdays"
             label="Weekdays"
             name="subscriptionOptions"
             value="weekdays"
-            checked={subscription === 'weekdays'}
+            checked={subscription === "weekdays"}
             onChange={handleSubscriptionChange}
           />
-          <Form.Check 
+          <Form.Check
             type="radio"
             id="weekends"
             label="Weekends"
             name="subscriptionOptions"
             value="weekends"
-            checked={subscription === 'weekends'}
+            checked={subscription === "weekends"}
             onChange={handleSubscriptionChange}
           />
-          <Form.Check 
+          <Form.Check
             type="radio"
             id="custom"
             label="Custom"
             name="subscriptionOptions"
             value="custom"
-            checked={subscription === 'custom'}
+            checked={subscription === "custom"}
             onChange={handleSubscriptionChange}
           />
-          {subscription === 'custom' && (
+          {subscription === "custom" && (
             <div>
-              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
-                <Form.Check 
-                  key={day}
+              {[
+                { key: "mon", value: "Monday" },
+                { key: "tue", value: "Tuesday" },
+                { key: "wed", value: "Wednesday" },
+                { key: "thu", value: "Thursday" },
+                { key: "fri", value: "Friday" },
+                { key: "sat", value: "Saturday" },
+                { key: "sun", value: "Sunday" },
+              ].map((day) => (
+                <Form.Check
+                  key={day.key}
                   type="checkbox"
-                  label={day}
-                  checked={customDays.includes(day)}
-                  onChange={() => handleDayToggle(day)}
+                  label={day.value}
+                  checked={customDays.includes(day.key)}
+                  onChange={() => handleDayToggle(day.key)}
                 />
               ))}
             </div>

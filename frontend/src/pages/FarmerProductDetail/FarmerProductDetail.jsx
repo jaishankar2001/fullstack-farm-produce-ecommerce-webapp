@@ -83,7 +83,7 @@ console.log(product);
     try {
       const response = await api.subscription.placeSubscription(subscriptionData);
       toast.success("Subscription placed successfully!");
-      navigate("/farmer-products");
+      navigate("/my-subscriptions");
     } catch (error) {
   
     }
