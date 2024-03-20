@@ -12,4 +12,6 @@ public interface SubscriptionService {
     void runCron();
 
     List<GetSubscriptionResponse> getOwnSubscription(Principal principal);
+
+    List<GetSubscriptionResponse> getMySubscribedProduct(Principal principal);
 }
