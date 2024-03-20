@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @RestController
@@ -41,4 +40,9 @@ public class SubscriptionController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/my-subscribed-products")
+    public ResponseEntity<List<GetSubscriptionResponse>> getMySubscribedProduct(Principal principal) {
+        List<GetSubscriptionResponse> response = subscriptionService.getMySubscribedProduct(principal);
+        return ResponseEntity.ok(response);
+    }
 }

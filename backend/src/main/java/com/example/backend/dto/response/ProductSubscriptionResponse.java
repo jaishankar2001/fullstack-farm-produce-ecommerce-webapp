@@ -2,9 +2,6 @@ package com.example.backend.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.backend.entities.Category;
-import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
 
 import lombok.Getter;
