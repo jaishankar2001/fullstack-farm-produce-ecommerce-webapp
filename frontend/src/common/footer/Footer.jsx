@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useLocation } from 'react-router-dom';
 
-export const Footer = () => {
+const Footer = () => {
   let currentLocation = useLocation();
   if (currentLocation.pathname === "/Admin-dashboard") {
     return null;

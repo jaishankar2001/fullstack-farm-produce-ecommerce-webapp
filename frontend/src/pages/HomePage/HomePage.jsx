@@ -51,9 +51,6 @@ export const HomePage = () => {
             <a href="#">
               <small class="text-white mx-2 fw-bold">Contact</small>
             </a>
-            <a href="/Admin-dashboard">
-              <small class="text-white mx-2 fw-bold">Admin</small>
-            </a>
           </div>
         </div>
       </div>
