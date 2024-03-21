@@ -13,16 +13,8 @@ import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.FarmDto;
 import com.example.backend.dto.response.GetFarmByIdResponse;
-import com.example.backend.entities.Farms;
 import com.example.backend.services.FarmerService;
-
-import jakarta.validation.Valid;
-
-// import com.example.Auth.entities.Farms;
-// import com.example.Auth.services.FarmerService;
-
 import java.util.*;
-import java.util.stream.Collectors;
 import java.security.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,11 +32,6 @@ public class FarmerController {
 
     private final FarmerService farmerService;
 
-    @GetMapping
-    public ResponseEntity<String> farmerHome() {
-        return ResponseEntity.ok("Hi Farmer");
-    }
-
     @PostMapping("/own-farms")
     public ResponseEntity<List<FarmDto>> getFarms(@RequestBody FarmerOwnFarmRequest farmerOwnFarmRequest,
             Principal principal) {
@@ -59,7 +46,7 @@ public class FarmerController {
         List<FarmDto> AllFarmerFarms = farmerService.addFarm(farmRequest, files,
                 principal);
         Map<String, Object> response = new HashMap<>();
-        response.put("Farmsss", AllFarmerFarms);
+        response.put("AllFarm", AllFarmerFarms);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -86,6 +73,5 @@ public class FarmerController {
         GetFarmByIdResponse response = farmerService.getFarmById(farmId);
         return ResponseEntity.ok(response);
     }
-    
 
 }

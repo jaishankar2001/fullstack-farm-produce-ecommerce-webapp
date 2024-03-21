@@ -24,11 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthController {
     private final AuthenticationService authenticationService;
 
-    @GetMapping("/demo")
-    public ResponseEntity<String> customerHome() {
-        return ResponseEntity.ok("Hi Customer");
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return ResponseEntity.ok(authenticationService.signUp(signUpRequest));
