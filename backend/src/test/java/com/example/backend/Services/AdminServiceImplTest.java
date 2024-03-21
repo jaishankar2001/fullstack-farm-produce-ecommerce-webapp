@@ -3,6 +3,7 @@ package com.example.backend.Services;
 import com.example.backend.dto.response.AdminResponse;
 import com.example.backend.dto.response.SalesDTO;
 import com.example.backend.entities.Order;
+import com.example.backend.entities.OrderType;
 import com.example.backend.entities.Role;
 import com.example.backend.entities.User;
 import com.example.backend.exception.ApiRequestException;
@@ -18,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,25 +94,31 @@ class AdminServiceImplTest {
     }
     @Test
     void testGetOrderByMonth() {
-
         List<Order> orders = new ArrayList<>();
         Order order1 = new Order();
         order1.setOrderValue(100);
+        order1.setOrderType(OrderType.valueOf("ORDER"));
         orders.add(order1);
         Order order2 = new Order();
         order2.setOrderValue(200);
+        order2.setOrderType(OrderType.valueOf("SUBSCRIPTION"));
         orders.add(order2);
         when(orderRepository.findByOrderDateBetween(any(), any())).thenReturn(orders);
 
 
-        List<SalesDTO> salesList = adminService.getOrderByMonth();
+        SalesDTO sales = adminService.getOrderByMonth();
 
 
-        assertNotNull(salesList);
-        assertEquals(4, salesList.size());
-        assertEquals("MARCH", salesList.get(0).getMonth());
-        assertEquals(300, salesList.get(0).getSales());
+        assertNotNull(sales);
+        assertEquals(4, sales.getOrderSales().size());
+        assertEquals(4, sales.getSubscriptionSales().size());
 
+
+        LocalDate endDate = LocalDate.now();
+        int currentMonthValue = endDate.getMonthValue();
+        String currentMonthString = Month.of(currentMonthValue).name();
+        assertEquals(100, sales.getOrderSales().get(currentMonthString));
+        assertEquals(200, sales.getSubscriptionSales().get(currentMonthString));
     }
 
 
