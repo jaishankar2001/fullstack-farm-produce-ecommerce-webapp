@@ -1,6 +1,7 @@
 package com.example.backend.Services;
 
 import com.example.backend.dto.request.AddProductRequest;
+import com.example.backend.dto.request.EditProductRequest;
 import com.example.backend.dto.response.ProductDto;
 import com.example.backend.entities.Category;
 import com.example.backend.entities.Farms;
@@ -40,8 +41,6 @@ public class ProductServiceImplTest {
     @Mock
     private CategoryRepository categoryRepository;
     @Mock
-    private UserRepository userRepository;
-    @Mock
     private ImagesRepository imagesRepository;
     @Mock
     private ModelMapper modelMapper;
@@ -61,6 +60,9 @@ public class ProductServiceImplTest {
 
     @Mock
     Product product;
+
+    @InjectMocks
+    ProductDto productDto;
 
     static final int id = 1;
 
@@ -83,6 +85,7 @@ public class ProductServiceImplTest {
         product.setId(id);
         ArrayList<Images> image = new ArrayList<>();
         image.add(images);
+        imagesRepository.save(images);
         product.setImages(image);
     }
 
@@ -95,7 +98,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void deleteProduct(){
+    void testDeleteProduct(){
 
         when(productRepository.findById(id)).thenReturn(product);
         productService.deleteProduct(id);
@@ -104,8 +107,49 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void deleteProductWhenNull(){
+    void testDeleteProductWhenNullTest(){
         when(productRepository.findById(anyInt())).thenReturn(null);
         assertThrows(ApiRequestException.class,()-> productService.deleteProduct(anyInt()));
     }
+
+    @Test
+    void testEditProduct(){
+
+        EditProductRequest mockEditProductRequest = new EditProductRequest();
+        mockEditProductRequest.setId(2); // Set valid ID for testing
+        mockEditProductRequest.setProductName("Updated Product Name");
+        mockEditProductRequest.setProductDescription("Updated Product Description");
+        mockEditProductRequest.setPrice(99.99);
+        mockEditProductRequest.setStock(100);
+        mockEditProductRequest.setUnit("kg");
+
+        MultipartFile[] mockFiles = { new MockMultipartFile("file1", "test.txt", "text/plain", "test file".getBytes()) };
+        Principal mockPrincipal = () -> "user1";
+
+        when(productRepository.findById(anyInt())).thenReturn(product);
+        when(awsutils.uploadFileToS3(any(MultipartFile.class), anyString(), anyInt())).thenReturn("https://test-URL/test/file1");
+
+
+        Product updatedProduct = productService.editProduct(mockEditProductRequest, mockFiles, mockPrincipal);
+
+        assertNotNull(updatedProduct);
+        assertEquals(mockEditProductRequest.getProductName(), updatedProduct.getProductName());
+        assertEquals(mockEditProductRequest.getProductDescription(), updatedProduct.getProductDescription());
+        assertEquals(mockEditProductRequest.getPrice(), updatedProduct.getPrice(), 0.0);
+        assertEquals(mockEditProductRequest.getStock(), updatedProduct.getStock());
+        assertEquals(mockEditProductRequest.getUnit(), updatedProduct.getUnit());
+    }
+
+    @Test
+    void testEditProductWhenNull(){
+        MultipartFile[] mockFiles = { new MockMultipartFile("file1", "test.txt", "text/plain", "test file".getBytes()) };
+        Principal mockPrincipal = () -> "user1";
+        EditProductRequest mockEditProductRequest = new EditProductRequest();
+        when(productRepository.findById(anyInt())).thenReturn(null);
+        assertThrows(ApiRequestException.class, () -> productService.editProduct(mockEditProductRequest, mockFiles, mockPrincipal));
+    }
+
+
+
+
 }
