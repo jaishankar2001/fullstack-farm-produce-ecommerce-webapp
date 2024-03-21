@@ -1,14 +1,12 @@
 package com.example.backend.utils;
 
+import com.example.backend.dto.response.UserDTO;
+import com.example.backend.entities.*;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.dto.response.CategoryDto;
 import com.example.backend.dto.response.FarmDto;
 import com.example.backend.dto.response.ProductDto;
-import com.example.backend.entities.Category;
-import com.example.backend.entities.Farms;
-import com.example.backend.entities.Images;
-import com.example.backend.entities.Product;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,7 +47,6 @@ public class ResponseUtils {
         }
 
         long afterS3 = System.nanoTime();
-        System.out.println("Time AFTERR IMAGES DTOOOOO: " + (afterS3 - startTime) / 1e6 + " milliseconds");
         if (category != null) {
             CategoryDto categoryDto = new CategoryDto();
             categoryDto.setId(category.getId());
@@ -58,5 +55,13 @@ public class ResponseUtils {
         }
         return dto;
     }
-
+    public static UserDTO convertUserResponse(User user){
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setRole(user.getRole());
+        return dto;
+    }
 }

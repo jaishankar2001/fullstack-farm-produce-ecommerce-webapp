@@ -17,6 +17,7 @@ export async function placeSubscription(payload) {
       throw error;
     }
   }
+<<<<<<< HEAD
 
   export async function farmerSubscription() {
     try {
@@ -26,3 +27,5 @@ export async function placeSubscription(payload) {
       throw error;
     }
   }
+=======
+>>>>>>> 492b29209aa02b34f94da04692993e3db77df799

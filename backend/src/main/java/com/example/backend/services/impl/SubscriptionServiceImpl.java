@@ -8,8 +8,11 @@ import java.util.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.example.backend.dto.request.ProductSubscribeRequest;
+import com.example.backend.dto.response.GetSubscriptionResponse;
+import com.example.backend.dto.response.ProductSubscriptionResponse;
 import com.example.backend.entities.Days;
 import com.example.backend.entities.Farms;
+import com.example.backend.entities.Images;
 import com.example.backend.entities.Order;
 import com.example.backend.entities.OrderType;
 import com.example.backend.entities.Product;
@@ -32,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
 
+    static final int SUBSCTRING_END_INDEX = 3;
     private final UserRepository userRepository;
     private final UserMetaRepository userMetaRepository;
     private final ProductRepository productRepository;
@@ -68,29 +72,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             throw new ApiRequestException("You do not have sufficient balance to buy this product");
         }
 
-        List<String> subscribeDays = new ArrayList<>();
-
-        if (request.getMon() == 1) {
-            subscribeDays.add(Days.MONDAY.name());
-        }
-        if (request.getTue() == 1) {
-            subscribeDays.add(Days.TUESDAY.name());
-        }
-        if (request.getWed() == 1) {
-            subscribeDays.add(Days.WEDNESDAY.name());
-        }
-        if (request.getThu() == 1) {
-            subscribeDays.add(Days.THURSDAY.name());
-        }
-        if (request.getFri() == 1) {
-            subscribeDays.add(Days.FRIDAY.name());
-        }
-        if (request.getSat() == 1) {
-            subscribeDays.add(Days.SATURDAY.name());
-        }
-        if (request.getSun() == 1) {
-            subscribeDays.add(Days.SUNDAY.name());
-        }
+        List<String> subscribeDays = getSubScribedDays(request);
 
         for (String day : subscribeDays) {
             Subscription subscription = new Subscription();
@@ -103,6 +85,108 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscription.setFarm(farm);
             subscriptionRepository.save(subscription);
         }
+    }
+
+    public void runCron() {
+        CronForMakeOrder();
+    }
+
+    @Override
+    public List<GetSubscriptionResponse> getOwnSubscription(Principal principal) {
+        User user = userRepository.findByEmail(principal.getName());
+        List<Subscription> subscriptions = subscriptionRepository.findByUser(user);
+        List<GetSubscriptionResponse> responses = new ArrayList<>();
+        for (Subscription subscription : subscriptions) {
+            Product product = subscription.getProduct();
+
+            boolean productAlreadyExists = false;
+            for (GetSubscriptionResponse response : responses) {
+                if (response.getProductId() == product.getId()) {
+                    ArrayList<String> days = response.getDays();
+                    days.add(subscription.getDays().toString());
+                    response.setDays(days);
+                    productAlreadyExists = true;
+                    break;
+                }
+            }
+
+            if (!productAlreadyExists) {
+                GetSubscriptionResponse generatedResponse = new GetSubscriptionResponse();
+                ProductSubscriptionResponse productResponse = new ProductSubscriptionResponse();
+                productResponse.setProductName(product.getProductName());
+                productResponse.setProductDescription(product.getProductDescription());
+                productResponse.setPrice(product.getPrice());
+                productResponse.setStock(product.getStock());
+                productResponse.setUnit(product.getUnit());
+
+                for (Images images : product.getImages()) {
+                    productResponse.addImage(images);
+                }
+
+                generatedResponse.setName(subscription.getName());
+                ArrayList<String> days = new ArrayList<>();
+                days.add(subscription.getDays().toString());
+                generatedResponse.setDays(days);
+                generatedResponse.setProductId(product.getId());
+                generatedResponse.setProduct(productResponse);
+                generatedResponse.setSubscriptionDate(subscription.getSubscriptionDate());
+                responses.add(generatedResponse);
+            }
+        }
+        return responses;
+    }
+
+    @Override
+    public List<GetSubscriptionResponse> getMySubscribedProduct(Principal principal) {
+        User user = userRepository.findByEmail(principal.getName());
+        List<Farms> userFarms = user.getFarms();
+        System.out.println("userFarmsuserFarms" + userFarms);
+
+        List<Subscription> subscriptions = new ArrayList<Subscription>();
+        for (Farms f : userFarms) {
+            List<Subscription> farmSubscription = f.getSubscriptions();
+            subscriptions.addAll(farmSubscription);
+        }
+        List<GetSubscriptionResponse> responses = new ArrayList<>();
+        for (Subscription subscription : subscriptions) {
+            Product product = subscription.getProduct();
+
+            boolean productAlreadyExists = false;
+            for (GetSubscriptionResponse response : responses) {
+                if (response.getProductId() == product.getId()) {
+                    ArrayList<String> days = response.getDays();
+                    days.add(subscription.getDays().toString());
+                    response.setDays(days);
+                    productAlreadyExists = true;
+                    break;
+                }
+            }
+
+            if (!productAlreadyExists) {
+                GetSubscriptionResponse generatedResponse = new GetSubscriptionResponse();
+                ProductSubscriptionResponse productResponse = new ProductSubscriptionResponse();
+                productResponse.setProductName(product.getProductName());
+                productResponse.setProductDescription(product.getProductDescription());
+                productResponse.setPrice(product.getPrice());
+                productResponse.setStock(product.getStock());
+                productResponse.setUnit(product.getUnit());
+
+                for (Images images : product.getImages()) {
+                    productResponse.addImage(images);
+                }
+
+                generatedResponse.setName(subscription.getName());
+                ArrayList<String> days = new ArrayList<>();
+                days.add(subscription.getDays().toString());
+                generatedResponse.setDays(days);
+                generatedResponse.setProductId(product.getId());
+                generatedResponse.setProduct(productResponse);
+                generatedResponse.setSubscriptionDate(subscription.getSubscriptionDate());
+                generatedResponse.setCustomerName(user.getFirstname() + " " + user.getLastname());
+                responses.add(generatedResponse);
+            }
+        }
+        return responses;
     }
 
     // @Scheduled(cron = "0 * * * * *") // running every minute
@@ -118,19 +202,48 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         // creating order for all upcoming subscription
         for (Subscription subscription : upcomingSubscriptions) {
+            User user = subscription.getUser();
+            UserMeta userMeta = user.getUserMeta();
             Product product = subscription.getProduct();
-            Order order = new Order();
-            order.setUser(subscription.getUser());
-            order.setProduct(subscription.getProduct());
-            order.setFarm(subscription.getFarm());
-            order.setOrderDate(LocalDateTime.now());
-            order.setOrderValue(product.getPrice());
-            order.setQuantity(1);
-            order.setOrderPaymentMethod("Wallet");
-            order.setOrderType(OrderType.SUBSCRIPTION);
-            order.setSubscription(subscription);
-            orderRepository.save(order);
+            if (userMeta.getWallet_balance() < product.getPrice()) {
+                throw new ApiRequestException("Can not make order, user does not have balance");
+            } else {
+                Order order = new Order();
+                order.setUser(subscription.getUser());
+                order.setProduct(subscription.getProduct());
+                order.setFarm(subscription.getFarm());
+                order.setOrderDate(LocalDateTime.now());
+                order.setOrderValue(product.getPrice());
+                order.setQuantity(1);
+                order.setOrderPaymentMethod("Wallet");
+                order.setOrderType(OrderType.SUBSCRIPTION);
+                order.setSubscription(subscription);
+                orderRepository.save(order);
+                userMeta.setWallet_balance(userMeta.getWallet_balance() - product.getPrice());
+                userMetaRepository.save(userMeta);
+            }
+
         }
     }
 
+    public List<String> getSubScribedDays(ProductSubscribeRequest request) {
+        List<String> subscribeDays = new ArrayList<>();
+
+        for (Days day : Days.values()) {
+            try {
+                // Get the field corresponding to the day using reflection
+                String firstchar = day.name().substring(0, 1).toUpperCase();
+                String remainingChar = day.name().substring(1, SUBSCTRING_END_INDEX).toLowerCase();
+                String methodName = "get" + firstchar + remainingChar;
+                int fieldValue = (int) request.getClass().getMethod(methodName).invoke(request);
+
+                if (fieldValue == 1) {
+                    subscribeDays.add(day.name());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return subscribeDays;
+    }
 }

@@ -16,12 +16,6 @@ public class CustomerController {
 
     private final FarmerService farmerService;
 
-
-    @GetMapping
-    public ResponseEntity<String> customerHome() {
-        return ResponseEntity.ok("Hello Buyer!");
-    }
-
     @GetMapping("/listfarms")
     public ResponseEntity<List<FarmDto>> listFarms(@RequestParam("farmName") String farmName) {
         List<FarmDto> allFarms = farmerService.getAllFarms(farmName);
