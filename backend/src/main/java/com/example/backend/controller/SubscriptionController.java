@@ -29,7 +29,7 @@ public class SubscriptionController {
     }
 
     @GetMapping("/run-cron")
-    public ResponseEntity<String> getMethodName() {
+    public ResponseEntity<String> runCron() {
         subscriptionService.runCron();
         return ResponseEntity.ok("cronjob run successfully!");
     }

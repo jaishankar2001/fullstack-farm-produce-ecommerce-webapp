@@ -75,7 +75,7 @@ public class FarmerServiceImplTest {
         @Test
         public void testAddFarm() {
                 // Arrange
-                AddFarmRequest farmRequest = new AddFarmRequest(/* provide necessary parameters */);
+                AddFarmRequest farmRequest = new AddFarmRequest();
                 Principal principal = mock(Principal.class);
                 when(principal.getName()).thenReturn("testuser@example.com");
                 User user = new User();
