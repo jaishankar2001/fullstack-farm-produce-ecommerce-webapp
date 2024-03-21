@@ -6,6 +6,7 @@ import com.example.backend.entities.Category;
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
 import com.example.backend.entities.Product;
+import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.*;
 import com.example.backend.services.ProductService;
 import com.example.backend.services.impl.ProductServiceImpl;
@@ -20,12 +21,14 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
 public class ProductServiceImplTest {
@@ -63,6 +66,7 @@ public class ProductServiceImplTest {
 
     @BeforeEach
     void setUp(){
+
         MockitoAnnotations.openMocks(this);
         addProductRequest.setFarm_id(id);
         farm.setId(addProductRequest.getFarm_id());
@@ -76,6 +80,10 @@ public class ProductServiceImplTest {
         when(farmRepository.findById(anyInt())).thenReturn(farm);
         when(categoryRepository.findById(anyInt())).thenReturn(category);
         when(awsutils.uploadFileToS3(any(MultipartFile.class), anyString(), anyInt())).thenReturn("test-url");
+        product.setId(id);
+        ArrayList<Images> image = new ArrayList<>();
+        image.add(images);
+        product.setImages(image);
     }
 
     @Test
@@ -86,4 +94,18 @@ public class ProductServiceImplTest {
         assertTrue(productAdded instanceof List<ProductDto>);
     }
 
+    @Test
+    void deleteProduct(){
+
+        when(productRepository.findById(id)).thenReturn(product);
+        productService.deleteProduct(id);
+        verify(productRepository, times(id)).deleteById(id);
+
+    }
+
+    @Test
+    void deleteProductWhenNull(){
+        when(productRepository.findById(anyInt())).thenReturn(null);
+        assertThrows(ApiRequestException.class,()-> productService.deleteProduct(anyInt()));
+    }
 }
