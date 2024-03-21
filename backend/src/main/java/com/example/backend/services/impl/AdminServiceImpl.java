@@ -55,35 +55,39 @@ public class AdminServiceImpl implements AdminService{
         List<UserDTO> users = allUsers.stream().map(ResponseUtils::convertUserResponse)
                 .toList();
         adminResponse.setUsers(users);
-        adminResponse.setOrderSales(getOrderByMonth());
+        adminResponse.setSales(getOrderByMonth());
         return adminResponse;
     }
 
 
-    public List<SalesDTO> getOrderByMonth() {
+    public SalesDTO getOrderByMonth() {
 
         LocalDate endDate = LocalDate.now(TimeZone.getTimeZone("AST").toZoneId());
         int year = endDate.getYear();
         int month = endDate.getMonthValue()+1;
-        List<SalesDTO> salesList = new ArrayList<>();
+        SalesDTO sale = new SalesDTO();
         for (int i=0; i<4; i++){
             month -= 1;
             if(month==0){
                 year -= 1;
                 month = 12;
             }
-            double salesValue = 0;
+            double orderSalesValue = 0;
+            double subscriptionSalesValue = 0;
             LocalDate startDate = LocalDate.of(year, month, 1);
-            SalesDTO sale = new SalesDTO();
-            sale.setMonth(Month.of(month).name());
+            String currentMonthString = Month.of(month).name();
             List<Order> orders = orderRepository.findByOrderDateBetween(startDate.atStartOfDay(), endDate.atStartOfDay());
-            endDate = startDate;
             for (Order order : orders) {
-                salesValue += order.getOrderValue();
+                if(Objects.equals(String.valueOf(order.getOrderType()), "SUBSCRIPTION")){
+                    subscriptionSalesValue += order.getOrderValue();
+                }else{
+                    orderSalesValue += order.getOrderValue();
+                }
             }
-            sale.setSales(salesValue);
-            salesList.add(sale);
+            sale.addValue(currentMonthString, orderSalesValue, "ORDER");
+            sale.addValue(currentMonthString,subscriptionSalesValue, "SUBSCRIPTION");
+            endDate = startDate;
         }
-        return salesList;
+        return sale;
     }
 }

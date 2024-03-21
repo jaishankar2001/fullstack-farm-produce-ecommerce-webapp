@@ -15,5 +15,5 @@ public class AdminResponse {
     private List<ProductDto> products = new ArrayList<>();
     private List<Order> orders = new ArrayList<>();
     private List<UserDTO> users = new ArrayList<>();
-    private List<SalesDTO> orderSales = new ArrayList<>();
+    private SalesDTO Sales;
 }
