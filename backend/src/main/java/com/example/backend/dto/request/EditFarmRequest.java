@@ -8,7 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EditFarmRequest {
-    @NotNull(message = "Farm ID is required")
     private int id;
     private String name;
     private String Address;
