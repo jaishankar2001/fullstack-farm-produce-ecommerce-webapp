@@ -49,7 +49,6 @@ public class VerificationServiceImplementation implements VerificationService {
         } catch (Exception e) {
             throw new ApiRequestException(e.getMessage());
         }
-
     }
 
     @Override
@@ -140,13 +139,14 @@ public class VerificationServiceImplementation implements VerificationService {
         }
     }
 
-    private String generateUrl(VerificationType type) {
+    public String generateUrl(VerificationType type) {
         String url = "";
         if (type == VerificationType.VerifyEmail) {
             url = frontendEndpoint + "/verify-email?email=%s&code=%s&type=%s";
         } else if (type == VerificationType.ResetPassword) {
             url = frontendEndpoint + "/reset-password?email=%s&code=%s&type=%s";
         }
+        System.out.println("HEREE?" + url);
         return url;
     }
 }
