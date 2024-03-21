@@ -18,6 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
+*.xml
 
 ### NetBeans ###
 /nbproject/private/
@@ -37,6 +38,7 @@ build/
 .idea/*.xml
 .idea/.ipr
 .idea
+
 
 
 env.properties
