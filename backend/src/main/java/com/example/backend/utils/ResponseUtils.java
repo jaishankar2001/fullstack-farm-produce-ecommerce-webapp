@@ -1,12 +1,8 @@
 package com.example.backend.utils;
 
-import com.example.backend.dto.response.UserDTO;
+import com.example.backend.dto.response.*;
 import com.example.backend.entities.*;
 import org.springframework.stereotype.Service;
-
-import com.example.backend.dto.response.CategoryDto;
-import com.example.backend.dto.response.FarmDto;
-import com.example.backend.dto.response.ProductDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -63,5 +59,23 @@ public class ResponseUtils {
         dto.setLastname(user.getLastname());
         dto.setRole(user.getRole());
         return dto;
+    }
+    public static OrderDto convertOrderResponse(Order order){
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setProduct(order.getProduct());
+        orderDto.setProductName(order.getProduct().getProductName());
+        orderDto.setProductDescription(order.getProduct().getProductDescription());
+        orderDto.setFarm(order.getFarm());
+        orderDto.setFarmName(order.getFarm().getName());
+        orderDto.setOrderDate(order.getOrderDate());
+        orderDto.setOrderValue(order.getOrderValue());
+        orderDto.setQuantity(order.getQuantity());
+        orderDto.setOrderPaymentMethod(order.getOrderPaymentMethod());
+
+        for (Images image : order.getProduct().getImages()) {
+            orderDto.addImage(image);
+        }
+        return orderDto;
     }
 }
