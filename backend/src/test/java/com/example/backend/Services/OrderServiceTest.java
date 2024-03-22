@@ -3,23 +3,23 @@ package com.example.backend.Services;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.security.Principal;
+import java.security.PrivateKey;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.backend.dto.request.OrderRequest;
 import com.example.backend.entities.*;
 import com.example.backend.exception.ApiRequestException;
+import com.example.backend.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import com.example.backend.dto.response.OrderDto;
-import com.example.backend.repository.OrderRepository;
-import com.example.backend.repository.UserRepository;
 import com.example.backend.services.impl.OrderServiceImpl;
 
 public class OrderServiceTest {
@@ -27,16 +27,34 @@ public class OrderServiceTest {
         private UserRepository userRepository;
 
         @Mock
+        private UserMetaRepository userMetaRepository;
+
+        @Mock
         private OrderRepository orderRepository;
+
+        @Mock
+        private ProductRepository productRepository;
+
+        @Mock
+        private FarmRepository farmRepository;
 
         @Mock
         private OrderServiceImpl orderService;
 
+        @Mock
+        private WalletRepository walletRepository;
+
         private User mockUser;
         private List<Order> mockOrders;
+        private Principal principal;
 
         static final double ORDER_VALUE = 100.0;
         static final int ORDER_QUANTITY = 2;
+
+//        @BeforeEach
+//        public void setUp() {
+//                MockitoAnnotations.openMocks(this);
+//        }
 
         @BeforeEach
         void setUp() {
@@ -44,7 +62,7 @@ public class OrderServiceTest {
                 int productid = 1;
                 MockitoAnnotations.openMocks(this);
 
-                orderService = new OrderServiceImpl(userRepository, null, null, null, orderRepository, null);
+                orderService = new OrderServiceImpl(userRepository, userMetaRepository, productRepository, farmRepository, orderRepository, walletRepository);
                 mockUser = new User();
                 mockUser.setEmail("test@example.com");
 
@@ -72,6 +90,7 @@ public class OrderServiceTest {
                 order1.setQuantity(ORDER_QUANTITY);
 
                 mockOrders.add(order1);
+                principal = mock(Principal.class);
 
         }
 
@@ -104,5 +123,124 @@ public class OrderServiceTest {
                 assertThrows(ApiRequestException.class, () -> orderService.orderHistory(mockNullPrincipal),
                                 "User not Found");
 
+        }
+
+        @Test
+        public void testPlaceOrderSuccess(){
+                OrderRequest orderRequest = new OrderRequest();
+                orderRequest.setProduct_id(1);
+                orderRequest.setFarm_id(1);
+                orderRequest.setQuantity(1);
+
+                UserMeta userMeta = new UserMeta();
+                userMeta.setWallet_balance(200);
+                User user = new User();
+                user.setUserMeta(userMeta);
+
+                Product product = new Product();
+                product.setStock(1);
+                product.setPrice(100.0);
+
+                Farms farms = new Farms();
+                String email = "test@gmail.com";
+                when(principal.getName()).thenReturn(email);
+                when(userRepository.findByEmail(email)).thenReturn(user);
+                when(userMetaRepository.findByUser(user)).thenReturn(userMeta);
+                when(productRepository.findById(anyInt())).thenReturn(product);
+                when(farmRepository.findById(orderRequest.getFarm_id())).thenReturn(farms);
+
+                orderService.placeOrder(orderRequest, principal);
+
+                verify(orderRepository, times(1)).save(any(Order.class));
+                verify(userMetaRepository, times(1)).save(any(UserMeta.class));
+                verify(productRepository, times(1)).save(any(Product.class));
+                assertEquals(0, product.getStock());
+        }
+
+        @Test
+        public void testProductNull() {
+                OrderRequest orderRequest = new OrderRequest();
+
+                when(productRepository.findById(anyInt())).thenReturn(null);
+
+                //ASSERT
+                Throwable thrown = assertThrows(
+                        ApiRequestException.class,
+                        () -> orderService.placeOrder(orderRequest, principal));
+
+                assertEquals("Product not found", thrown.getMessage());
+        }
+
+        @Test
+        public void testFarmNull() {
+                OrderRequest orderRequest = new OrderRequest();
+                Product product = new Product();
+
+                when(productRepository.findById(anyInt())).thenReturn(product);
+                when(farmRepository.findById(anyInt())).thenReturn(null);
+
+                //ASSERT
+                Throwable thrown = assertThrows(
+                        ApiRequestException.class,
+                        () -> orderService.placeOrder(orderRequest, principal));
+
+                assertEquals("Farm not found", thrown.getMessage());
+        }
+
+        @Test
+        public void testOutOfStock() {
+                OrderRequest orderRequest = new OrderRequest();
+                orderRequest.setProduct_id(1);
+                orderRequest.setFarm_id(1);
+                orderRequest.setQuantity(2);
+
+                Product product = new Product();
+                product.setStock(1);
+
+                Farms farms = new Farms();
+
+                UserMeta userMeta = new UserMeta();
+
+                when(productRepository.findById(anyInt())).thenReturn(product);
+                when(farmRepository.findById(anyInt())).thenReturn(farms);
+
+                //ASSERT
+                Throwable thrown = assertThrows(
+                        ApiRequestException.class,
+                        () -> orderService.placeOrder(orderRequest, principal));
+
+                assertEquals("Order cannot have more quantity than total stock", thrown.getMessage());
+        }
+
+        @Test
+        public void TestInsufficientBalance() {
+                OrderRequest orderRequest = new OrderRequest();
+                orderRequest.setProduct_id(1);
+                orderRequest.setFarm_id(1);
+                orderRequest.setQuantity(1);
+
+                UserMeta userMeta = new UserMeta();
+                userMeta.setWallet_balance(10);
+                User user = new User();
+                user.setUserMeta(userMeta);
+
+                Product product = new Product();
+                product.setStock(1);
+                product.setPrice(100.0);
+
+                Farms farms = new Farms();
+                String email = "test@gmail.com";
+                when(principal.getName()).thenReturn(email);
+                when(userRepository.findByEmail(email)).thenReturn(user);
+                when(userMetaRepository.findByUser(user)).thenReturn(userMeta);
+                when(productRepository.findById(anyInt())).thenReturn(product);
+                when(farmRepository.findById(orderRequest.getFarm_id())).thenReturn(farms);
+
+                //ASSERT
+                Throwable thrown = assertThrows(
+                        ApiRequestException.class,
+                        () -> orderService.placeOrder(orderRequest, principal));
+
+                assertEquals("You do not have sufficient balance to buy this product", thrown.getMessage());
         }
 }
