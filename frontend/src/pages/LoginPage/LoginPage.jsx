@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useNavigate } from "react-router-dom";
-import Layout from "../../common/Layout/Layout";
 import api from "../../api/index";
+import Layout from "../../common/Layout/Layout";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -28,7 +28,12 @@ function Login() {
           balance: response.wallet_balance,
         };
         localStorage.setItem("userMeta", JSON.stringify(userMeta));
+        if(userMeta.email === "admin123@gmail.com"){
+          window.location.replace("/Admin-dashboard");
+        }
+        else{
         window.location.replace("/");
+        }
       }
     } catch (error) {
       setIsLoading(false);

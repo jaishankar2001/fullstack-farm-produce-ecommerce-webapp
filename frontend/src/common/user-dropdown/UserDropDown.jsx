@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import "./UserDropdown.css";
-import { User } from "../../assets/images";
-import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./UserDropdown.css";
 
 const UserDropdown = ({ handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,10 +12,11 @@ const UserDropdown = ({ handleLogout }) => {
     setUserMeta(JSON.parse(localStorage.getItem("userMeta")));
   }, []);
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
-
+  let currentLocation = useLocation();
+  if (currentLocation.pathname === "/Admin-dashboard") {
+    return <a className="btn btn-primary d-none d-md-block ms-2" onClick={handleLogout}>Logout</a>;
+  }
+else{
   return (
     <>
       {userMeta && (
@@ -60,5 +60,6 @@ const UserDropdown = ({ handleLogout }) => {
     </>
   );
 };
+}
 
 export default UserDropdown;

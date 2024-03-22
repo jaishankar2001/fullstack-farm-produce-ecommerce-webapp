@@ -17,3 +17,12 @@ export async function placeSubscription(payload) {
       throw error;
     }
   }
+
+  export async function farmerSubscription() {
+    try {
+      const response = await api.get("/subscribe/my-subscribed-products");
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }

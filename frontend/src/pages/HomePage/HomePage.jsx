@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
+import api from "../../api/index";
 import {
-  background_1,
   BannerImage,
   CAT1,
-  CAT2,
-  CAT3,
-  farm1,
   CarousalImage,
   FarmCarousal,
+  background_1
 } from "../../assets/images/index";
 import "./styles.css";
-import api from "../../api/index";
-import { DashboardImage } from "../../assets/images/index";
 
 export const HomePage = () => {
   const list = [1, 2, 3, 4];

@@ -1,35 +1,25 @@
 package com.example.backend.services.impl;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.Objects;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import lombok.RequiredArgsConstructor;
 import com.example.backend.dto.request.AddProductRequest;
 import com.example.backend.dto.request.EditProductRequest;
 import com.example.backend.dto.request.ProductSearchRequest;
-import com.example.backend.dto.response.CategoryDto;
 import com.example.backend.dto.response.ProductDto;
-import com.example.backend.entities.Category;
-import com.example.backend.entities.Farms;
-import com.example.backend.entities.Images;
-import com.example.backend.entities.Product;
-import com.example.backend.entities.User;
+import com.example.backend.entities.*;
 import com.example.backend.exception.ApiRequestException;
-import com.example.backend.repository.CategoryRepository;
-import com.example.backend.repository.FarmRepository;
-import com.example.backend.repository.ImagesRepository;
-import com.example.backend.repository.ProductRepository;
+import com.example.backend.repository.*;
 import com.example.backend.services.ProductService;
-import com.example.backend.repository.UserRepository;
 import com.example.backend.utils.Awsutils;
 import com.example.backend.utils.ResponseUtils;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -180,7 +170,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getAllProducts(ProductSearchRequest productSearchRequest) {
         List<Product> allProducts = new ArrayList<>();
-        ;
         String productName = productSearchRequest.getProductName();
         if (!Objects.equals(productName, "")) {
             allProducts = productRepository.findByProductNameContaining(productName);
