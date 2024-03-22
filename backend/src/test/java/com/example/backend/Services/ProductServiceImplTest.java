@@ -149,7 +149,18 @@ public class ProductServiceImplTest {
         assertThrows(ApiRequestException.class, () -> productService.editProduct(mockEditProductRequest, mockFiles, mockPrincipal));
     }
 
+    @Test
+    void testGetProductById(){
+        when(productRepository.findById(id)).thenReturn(product);
+        Object result = productService.getProductById(id);
+        assertEquals(productService.getProductById(id).getId(), productDto.getId());
+    }
 
+    @Test
+    void testProductByIdWhenNull(){
+        when(productRepository.findById(anyInt())).thenReturn(null);
+        assertThrows(ApiRequestException.class, ()-> productService.getProductById(id));
+    }
 
 
 }
