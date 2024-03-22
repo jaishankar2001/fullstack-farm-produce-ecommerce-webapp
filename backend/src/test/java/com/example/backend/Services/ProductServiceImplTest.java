@@ -3,13 +3,9 @@ package com.example.backend.Services;
 import com.example.backend.dto.request.AddProductRequest;
 import com.example.backend.dto.request.EditProductRequest;
 import com.example.backend.dto.response.ProductDto;
-import com.example.backend.entities.Category;
-import com.example.backend.entities.Farms;
-import com.example.backend.entities.Images;
-import com.example.backend.entities.Product;
+import com.example.backend.entities.*;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.*;
-import com.example.backend.services.ProductService;
 import com.example.backend.services.impl.ProductServiceImpl;
 import com.example.backend.utils.Awsutils;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +16,9 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -46,7 +39,8 @@ public class ProductServiceImplTest {
     private ModelMapper modelMapper;
     @Mock
     private Awsutils awsutils;
-
+    @Mock
+    private UserRepository userRepository;
     @InjectMocks
     private AddProductRequest addProductRequest;
     @InjectMocks
@@ -64,6 +58,9 @@ public class ProductServiceImplTest {
     @InjectMocks
     ProductDto productDto;
 
+    @InjectMocks
+    User user;
+
     static final int id = 1;
 
     @BeforeEach
@@ -77,7 +74,7 @@ public class ProductServiceImplTest {
         product = new Product();
         when(modelMapper.map(addProductRequest, Product.class)).thenReturn(product);
         Product savedProduct = new Product();
-        savedProduct.setId(1); // Set an ID for the saved product
+        savedProduct.setId(1);
         when(productRepository.save(any())).thenReturn(savedProduct);
         when(farmRepository.findById(anyInt())).thenReturn(farm);
         when(categoryRepository.findById(anyInt())).thenReturn(category);
@@ -164,7 +161,32 @@ public class ProductServiceImplTest {
 
     @Test
     void testGetFarmerProducts(){
+        Principal mockPrincipal = ()-> "testUser@ecopick.com" ;
+        user.setEmail("testUser@ecopick.com");
+        farm.setId(id);
+        product.setId(id);
+        List<Farms> mockFarmArr = new ArrayList<>();
+        mockFarmArr.add(farm);
+        List<Product> mockProductsArr = new ArrayList<>();
+        mockProductsArr.add(product);
+        when(userRepository.findByEmail(anyString())).thenReturn(user);
+        when(farmRepository.findByUser(any(User.class))).thenReturn(mockFarmArr);
+        when(productRepository.findByFarm(any(Farms.class))).thenReturn(mockProductsArr);
+        List<ProductDto> testArr = productService.getFarmerProducts(mockPrincipal);
+        assertNotNull(testArr);
+        assertEquals(1, testArr.size());
+        assertEquals(product.getId(), testArr.get(0).getId());
 
+        verify(userRepository, times(1)).findByEmail(anyString());
+        verify(farmRepository, times(1)).findByUser(any(User.class));
+        verify(productRepository, times(1)).findByFarm(any(Farms.class));
+
+    }
+    @Test
+    void testGetFarmerProductsWhenNull(){
+        Principal mockPrincipal = ()-> "testUser@ecopick.com" ;
+        when(userRepository.findById(anyInt())).thenReturn(null);
+        assertThrows(ApiRequestException.class, ()-> productService.getFarmerProducts(mockPrincipal));
     }
 
 
