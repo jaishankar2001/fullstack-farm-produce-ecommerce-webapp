@@ -157,9 +157,14 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testProductByIdWhenNull(){
+    void testGetProductByIdWhenNull(){
         when(productRepository.findById(anyInt())).thenReturn(null);
         assertThrows(ApiRequestException.class, ()-> productService.getProductById(id));
+    }
+
+    @Test
+    void testGetFarmerProducts(){
+
     }
 
 
