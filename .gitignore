@@ -32,13 +32,17 @@ build/
 
 ### VS Code ###
 .vscode/
-.idea/
 
+### IntelliJ ###
+.idea
+.idea/
+/.idea
+./.idea/*.xml
+./.idea/*.iml
 .idea/*.iml
 .idea/*.xml
 .idea/.ipr
-.idea
-
+./*.xml
 
 
 env.properties
