@@ -2,6 +2,7 @@ package com.example.backend.Services;
 
 import com.example.backend.dto.request.AddProductRequest;
 import com.example.backend.dto.request.EditProductRequest;
+import com.example.backend.dto.request.ProductSearchRequest;
 import com.example.backend.dto.response.ProductDto;
 import com.example.backend.entities.*;
 import com.example.backend.exception.ApiRequestException;
@@ -17,12 +18,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
 public class ProductServiceImplTest {
@@ -60,6 +58,9 @@ public class ProductServiceImplTest {
 
     @InjectMocks
     User user;
+
+    @InjectMocks
+    ProductSearchRequest productSearchRequest;
 
     static final int id = 1;
 
@@ -187,6 +188,37 @@ public class ProductServiceImplTest {
         Principal mockPrincipal = ()-> "testUser@ecopick.com" ;
         when(userRepository.findById(anyInt())).thenReturn(null);
         assertThrows(ApiRequestException.class, ()-> productService.getFarmerProducts(mockPrincipal));
+    }
+
+    @Test
+    void testGetAllProducts(){
+        product.setId(id);
+        product.setProductName("TestProduct");
+        when(productSearchRequest.getProductName()).thenReturn(product.getProductName());
+        List<Product> testProductArr = new ArrayList<>(Arrays.asList(product));
+        when(productRepository.findByProductNameContaining(product.getProductName())).thenReturn(testProductArr);
+        when(productRepository.findAll()).thenReturn(testProductArr);
+        List<ProductDto> testArr = productService.getAllProducts(productSearchRequest);
+        System.out.println(testArr.toString());
+        assertNotNull(testArr);
+        assertEquals(1, testArr.size()); // Assuming only one product in the mock repository
+        assertEquals(product.getProductName(), testArr.get(0).getProductName());
+    }
+
+    @Test
+    void testGetAllProductsWhenEmpty(){
+        product.setProductName("");
+        when(productSearchRequest.getProductName()).thenReturn(product.getProductName());
+        List<Product> testProductArr = new ArrayList<>(Arrays.asList(product));
+        when(productRepository.findAll()).thenReturn(testProductArr);
+        List<ProductDto> testArr = productService.getAllProducts(productSearchRequest);
+        assertNotNull(testArr);
+        assertEquals(1, testArr.size()); // Assuming only one product in the mock repository
+        assertEquals(product.getProductName(), testArr.get(0).getProductName());
+        when(productRepository.findAll()).thenReturn(Collections.emptyList());
+        List<ProductDto> testArr1 = productService.getAllProducts(productSearchRequest);
+        assertTrue(testArr1.isEmpty());
+
     }
 
 
