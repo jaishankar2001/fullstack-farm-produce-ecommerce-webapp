@@ -49,7 +49,8 @@ public class AdminServiceImpl implements AdminService{
         adminResponse.setProducts(products);
 
         List<Order> allOrders = orderRepository.findAll();
-        adminResponse.setOrders(allOrders);
+        List<OrderDto> orders = allOrders.stream().map(ResponseUtils::convertOrderResponse).toList();
+        adminResponse.setOrders(orders);
 
         List<User> allUsers = userRepository.findAll();
         List<UserDTO> users = allUsers.stream().map(ResponseUtils::convertUserResponse)

@@ -13,7 +13,7 @@ import java.util.List;
 public class AdminResponse {
     private List<FarmDto> farms = new ArrayList<>();
     private List<ProductDto> products = new ArrayList<>();
-    private List<Order> orders = new ArrayList<>();
+    private List<OrderDto> orders = new ArrayList<>();
     private List<UserDTO> users = new ArrayList<>();
     private SalesDTO Sales;
 }
