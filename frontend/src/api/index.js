@@ -7,7 +7,7 @@ import * as categoryApi from './category';
 import * as orderApi from './order';
 import * as subscriptionApi from './subscription';
 import * as adminApi from './admin';
-import * as chronApi from './cron';
+import * as cronApi from './cron';
 
 const api = {
   auth: authApi,
@@ -19,7 +19,7 @@ const api = {
   order: orderApi,
   subscription: subscriptionApi,
   admin: adminApi,
-  chron: chronApi
+  cron: cronApi
 };
 
 export default api;
