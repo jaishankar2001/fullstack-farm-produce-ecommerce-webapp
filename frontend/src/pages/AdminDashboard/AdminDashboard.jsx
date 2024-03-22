@@ -3,10 +3,31 @@ import moment from "moment";
 import React, { useEffect, useRef, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Bar } from "react-chartjs-2";
+import { ToastContainer, toast } from "react-toastify";
 import api from "../../api/index";
+import './styles.css';
+
 
 function AdminDashboard() {
 const [adminResponse, setAdminResponse] = useState([]);
+
+function calculateOrderSum(orders) {
+    let totalOrderValue = 0;
+    for (let i = 0; i < orders?.length; i++) {
+        totalOrderValue += orders[i].orderValue;
+    }
+    return totalOrderValue;
+}
+
+const runCronJob = () => {
+    api.cron.runCron()
+        .then(response => {
+            toast.success("Cron job ran successfully!");
+        })
+        .catch(error => {
+          console.error("Error fetching sales data:", error);
+        });
+}
 
 useEffect(() => {
         api.admin.adminData()
@@ -26,7 +47,7 @@ const data = {
     datasets: [
       {
         label: 'Sales',
-        data: [35, 53, 85, 41],
+        data: [adminResponse.sales?.orderSales?.DECEMBER, adminResponse.sales?.orderSales?.JAUNARY, adminResponse.sales?.orderSales?.FEBRUARY, adminResponse.sales?.orderSales?.MARCH],
         fill: true,
         backgroundColor: '#2e5d3f',
         borderColor: '#2e5d3f',
@@ -38,7 +59,7 @@ const data1 = {
     datasets: [
       {
         label: 'Sales',
-        data: [62, 29, 45, 86],
+        data: [[adminResponse.sales?.subscriptionSales?.DECEMBER, adminResponse.sales?.subscriptionSales?.JAUNARY, adminResponse.sales?.subscriptionSales?.FEBRUARY, adminResponse.sales?.subscriptionSales?.MARCH]],
         fill: true,
         backgroundColor: '#2e5d3f',
         borderColor: '#2e5d3f',
@@ -55,6 +76,7 @@ const options = {
 
   return (
     <Container fluid className="bg-light">
+    <ToastContainer />
       <Row>
         <Col md={2} className="bg-primary text-light p-1">
           <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -98,10 +120,15 @@ const options = {
         </div>
       </div>
       
+
           <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
                         <h1 class="h3 mb-0 text-gray-800"> Admin Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                          <i class="fas fa-download fa-sm text-white-50"></i> Run schedule for subscription</a>
+                        <button
+                        className="btn btn-primary px-md-4 col col-md-auto me-2"
+                        onClick={runCronJob}
+                    >
+                        Run Schedule for subscription
+                      </button>
                     </div>
 
                 <div class="row">
@@ -115,7 +142,7 @@ const options = {
                                                 Sales
                                             <div class="h6 mb-0 text-gray-800"></div>
                                             </div>
-                                            <div class="h6 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                            <div class="h6 mb-0 font-weight-bold text-gray-800">$ {calculateOrderSum(adminResponse.orders)}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -134,7 +161,7 @@ const options = {
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Number of Users
                                             </div>
-                                            <div class="h6 mb-0 text-gray-800">150</div>
+                                            <div class="h6 mb-0 text-gray-800">{adminResponse?.users?.length}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -152,7 +179,7 @@ const options = {
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Number of Farms
                                             </div>
-                                            <div class="h6 mb-0 text-gray-800">60</div>
+                                            <div class="h6 mb-0 text-gray-800">{adminResponse?.farms?.length}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -170,7 +197,7 @@ const options = {
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Number of Products
                                             </div>
-                                            <div class="h6 mb-0 text-gray-800">10</div>
+                                            <div class="h6 mb-0 text-gray-800">{adminResponse?.products?.length}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -261,7 +288,7 @@ const options = {
                     </div>
 
                 <div class="row">
-                    <div class="card col-xl-6 shadow m-3 mb-4">
+                    <div class="card col-xl-7 shadow m-3 mb-4">
                             <div class="card-header py-3 mb-2">
                                 <h6 class="m-0 font-weight-bold text-primary mb-3">List of Products</h6>
                                 <div class="table-responsive">
@@ -296,20 +323,25 @@ const options = {
                                 </div>
                             </div>
                         </div>
-                    <div class="card col-xl-5 shadow m-3 mb-4">
+                    </div>
+
+
+                <div class="row">
+                    <div class="card col-xl-11 shadow m-3 mb-4">
                         <div class="card-header py-2 mb-2">
-                            <h6 class="m-0 font-weight-bold text-primary mb-3">Orders</h6>
+                            <h6 class="m-0 font-weight-bold text-primary mb-3">List of orders</h6>
                             <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                 <tr>
                                     <th scope="col">Order Id</th>
+                                    <th scope="col">Farm Name</th>
+                                    <th scope="col">Product Name</th>
                                     <th scope="col">Quantity</th>
-                                    <th scope="col">Order Date</th>
-                                    {/* <th scope="col">Name</th>
-                                    <th scope="col">Price</th> */}
+                                    <th scope="col">Price</th>
                                     <th scope="col">Order Value</th>
-                                    {/* <th scope="col">Payment Status</th> */}
+                                    <th scope="col">Order Date</th>
+                                    <th scope="col">Payment Method</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -318,11 +350,13 @@ const options = {
                                         <>
                                         <tr>
                                             <td><p class="mb-0 mt-4 d-flex align-items-center">{order.id}</p></td>
+                                            <td><p class="mb-0 mt-4 d-flex align-items-center">{order.farmName}</p></td>
+                                            <td><p class="mb-0 mt-4 d-flex align-items-center">{order.productName}</p></td>
                                             <td><p class="mb-0 mt-4 d-flex align-items-center">{order.quantity}</p></td>
-                                            <td><p class="mb-0 mt-4 d-flex align-items-center">{moment(order.orderDate).format("MM/DD/YYYY")}</p></td>
+                                            <td><p class="mb-0 mt-4 d-flex align-items-center">{order.product.price}</p></td>
                                             <td><p class="mb-0 mt-4 d-flex align-items-center">{order.orderValue}</p></td>
-                                            {/* <td><p class="mb-0 mt-4 d-flex align-items-center">{product.stock}</p></td>
-                                            <td><p class="mb-0 mt-4 d-flex align-items-center">{product.unit}</p></td> */}
+                                            <td><p class="mb-0 mt-4 d-flex align-items-center">{moment(order.orderDate).format("MM/DD/YYYY")}</p></td>
+                                            <td><p class="mb-0 mt-4 d-flex align-items-center">{order.orderPaymentMethod}</p></td>
                                         </tr>
                                         </>
                                         )
