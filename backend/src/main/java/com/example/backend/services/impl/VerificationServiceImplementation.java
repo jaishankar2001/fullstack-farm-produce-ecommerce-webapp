@@ -74,7 +74,7 @@ public class VerificationServiceImplementation implements VerificationService {
         }
 
         userMeta.setVerified(true);
-        userRepository.save(user);
+        userMetaRepository.save(userMeta);
         verificationCodeRepository.delete(verificationCode);
     }
 
