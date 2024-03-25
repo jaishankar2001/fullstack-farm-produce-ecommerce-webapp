@@ -73,7 +73,7 @@ public class VerificationServiceImplTest {
 
         //ASSERT
         assertEquals(true, userMeta.isVerified());
-        verify(userRepository, times(1)).save(any(User.class));
+        verify(userMetaRepository, times(1)).save(any(UserMeta.class));
         verify(verificationCodeRepository, times(1)).delete(any(VerificationCode.class));
 
 
