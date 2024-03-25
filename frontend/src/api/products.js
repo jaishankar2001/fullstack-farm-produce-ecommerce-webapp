@@ -9,6 +9,15 @@ export async function getProducts(payload) {
   }
 }
 
+export async function getProductById(id) {
+  try {
+    const response = await api.get(`/products/getProduct/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function deleteProduct(id) {
   try {
     const response = await api.del(`/products/delete/${id}`);

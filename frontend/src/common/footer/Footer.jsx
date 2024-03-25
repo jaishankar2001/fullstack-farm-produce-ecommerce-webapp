@@ -1,7 +1,13 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { useLocation } from 'react-router-dom';
 
-export const Footer = () => {
+const Footer = () => {
+  let currentLocation = useLocation();
+  if (currentLocation.pathname === "/Admin-dashboard") {
+    return null;
+  }
+  else{
   return (
     <div className="vstack mt-auto">
       <footer className="py-4 bg-primary">
@@ -38,6 +44,7 @@ export const Footer = () => {
       </footer>
     </div>
   );
+  }
 };
 
 export default Footer;

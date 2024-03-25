@@ -1,33 +1,25 @@
 package com.example.backend.services.impl;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.Objects;
-
+import com.example.backend.dto.request.AddProductRequest;
+import com.example.backend.dto.request.EditProductRequest;
+import com.example.backend.dto.request.ProductSearchRequest;
+import com.example.backend.dto.response.ProductDto;
+import com.example.backend.entities.*;
+import com.example.backend.exception.ApiRequestException;
+import com.example.backend.repository.*;
+import com.example.backend.services.ProductService;
+import com.example.backend.utils.Awsutils;
+import com.example.backend.utils.ResponseUtils;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import lombok.RequiredArgsConstructor;
-import com.example.backend.dto.request.AddProductRequest;
-import com.example.backend.dto.request.ProductSearchRequest;
-import com.example.backend.dto.response.CategoryDto;
-import com.example.backend.dto.response.ProductDto;
-import com.example.backend.entities.Category;
-import com.example.backend.entities.Farms;
-import com.example.backend.entities.Images;
-import com.example.backend.entities.Product;
-import com.example.backend.entities.User;
-import com.example.backend.exception.ApiRequestException;
-import com.example.backend.repository.CategoryRepository;
-import com.example.backend.repository.FarmRepository;
-import com.example.backend.repository.ImagesRepository;
-import com.example.backend.repository.ProductRepository;
-import com.example.backend.services.ProductService;
-import com.example.backend.repository.UserRepository;
-import com.example.backend.utils.Awsutils;
-import com.example.backend.utils.ResponseUtils;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,6 +84,74 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product editProduct(EditProductRequest editProductRequest, MultipartFile[] files, Principal principal) {
+
+        // List<ProductDto> editedProductList = new ArrayList<>();
+        Product product =  productRepository.findById(editProductRequest.getId());
+        try {
+            
+            product.setProductName(editProductRequest.getProductName());
+            product.setProductDescription(editProductRequest.getProductDescription());
+            product.setPrice(editProductRequest.getPrice());
+            product.setStock(editProductRequest.getStock());
+            product.setUnit(editProductRequest.getUnit());
+            productRepository.save(product);
+
+            List<Images> imgArr = product.getImages();
+
+            for(Images image:imgArr){
+                awsutils.deleteFilefromS3(image.getImg_url());
+            }
+            imgArr.clear();
+            
+            for(MultipartFile item :files){
+                String url = awsutils.uploadFileToS3(item, "Product", product.getId());
+                Images img = new Images();
+                img.setProduct(product);
+                img.setImg_url(url);
+                imagesRepository.save(img);
+                System.out.println("-=-=-=-=-  " + url);
+                imgArr.add(img);
+            }
+
+            product.setImages(imgArr);
+            productRepository.save(product);
+            return product;
+            // editedProductList = productRepository.findByFarm(product.getFarm()).stream().map(this::convertProductResponse).collect(Collectors.toList());
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            throw new ApiRequestException("Product not found" );
+        }
+        
+        
+    }
+
+    @Override
+    public ProductDto getProductById(int id) {
+        Product product = productRepository.findById(id);
+        ProductDto gpid = new ProductDto();
+        if(product!=null){
+            gpid.setProductName(product.getProductName());
+            gpid.setProductDescription(product.getProductDescription());
+            gpid.setPrice(product.getPrice());
+            gpid.setStock(product.getStock());
+            gpid.setUnit(product.getUnit());
+            gpid.setPrebook(product.isPrebook());
+            gpid.setProductCategory(product.getCategory());
+            gpid.setFarm(product.getFarm());
+            
+            for(Images images: product.getImages()){
+                gpid.addImage(images);
+            }
+            return gpid;
+        }
+        else {
+            throw new ApiRequestException("Product not found with id " + id);
+        }
+    }
+
+    @Override
     public List<ProductDto> getFarmerProducts(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
         if (user == null) {
@@ -110,7 +170,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getAllProducts(ProductSearchRequest productSearchRequest) {
         List<Product> allProducts = new ArrayList<>();
-        ;
         String productName = productSearchRequest.getProductName();
         if (!Objects.equals(productName, "")) {
             allProducts = productRepository.findByProductNameContaining(productName);

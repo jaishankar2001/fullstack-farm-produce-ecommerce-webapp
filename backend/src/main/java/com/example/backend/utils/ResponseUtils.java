@@ -1,14 +1,8 @@
 package com.example.backend.utils;
 
+import com.example.backend.dto.response.*;
+import com.example.backend.entities.*;
 import org.springframework.stereotype.Service;
-
-import com.example.backend.dto.response.CategoryDto;
-import com.example.backend.dto.response.FarmDto;
-import com.example.backend.dto.response.ProductDto;
-import com.example.backend.entities.Category;
-import com.example.backend.entities.Farms;
-import com.example.backend.entities.Images;
-import com.example.backend.entities.Product;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +34,7 @@ public class ResponseUtils {
         dto.setStock(product.getStock());
         dto.setPrice(product.getPrice());
         dto.setUnit(product.getUnit());
+        dto.setProductDescription(product.getProductDescription());
 
         Category category = product.getCategory();
 
@@ -48,7 +43,6 @@ public class ResponseUtils {
         }
 
         long afterS3 = System.nanoTime();
-        System.out.println("Time AFTERR IMAGES DTOOOOO: " + (afterS3 - startTime) / 1e6 + " milliseconds");
         if (category != null) {
             CategoryDto categoryDto = new CategoryDto();
             categoryDto.setId(category.getId());
@@ -57,5 +51,31 @@ public class ResponseUtils {
         }
         return dto;
     }
+    public static UserDTO convertUserResponse(User user){
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setRole(user.getRole());
+        return dto;
+    }
+    public static OrderDto convertOrderResponse(Order order){
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setProduct(order.getProduct());
+        orderDto.setProductName(order.getProduct().getProductName());
+        orderDto.setProductDescription(order.getProduct().getProductDescription());
+        orderDto.setFarm(order.getFarm());
+        orderDto.setFarmName(order.getFarm().getName());
+        orderDto.setOrderDate(order.getOrderDate());
+        orderDto.setOrderValue(order.getOrderValue());
+        orderDto.setQuantity(order.getQuantity());
+        orderDto.setOrderPaymentMethod(order.getOrderPaymentMethod());
 
+        for (Images image : order.getProduct().getImages()) {
+            orderDto.addImage(image);
+        }
+        return orderDto;
+    }
 }

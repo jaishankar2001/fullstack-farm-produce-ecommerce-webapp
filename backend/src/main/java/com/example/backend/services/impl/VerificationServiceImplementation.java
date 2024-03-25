@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class VerificationServiceImplementation implements VerificationService {
+    static final int ADD_MINUTES_EXPIRY = 30;
 
     // private final UserMeta userMeta;
     private final UserRepository userRepository;
@@ -30,6 +31,25 @@ public class VerificationServiceImplementation implements VerificationService {
     private final PasswordEncoder passwordEncoder;
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
+
+    @Override
+    public String verifyAndUpdate(String code, String email, String newPassword, String type) {
+        try {
+            VerificationType verificationType = VerificationType.valueOf(type);
+            switch (verificationType) {
+                case VerifyEmail:
+                    verify(code, email);
+                    return "User verified succesfully";
+                case ResetPassword:
+                    resetPassword(code, email, newPassword);
+                    return "Password reset succesfully";
+                default:
+                    throw new ApiRequestException("Invalid type");
+            }
+        } catch (Exception e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
 
     @Override
     public void verify(String code, String email) {
@@ -54,7 +74,7 @@ public class VerificationServiceImplementation implements VerificationService {
         }
 
         userMeta.setVerified(true);
-        userRepository.save(user);
+        userMetaRepository.save(userMeta);
         verificationCodeRepository.delete(verificationCode);
     }
 
@@ -84,7 +104,7 @@ public class VerificationServiceImplementation implements VerificationService {
             throw new ApiRequestException("User not found!");
         }
 
-        if (userMeta != null && userMeta.isVerified() && type != VerificationType.valueOf("ResetPassword")) {
+        if (userMeta.isVerified() && type != VerificationType.valueOf("ResetPassword")) {
             throw new ApiRequestException("User already verified");
         }
 
@@ -96,17 +116,12 @@ public class VerificationServiceImplementation implements VerificationService {
 
         if (verificationCode == null) {
             String code = UUID.randomUUID().toString();
-            LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(30);
+            LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(ADD_MINUTES_EXPIRY);
             verificationCode = new VerificationCode(code, user.getEmail(), expiryTime, type);
             verificationCodeRepository.save(verificationCode);
         }
 
-        String url = "";
-        if (type == VerificationType.VerifyEmail) {
-            url = frontendEndpoint + "/verify-email?email=%s&code=%s&type=%s";
-        } else if (type == VerificationType.ResetPassword) {
-            url = frontendEndpoint + "/reset-password?email=%s&code=%s&type=%s";
-        }
+        String url = generateUrl(type);
 
         String verificationUrl = String.format(
                 url,
@@ -122,5 +137,16 @@ public class VerificationServiceImplementation implements VerificationService {
             String body = "Please click on this link to reset your Password: " + verificationUrl;
             emailService.sendEmail(user.getEmail(), subject, body);
         }
+    }
+
+    public String generateUrl(VerificationType type) {
+        String url = "";
+        if (type == VerificationType.VerifyEmail) {
+            url = frontendEndpoint + "/verify-email?email=%s&code=%s&type=%s";
+        } else if (type == VerificationType.ResetPassword) {
+            url = frontendEndpoint + "/reset-password?email=%s&code=%s&type=%s";
+        }
+        System.out.println("HEREE?" + url);
+        return url;
     }
 }

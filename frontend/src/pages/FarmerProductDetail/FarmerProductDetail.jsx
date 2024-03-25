@@ -1,25 +1,62 @@
-import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Modal from "react-modal";
-import { useLocation } from "react-router-dom";
-import api from "../../api/index";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import api from "../../api/index";
+import QuantitySelector from "../../components/QuantitySelector";
+import OrderConfirmationModal from "../../components/OrderConfirmationModal";
+import SubscriptionModal from "../../components/SubscriptionModal";
 
 function FarmerProductDetail() {
   const images = [2, 4, 6, 8, 1];
   const navigate = useNavigate();
   const location = useLocation();
-  const { state } = location;
-  const { product } = state;
+  const { id } = useParams();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [product, setProduct] = useState();
+  const [quantity, setQuantity] = useState(1);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+
+  const handleQuantityChange = (newQuantity) => {
+    setQuantity(newQuantity);
+  };
+
   const openModal = () => {
     setModalIsOpen(true);
   };
 
+  const previousPath = location.state && location.state.previousPath;
+      
+  const handleConfirmOrder = () => {
+    onBuyProduct();
+    setIsConfirmationModalOpen(false);
+  };
+console.log(product);
+
+  useEffect(() => {
+    api.products
+      .getProductById(id)
+      .then((response) => {
+        setProduct(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching Product:", error);
+      });
+  }, []);
 
   const closeModal = () => {
     setModalIsOpen(false);
+  };
+
+  const openOrderConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const closeSubscriptionModal = () => {
+    setIsSubscriptionModalOpen(false);
   };
 
   const customStyles = {
@@ -33,18 +70,55 @@ function FarmerProductDetail() {
     },
   };
 
-  const onDeleteProduct = async() => {
-     const response = await api.products.deleteProduct(product.id);
-     toast.success("Farm deleted successfully!");
-     navigate("/farmer-products");
- 
-     closeModal();
+  const onDeleteProduct = async () => {
+    const response = await api.products.deleteProduct(id);
+    toast.success("Product deleted successfully!");
+    navigate("/product-listing");
 
+    closeModal();
+  };
+
+
+  const onSubscribeProduct = async (subscriptionData) => {
+    try {
+      const response = await api.subscription.placeSubscription(subscriptionData);
+      toast.success("Subscription placed successfully!");
+      navigate("/my-subscriptions");
+    } catch (error) {
+  
+    }
+    closeSubscriptionModal();
+  };
+  const onBuyProduct = async () => {
+    try{
+      const response = await api.order.placeOrder({
+        farm_id: product?.farm?.id,
+        product_id: id,
+        quantity: quantity,
+        orderPaymentMethod: "Wallet"
+      });
+      if(response){
+        toast.success("Order confirmed successfully!");
+        navigate("/order-history")
+      }
+    }
+   catch(error){
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
+
+    }
   }
 
   return (
     <div className="vstack">
-       <ToastContainer />
+      <ToastContainer />
       <div className="bg-secondary">
         <div className="container">
           <div className="row py-4 px-2"></div>
@@ -59,7 +133,7 @@ function FarmerProductDetail() {
                   <div className="ratio ratio-1x1">
                     <img
                       className="rounded"
-                      src={product.images?.[0]?.img_url}
+                      src={product?.images?.[0]?.img_url}
                       width={150}
                       height={150}
                       alt="Product image."
@@ -94,7 +168,7 @@ function FarmerProductDetail() {
             <div className="col-lg-7">
               <div className="d-flex">
                 <div className="d-inline h2 mb-0 fw-semibold me-3">
-                  {product.productName}
+                  {product?.productName}
                 </div>
                 <div className="ms-auto">
                   <button
@@ -117,35 +191,65 @@ function FarmerProductDetail() {
                   </span>
                 </div>
                 <h4 className="fw-semibold">
-                  ${product.price}/{product.unit}
+                  ${product?.price}/{product?.unit}
                 </h4>
-                <p className="fw-light">
-                  Lorem ipsum is placeholder text commonly used in the graphic,
-                  print, and publishing industries for previewing layouts and
-                  visual mockups.
-                </p>
+                <p className="fw-light">{product?.productDescription}</p>
                 <dl className="row mb-0">
                   <dt className="col-sm-3 fw-semibold">Code#</dt>
-                  <dd className="col-sm-9">{product.id}</dd>
+                  <dd className="col-sm-9">{id}</dd>
                   <dt className="col-sm-3 fw-semibold">Category</dt>
-                  <dd className="col-sm-9">{product.id}</dd>
+                  <dd className="col-sm-9">{product?.productCategory?.name}</dd>
                   <dt className="col-sm-3 fw-semibold">Stock</dt>
-                  <dd className="col-sm-9">{product.stock}</dd>
+                  <dd className="col-sm-9">{product?.stock}</dd>
                 </dl>
+                {previousPath === "products" && (
+                  <div>
+                   <h6 className="fw-semibold">
+                  Select Quantity
+                </h6>
+                   <QuantitySelector quantity={quantity} handleQuantityChange={handleQuantityChange}/>
+                  </div>
+                )}
                 <hr className="text-muted" />
                 <div className="d-flex">
-                  <a
-                    href="#"
-                    className="btn btn-primary px-md-4 col col-md-auto me-2"
-                  >
-                    Edit Product
-                  </a>
-                  <button className="btn btn-outline-primary col col-md-auto" onClick={openModal}>
-                    <FontAwesomeIcon icon={["fas", "trash"]} />
-                    &nbsp;Delete Product
-                  </button>
+                  {previousPath === "farmerProducts" && (
+                    <>
+                      <button
+                        className="btn btn-primary px-md-4 col col-md-auto me-2"
+                        onClick={() => {
+                          navigate(`/edit-product/${id}`);
+                        }}
+                      >
+                        Edit Product
+                      </button>
+
+                      <button
+                        className="btn btn-outline-primary col col-md-auto"
+                        onClick={openModal}
+                      >
+                        <FontAwesomeIcon icon={["fas", "trash"]} />
+                        &nbsp;Delete Product
+                      </button>
+                    </>
+                  )}
+                  {previousPath === "products" && (
+                    <>
+                      <button
+                        className="btn btn-primary px-md-4 col col-md-auto me-2"
+                        onClick={openOrderConfirmationModal}
+                      >
+                        Buy now
+                      </button>
+
+                      <button
+                        className="btn btn-outline-primary col col-md-auto"
+                        onClick={() => setIsSubscriptionModalOpen(true)}
+                      >
+                        &nbsp;Subscribe
+                      </button>
+                    </>
+                  )}
                 </div>
-                
               </div>
             </div>
           </div>
@@ -159,21 +263,31 @@ function FarmerProductDetail() {
       >
         <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">Are you sure to delete this farm?</h5>
-            <button
-              className="btn btn-primary"
-              onClick={onDeleteProduct}
-            >
+            <h5 class="card-title">Are you sure to delete this product?</h5>
+            <button className="btn btn-primary" onClick={onDeleteProduct}>
               Delete
             </button>
           </div>
         </div>
       </Modal>
-      <div className="container">
-      </div>
+      <div className="container"></div>
       <br />
       <br />
       <br />
+      <OrderConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        onConfirm={handleConfirmOrder}
+        product={product}
+        quantity={quantity}
+      />
+      <SubscriptionModal 
+         isOpen={isSubscriptionModalOpen}
+         onClose={closeSubscriptionModal}
+         onConfirm={onSubscribeProduct}
+         product={product}
+         productId={parseInt(id)}
+         />
     </div>
   );
 }

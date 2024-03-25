@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
+import api from "../../api/index";
 import {
-  background_1,
   BannerImage,
   CAT1,
-  CAT2,
-  CAT3,
-  farm1,
   CarousalImage,
   FarmCarousal,
+  background_1
 } from "../../assets/images/index";
 import "./styles.css";
-import api from "../../api/index";
-import { DashboardImage } from "../../assets/images/index";
 
 export const HomePage = () => {
   const list = [1, 2, 3, 4];
@@ -46,7 +42,7 @@ export const HomePage = () => {
             <a href="#">
               <small class="text-white mx-2 fw-bold">Home</small>
             </a>
-            <a href="#">
+            <a href="/show-farms">
               <small class="text-white mx-2 fw-bold">Farms</small>
             </a>
             <a href="/product-listing">
@@ -142,8 +138,8 @@ export const HomePage = () => {
                         {homeFarms.length > 0 &&
                           homeFarms.map((farm) => {
                             return (
-                              <div class="col-md-6 col-lg-4 col-xl-3 shadow lg ">
-                                <div class="hoverable">
+                              <div class="col-md-6 col-lg-4 col-xl-3">
+                                <div class="hoverable shadow h-100 bg-white">
                                   <div class="rounded position-relative fruite-item">
                                     <div class="fruite-img">
                                       {farm.images && (

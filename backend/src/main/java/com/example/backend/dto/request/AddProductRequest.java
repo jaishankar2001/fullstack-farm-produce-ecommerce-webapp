@@ -1,12 +1,14 @@
 package com.example.backend.dto.request;
 
-import java.math.BigDecimal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
-@Data
+@Getter
+@Setter
 public class AddProductRequest {
     @NotBlank(message = "name is required")
     private String productName;
@@ -15,7 +17,7 @@ public class AddProductRequest {
     private String productDescription;
 
     @NotNull(message = "price is required")
-    private BigDecimal price;
+    private double price;
 
     @NotNull(message = "stock is required")
     private int stock;

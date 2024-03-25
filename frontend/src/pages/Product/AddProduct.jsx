@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useRecoilState } from "recoil";
 import DropzoneComponent from "../../components/DropzoneComponent";
-import { productState } from "../../recoil/atoms/product";
+import api from "../../api/index";
+import Dropdown from "../../components/Dropdown";
+
 
 function AddProduct() {
   const [productName, setProductName] = useState("");
@@ -12,11 +13,29 @@ function AddProduct() {
   const [farmID, setFarmID]= useState("");
   const [price, setPrice]= useState("");
   const [stock, setStock]= useState("");
+  const [categories, setCategories] = useState([]);
+  const [productDescription, setProductDescription] = useState();
   const [unit, setUnit]= useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [productData, setProductData] = useRecoilState(productState);
   const [files, setFiles] = useState([]);
+  const [allFarms, setAllFarms] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
+
+  const unitOptions = [
+    {
+      id: 1,
+      name: "lb",
+    },
+    {
+      id: 2,
+      name: "litre",
+    },
+    {
+      id: 3,
+      name: "piece",
+    },
+  ];
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,13 +46,13 @@ function AddProduct() {
       files.forEach((file) => {
         formData.append(`files`, file);
       });
-      formData.append("productName", productData.name);
-      formData.append("productDescription", productData.description);
-      formData.append("price", productData.price);
-      formData.append("stock", productData.stock);
-      formData.append("unit", productData.unit);
-      formData.append("farmID", productData.farm_id);
-      formData.append("categoryID", productData.category_id);
+      formData.append("productName", productName);
+      formData.append("productDescription", productDescription);
+      formData.append("price", price);
+      formData.append("stock", stock);
+      formData.append("unit", unit);
+      formData.append("farm_id", farmID);
+      formData.append("category_id", categoryID);
 
       const token = localStorage?.getItem("token");
       const headers = {
@@ -45,7 +64,7 @@ function AddProduct() {
         body: formData,
       });
 
-      navigate("/");
+      navigate("/farmer-products");
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -61,12 +80,48 @@ function AddProduct() {
     }
   };
 
+
+  useEffect(() => {
+    api.category
+      .getCategories()
+      .then((response) => {
+        setCategories(response);
+      
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+
+  }, []);
+
   const handleFilesSelected = (selectedFiles) => {
     setFiles(selectedFiles);
   };
 
-  const handleChange = (e) => {
-    setProductData({ ...productData, [e.target.name]: e.target.value });
+  const handleFarmSelect = (selectedFarm) => {
+    const farm = allFarms.find(farm => farm.name === selectedFarm);
+    setFarmID(farm.id);
+  };
+
+
+  const getFarmerFarms = async () => {
+    const response = await api.farm.getFarmerFarms();
+    setAllFarms(response);
+  };
+
+  useEffect(() => {
+    getFarmerFarms();
+  }, []);
+
+  const handleCategorySelect = (selectedCategory) => {
+    const category = categories.find(category => category.name === selectedCategory);
+    setCategoryID(category?.id);
+    setCategoryName(category?.name);
+  };
+
+  const handleUnitSelect = (selectedUnit) => {
+    const unit = unitOptions.find(unit => unit.name === selectedUnit);
+    setUnit(unit.name);
   };
 
   return (
@@ -77,38 +132,22 @@ function AddProduct() {
           <div className="card border-1 shadow-sm">
             <div className="card-body">
               <form className="row g-3">
-                <h4 className="fw-bold py-1 mb-0 row justify-content-center">Add the product</h4>
+                <h4 className="fw-bold py-1 mb-0 row justify-content-center mt-2">Add Product</h4>
 
-                <div className="col-md-4 fw-semibold">
-                  <label className="form-label ">Farm ID</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="farmID"
-                    value={farmID}
-                    onChange={(e) => {
-                      setFarmID(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        farm_id: farmID, // Update address in Recoil state
-                      }));
-                    }}
+                <div className="col-md-4 fw-semibold mt-4">
+                  <label className="form-label ">Farm</label>
+                  <Dropdown
+                    options={allFarms}
+                    onSelect={handleFarmSelect}
+                    selectedValue={farmID}
                   />
                 </div>
-                <div className="col-md-4 fw-semibold">
-                  <label className="form-label">Category ID</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="categoryID"
-                    value={categoryID}
-                    onChange={(e) => {
-                      setCategoryID(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        category_id: categoryID, // Update address in Recoil state
-                      }));
-                    }}
+                <div className="col-md-4 fw-semibold mt-4">
+                  <label className="form-label">Category</label>
+                  <Dropdown
+                    options={categories}
+                    onSelect={handleCategorySelect}
+                    selectedValue={categoryName}
                   />
                 </div>
 
@@ -120,26 +159,18 @@ function AddProduct() {
                     value={productName}
                     onChange={(e) => {
                       setProductName(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        name: productName, // Update address in Recoil state
-                      }));
                     }}
                   />
                 </div>
 
                 <div className="col-md-4 fw-semibold mb-0">
-                  <label className="form-label fw-semibold">Price</label>
+                  <label className="form-label fw-semibold">Price (in CAD)</label>
                   <input
                     type="text"
                     className="form-control"
                     value={price}
                     onChange={(e) => {
                       setPrice(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        price: price, // Update address in Recoil state
-                      }));
                     }}
                   />
                 </div>
@@ -152,10 +183,6 @@ function AddProduct() {
                     value={stock}
                     onChange={(e) => {
                       setStock(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        stock: stock, // Update address in Recoil state
-                      }));
                     }}
                   />
                 </div>
@@ -178,20 +205,20 @@ function AddProduct() {
 
                 
                 <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                    Unit
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">lb</a>
-                <a class="dropdown-item" href="#">litre</a>
-                <a class="dropdown-item" href="#">piece</a>
-            </div>
+                <label className="form-label fw-semibold">Unit</label>
+                  <Dropdown
+                    options={unitOptions}
+                    onSelect={handleUnitSelect}
+                    selectedValue={unit}
+                  />
         </div>
         
 
                 <h6 className="fw-semibold mb-0">About your Product</h6>
                 <div>
-                  <input type="textarea" className="form-control" />
+                  <input type="textarea" className="form-control"  value={productDescription} onChange={(e) => {
+                      setProductDescription(e.target.value);
+                    }}/>
                 </div>
 
                 <div className="col-md-12">

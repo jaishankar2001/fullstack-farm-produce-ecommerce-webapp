@@ -37,14 +37,6 @@ public class WalletController {
         }
     }
 
-    @GetMapping("/balance/{userId}")
-    public WalletResponse checkBalance(@PathVariable int userId) {
-        double balance = walletService.checkBalance(userId);
-        WalletResponse response = new WalletResponse();
-        response.setBalance(balance);
-        return response;
-    }
-
     @GetMapping("/topup")
     public RedirectView topUp(@ModelAttribute WalletRequest request) {
         try {
