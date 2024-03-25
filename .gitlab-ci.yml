@@ -53,6 +53,9 @@ quality:
     - mkdir code-smells
     - java -jar DesigniteJava.jar -i ./backend/ -o code-smells/
     - echo "Code quality completed..."
+  artifacts:
+    paths:
+      - code-smells/
 
 publish:
   image: docker:latest
