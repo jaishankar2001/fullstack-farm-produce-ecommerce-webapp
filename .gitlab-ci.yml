@@ -56,7 +56,7 @@ quality:
     - echo "Code quality completed..."
   artifacts:
     paths:
-      - /backend/code-smells
+      - $CI_PROJECT_DIR/backend/code-smells
 
 # publish:
 #   image: docker:latest
