@@ -1,6 +1,7 @@
 stages:          
   - build
   - test
+  - quality
   - publish
   - deploy
 
@@ -17,8 +18,6 @@ build-backend:
   artifacts:
     paths:
       - backend/target/*.jar
-  only:
-    - main
 
 build-frontend:
   stage: build
@@ -36,8 +35,6 @@ build-frontend:
   artifacts:
     paths:
       - frontend/build
-  only:
-    - main
 
 test: 
   stage: test
@@ -45,10 +42,17 @@ test:
   script: 
     - echo "Testing backend..."
     - cd backend
-    - mvn clean install
+    - mvn test
     - echo "Testing backend Completed..."
-  only:
-    - main
+
+quality: 
+  stage: quality
+  image: maven:latest
+  script: 
+    - echo "Starting code quality checks"
+    - mkdir code-smells
+    - java -jar DesigniteJava.jar -i ./backend/ -o code-smells/
+    - echo "Code quality completed..."
 
 publish:
   image: docker:latest
@@ -69,8 +73,6 @@ publish:
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
     - docker build -t docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA -f ./Dockerfile .
     - docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
-  only:
-    - main
   dependencies: 
     - build-backend
 
@@ -89,8 +91,6 @@ deploy-backend:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f ecopick-backend || true"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
-  only:
-    - main
 
 deploy-frontend:
   stage: deploy 
@@ -105,5 +105,3 @@ deploy-frontend:
     - build-frontend
   tags:
     - ecopick
-  only:
-    - main
