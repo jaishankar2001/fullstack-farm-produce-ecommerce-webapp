@@ -50,12 +50,12 @@ quality:
   image: maven:latest
   script: 
     - echo "Starting code quality checks"
-    - mkdir code-smells
-    - java -jar DesigniteJava.jar -i ./backend/ -o code-smells/
+    - mkdir $CI_PROJECT_DIR/backend/code-smells
+    - java -jar $CI_PROJECT_DIR/backend/DesigniteJava.jar -i $CI_PROJECT_DIR/backend/ -o $CI_PROJECT_DIR/backend/code-smells
     - echo "Code quality completed..."
   artifacts:
     paths:
-      - code-smells/
+      - /backend/code-smells
 
 publish:
   image: docker:latest
