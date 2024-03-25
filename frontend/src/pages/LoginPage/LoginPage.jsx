@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useNavigate } from "react-router-dom";
-import Layout from "../../common/Layout/Layout";
 import api from "../../api/index";
+import Layout from "../../common/Layout/Layout";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -22,16 +22,27 @@ function Login() {
         // Store tokens in local storage
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
+        const userMeta = {
+          name: response.firstname,
+          email: response.email,
+          balance: response.wallet_balance,
+        };
+        localStorage.setItem("userMeta", JSON.stringify(userMeta));
+        if(userMeta.email === "admin123@gmail.com"){
+          window.location.replace("/Admin-dashboard");
+        }
+        else{
+        window.location.replace("/");
+        }
       }
-
-      navigate("/");
     } catch (error) {
       setIsLoading(false);
-      const { data } = error.response;
-      if (data) {
-        Object.values(data).forEach((message) => {
-          toast.error(message);
-        });
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
       } else {
         toast.error("An error occurred. Please try again later.");
       }
@@ -54,7 +65,7 @@ function Login() {
                     className="form-control"
                     placeholder="name@domain.com"
                     value={email}
-                    onSubmit={handleSubmit}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="col-md-12">
