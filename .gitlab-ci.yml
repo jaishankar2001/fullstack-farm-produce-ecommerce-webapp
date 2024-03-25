@@ -1,110 +1,111 @@
 stages:          
-  - build
-  - test
+  # - build
+  # - test
   - quality
-  - publish
-  - deploy
+  # - publish
+  # - deploy
 
 
-build-backend: 
-  stage: build
-  image: maven:latest
-  script: 
-    - cd backend/
-    - echo "Building Application"
-    - mvn clean package
-    - ls
-    - echo "Building Complete"
-  artifacts:
-    paths:
-      - backend/target/*.jar
+# build-backend: 
+#   stage: build
+#   image: maven:latest
+#   script: 
+#     - cd backend/
+#     - echo "Building Application"
+#     - mvn clean package
+#     - ls
+#     - echo "Building Complete"
+#   artifacts:
+#     paths:
+#       - backend/target/*.jar
 
-build-frontend:
-  stage: build
-  image: node:latest
-  script:
-    - echo "Building frontend..."
-    - cd frontend  # Change to the 'frontend' directory
-    - npm install -g pnpm
-    - pnpm install
-    - pnpm i -f
-    - pnpm build
-    - echo "frontend code build is completed."
-  tags:
-    - ecopick
-  artifacts:
-    paths:
-      - frontend/build
+# build-frontend:
+#   stage: build
+#   image: node:latest
+#   script:
+#     - echo "Building frontend..."
+#     - cd frontend  # Change to the 'frontend' directory
+#     - npm install -g pnpm
+#     - pnpm install
+#     - pnpm i -f
+#     - pnpm build
+#     - echo "frontend code build is completed."
+#   tags:
+#     - ecopick
+#   artifacts:
+#     paths:
+#       - frontend/build
 
-test: 
-  stage: test
-  image: maven:latest
-  script: 
-    - echo "Testing backend..."
-    - cd backend
-    - mvn test
-    - echo "Testing backend Completed..."
+# test: 
+#   stage: test
+#   image: maven:latest
+#   script: 
+#     - echo "Testing backend..."
+#     - cd backend
+#     - mvn test
+#     - echo "Testing backend Completed..."
 
 quality: 
   stage: quality
   image: maven:latest
   script: 
     - echo "Starting code quality checks"
+    - echo $CI_PROJECT_DIR
     - mkdir $CI_PROJECT_DIR/backend/code-smells
-    - java -jar $CI_PROJECT_DIR/backend/DesigniteJava.jar -i $CI_PROJECT_DIR/backend/ -o $CI_PROJECT_DIR/backend/code-smells
+    - java -jar $CI_PROJECT_DIR/backend/.gitlab/DesigniteJava.jar -i $CI_PROJECT_DIR/backend/ -o $CI_PROJECT_DIR/backend/code-smells -d
     - echo "Code quality completed..."
   artifacts:
     paths:
       - /backend/code-smells
 
-publish:
-  image: docker:latest
-  stage: publish
-  tags: 
-    - ecopick
-  variables:
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: "tcp://docker:2375"
-  services:
-    - docker:dind
-  script:
-    - cd backend/
-    - pwd 
-    - ls
-    - echo $SERVER_IP
-    - docker --version
-    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
-    - docker build -t docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA -f ./Dockerfile .
-    - docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
-  dependencies: 
-    - build-backend
+# publish:
+#   image: docker:latest
+#   stage: publish
+#   tags: 
+#     - ecopick
+#   variables:
+#     DOCKER_TLS_CERTDIR: ""
+#     DOCKER_HOST: "tcp://docker:2375"
+#   services:
+#     - docker:dind
+#   script:
+#     - cd backend/
+#     - pwd 
+#     - ls
+#     - echo $SERVER_IP
+#     - docker --version
+#     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
+#     - docker build -t docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA -f ./Dockerfile .
+#     - docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
+#   dependencies: 
+#     - build-backend
 
 
-deploy-backend:
-  image: alpine:latest
-  stage: deploy
-  tags: 
-    - ecopick
-  script:
-    - cd backend/
-    - echo "Deploying Backend..."
-    - chmod og-rwx $ID_RSA
-    - apk update && apk add openssh-client
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f ecopick-backend || true"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
+# deploy-backend:
+#   image: alpine:latest
+#   stage: deploy
+#   tags: 
+#     - ecopick
+#   script:
+#     - cd backend/
+#     - echo "Deploying Backend..."
+#     - chmod og-rwx $ID_RSA
+#     - apk update && apk add openssh-client
+#     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io"
+#     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
+#     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f ecopick-backend || true"
+#     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
 
-deploy-frontend:
-  stage: deploy 
-  script:
-    - echo "Deploying application..."
-    - chmod og-rwx $ID_RSA
-    - echo "Transfering Frontend Build Files"
-    - ssh -o StrictHostKeyChecking=no -i $ID_RSA ${SERVER_USER}@${SERVER_IP} 'rm -r /var/www/html/*'
-    - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
-    - echo "Frontend Deplyoment Complete" 
-  dependencies:
-    - build-frontend
-  tags:
-    - ecopick
+# deploy-frontend:
+#   stage: deploy 
+#   script:
+#     - echo "Deploying application..."
+#     - chmod og-rwx $ID_RSA
+#     - echo "Transfering Frontend Build Files"
+#     - ssh -o StrictHostKeyChecking=no -i $ID_RSA ${SERVER_USER}@${SERVER_IP} 'rm -r /var/www/html/*'
+#     - scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
+#     - echo "Frontend Deplyoment Complete" 
+#   dependencies:
+#     - build-frontend
+#   tags:
+#     - ecopick
