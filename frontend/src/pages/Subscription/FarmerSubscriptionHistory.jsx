@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import api from "../../api/index";
 import { Modal } from "react-bootstrap";
 
-function SubscriptionHistory() {
+function FarmerSubscriptionHistory() {
   const [subscription, setSubscription] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState(null);
@@ -116,4 +116,4 @@ function SubscriptionHistory() {
   );
 }
 
-export default SubscriptionHistory;
+export default FarmerSubscriptionHistory;

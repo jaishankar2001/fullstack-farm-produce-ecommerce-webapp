@@ -21,6 +21,7 @@ import AddProduct from "../pages/Product/AddProduct";
 import Farm from "../pages/Farm/Farm";
 import SubscriptionHistory from "../pages/Subscription/SubscriptionHistory";
 import ShowFarms from "../pages/Farm/ShowFarms";
+import FarmerSubscriptionHistory from "../pages/Subscription/FarmerSubscriptionHistory";
 
 export const Router = () => {
   const BrowserRoutes = createBrowserRouter([
@@ -115,6 +116,10 @@ export const Router = () => {
         {
           path: "/Admin-dashboard",
           element: <AdminDashboard />,
+        },
+        {
+          path: "/farmer-subscriptions",
+          element: <FarmerSubscriptionHistory />
         },
 
       ],
