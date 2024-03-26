@@ -18,8 +18,8 @@ build-backend:
   artifacts:
     paths:
       - backend/target/*.jar
-  only: 
-    - main
+  # only: 
+  #   - main
 
 build-frontend:
   stage: build
@@ -37,8 +37,8 @@ build-frontend:
   artifacts:
     paths:
       - frontend/build
-  only: 
-    - main
+  # only: 
+  #   - main
 
 test: 
   stage: test
@@ -48,10 +48,10 @@ test:
     - cd backend
     - mvn test
     - echo "Testing backend Completed..."
-  only: 
-    - main
+  # only: 
+  #   - main
 
-quality: 
+maven-code-quality: 
   stage: quality
   image: maven:latest
   script: 
@@ -63,8 +63,18 @@ quality:
   artifacts:
     paths:
       - $CI_PROJECT_DIR/backend/code-smells
-  only: 
-    - main
+  # only: 
+  #   - main
+
+code-format-frontend:
+  stage: code-quality-check
+  script:
+    - echo "Frontend code format start..."
+    - cd frontend
+    - node -v
+    - npm install prettier --save-dev
+    - npm run format
+    - echo "Frontend code format completed.."
 
 publish:
   image: docker:latest
@@ -87,8 +97,8 @@ publish:
     - docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
   dependencies: 
     - build-backend
-  only: 
-    - main
+  # only: 
+  #   - main
 
 
 deploy-backend:
@@ -105,8 +115,8 @@ deploy-backend:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f ecopick-backend || true"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA"
-  only: 
-    - main
+  # only: 
+  #   - main
 
 deploy-frontend:
   stage: deploy 
@@ -121,5 +131,5 @@ deploy-frontend:
     - build-frontend
   tags:
     - ecopick
-  only: 
-    - main
+  # only: 
+  #   - main
