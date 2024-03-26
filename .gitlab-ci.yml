@@ -68,6 +68,7 @@ stages:
 
 code-format-frontend:
   stage: quality
+  image: node:latest
   script:
     - echo "Frontend code format start..."
     - cd frontend
