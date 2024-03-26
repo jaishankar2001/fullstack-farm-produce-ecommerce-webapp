@@ -26,6 +26,7 @@ function Login() {
           name: response.firstname,
           email: response.email,
           balance: response.wallet_balance,
+          role: response.role
         };
         localStorage.setItem("userMeta", JSON.stringify(userMeta));
         if(userMeta.email === "admin123@gmail.com"){
