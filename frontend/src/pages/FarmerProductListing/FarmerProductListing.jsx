@@ -24,7 +24,7 @@ function FarmerProductListing() {
 
 
   const getAllProducts = async() => {
-    const response = await api.products.getProducts({ productName: searchTerm });
+    const response = await api.products.getProducts(searchTerm);
     setAllProducts(response);
 
   }

@@ -2,7 +2,6 @@ package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.AddProductRequest;
 import com.example.backend.dto.request.EditProductRequest;
-import com.example.backend.dto.request.ProductSearchRequest;
 import com.example.backend.dto.response.ProductDto;
 import com.example.backend.entities.*;
 import com.example.backend.exception.ApiRequestException;
@@ -168,9 +167,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProducts(ProductSearchRequest productSearchRequest) {
+    public List<ProductDto> getAllProducts(String searchTerm) {
         List<Product> allProducts = new ArrayList<>();
-        String productName = productSearchRequest.getProductName();
+        String productName = searchTerm;
         if (!Objects.equals(productName, "")) {
             allProducts = productRepository.findByProductNameContaining(productName);
             if (allProducts.isEmpty()) {
@@ -181,5 +180,4 @@ public class ProductServiceImpl implements ProductService {
         }
         return allProducts.stream().map(ResponseUtils::convertProductResponse).collect(Collectors.toList());
     }
-
 }
