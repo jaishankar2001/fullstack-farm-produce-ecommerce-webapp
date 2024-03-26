@@ -2,7 +2,6 @@ package com.example.backend.Services;
 
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.request.EditFarmRequest;
-import com.example.backend.dto.request.FarmerOwnFarmRequest;
 import com.example.backend.dto.response.FarmDto;
 import com.example.backend.dto.response.GetFarmByIdResponse;
 import com.example.backend.entities.Farms;
@@ -170,12 +169,11 @@ public class FarmerServiceImplTest {
                 farm2.setId(SECOND_FARM_ID);
                 farm2.setImages(images);
                 List<Farms> userFarms = List.of(farm1, farm2);
-                FarmerOwnFarmRequest farmerOwnFarmRequest = new FarmerOwnFarmRequest();
 
                 when(userRepositoryMock.findByEmail(anyString())).thenReturn(user);
                 when(farmRepositoryMock.findByUser(user)).thenReturn(userFarms);
                 //
-                List<FarmDto> result = farmerServiceMock.getFarms(farmerOwnFarmRequest, principal);
+                List<FarmDto> result = farmerServiceMock.getFarms(null, principal);
                 // // Assert
                 assertEquals(EXPECTED_RESULT_SIZE, result.size());
         }
@@ -203,13 +201,11 @@ public class FarmerServiceImplTest {
                 farm.setImages(images);
 
                 List<Farms> userFarms = List.of(farm);
-                FarmerOwnFarmRequest farmerOwnFarmRequest = new FarmerOwnFarmRequest();
-                farmerOwnFarmRequest.setSearchTerm("Farm");
 
                 when(userRepositoryMock.findByEmail(anyString())).thenReturn(user);
                 when(farmRepositoryMock.findByUser(user)).thenReturn(userFarms);
                 //
-                List<FarmDto> result = farmerServiceMock.getFarms(farmerOwnFarmRequest, principal);
+                List<FarmDto> result = farmerServiceMock.getFarms("Farm", principal);
                 // // Assert
                 assertEquals(1, result.size());
         }
@@ -264,11 +260,10 @@ public class FarmerServiceImplTest {
 
         @Test
         public void testGetFarmsWithNoUser() {
-                FarmerOwnFarmRequest farmerOwnFarmRequest = new FarmerOwnFarmRequest();
                 Principal principal = mock(Principal.class);
                 when(userRepositoryMock.findByEmail(anyString())).thenReturn(null);
                 assertThrows(ApiRequestException.class,
-                                () -> farmerServiceMock.getFarms(farmerOwnFarmRequest, principal));
+                                () -> farmerServiceMock.getFarms(null, principal));
         }
 
         @Test

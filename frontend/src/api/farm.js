@@ -9,9 +9,10 @@ export async function addFarm(payload) {
   }
 }
 
-export async function getFarmerFarms(payload) {
+export async function getFarmerFarms(searchTerm) {
   try {
-    const response = await api.post("/farmer/own-farms", payload);
+    const queryParams = searchTerm ? `?searchTerm=${encodeURIComponent(searchTerm)}` : '';
+    const response = await api.get(`/farmer/own-farms${queryParams}`);
     return response;
   } catch (error) {
     throw error;

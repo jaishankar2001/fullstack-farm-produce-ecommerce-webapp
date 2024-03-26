@@ -6,11 +6,10 @@ import api from "../../api/index";
 
 function FarmerFarms() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [allFarms, setAllFarms] = useState([]);
 
   const getFarmerFarms = async () => {
-    const response = await api.farm.getFarmerFarms({ searchTerm: searchTerm });
+    const response = await api.farm.getFarmerFarms(searchTerm);
     setAllFarms(response);
   };
 
