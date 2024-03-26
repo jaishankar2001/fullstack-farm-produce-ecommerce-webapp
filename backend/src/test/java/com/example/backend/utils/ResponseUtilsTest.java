@@ -18,6 +18,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 public class ResponseUtilsTest {
+    static final double LATITUDE = 10.1234;
+    static final double LONGITUDE = 20.5678;
+    static final double FARM_RES = 0.0001;
+    static final double PRODUCT_PRICE = 10.50;
+    static final double PRODUCTDTO_PRICE = 0.01;
+    static final int PRODUCT_STOCK = 100;
+    static final double ORDER_VALUE = 100.0;
+    static final int ORDER_QTY = 5;
 
     @Mock
     private Farms farms;
@@ -42,8 +50,8 @@ public class ResponseUtilsTest {
         when(farms.getName()).thenReturn("Farm Name");
         when(farms.getAddress()).thenReturn("Farm Address");
         when(farms.getDescription()).thenReturn("Farm Description");
-        when(farms.getLat()).thenReturn(10.1234);
-        when(farms.getLng()).thenReturn(20.5678);
+        when(farms.getLat()).thenReturn(LATITUDE);
+        when(farms.getLng()).thenReturn(LONGITUDE);
 
         FarmDto farmDto = ResponseUtils.convertFarmResponse(farms);
 
@@ -51,16 +59,16 @@ public class ResponseUtilsTest {
         assertEquals(farms.getName(), farmDto.getName());
         assertEquals(farms.getAddress(), farmDto.getAddress());
         assertEquals(farms.getDescription(), farmDto.getDescription());
-        assertEquals(farms.getLat(), farmDto.getLat(), 0.0001);
-        assertEquals(farms.getLng(), farmDto.getLng(), 0.0001);
+        assertEquals(farms.getLat(), farmDto.getLat(), FARM_RES);
+        assertEquals(farms.getLng(), farmDto.getLng(), FARM_RES);
     }
 
     @Test
     public void testConvertProductResponse() {
         when(product.getId()).thenReturn(1);
         when(product.getProductName()).thenReturn("Product Name");
-        when(product.getStock()).thenReturn(100);
-        when(product.getPrice()).thenReturn(10.50);
+        when(product.getStock()).thenReturn(PRODUCT_STOCK);
+        when(product.getPrice()).thenReturn(PRODUCT_PRICE);
         when(product.getUnit()).thenReturn("kg");
         when(product.getProductDescription()).thenReturn("Product Description");
 
@@ -80,7 +88,7 @@ public class ResponseUtilsTest {
         assertEquals(product.getId(), productDto.getId());
         assertEquals(product.getProductName(), productDto.getProductName());
         assertEquals(product.getStock(), productDto.getStock());
-        assertEquals(product.getPrice(), productDto.getPrice(), 0.01);
+        assertEquals(product.getPrice(), productDto.getPrice(), PRODUCTDTO_PRICE);
         assertEquals(product.getUnit(), productDto.getUnit());
         assertEquals(product.getProductDescription(), productDto.getProductDescription());
         assertEquals(product.getCategory().getId(), productDto.getCategory().getId());
@@ -109,9 +117,9 @@ public class ResponseUtilsTest {
         when(order.getId()).thenReturn(1);
         String str = "2001-10-26 12:30";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        when(order.getOrderDate()).thenReturn(LocalDateTime.parse(str,formatter));
-        when(order.getOrderValue()).thenReturn(100.0);
-        when(order.getQuantity()).thenReturn(5);
+        when(order.getOrderDate()).thenReturn(LocalDateTime.parse(str, formatter));
+        when(order.getOrderValue()).thenReturn(ORDER_VALUE);
+        when(order.getQuantity()).thenReturn(ORDER_QTY);
         when(order.getOrderPaymentMethod()).thenReturn("Cash");
 
         Product product = mock(Product.class);

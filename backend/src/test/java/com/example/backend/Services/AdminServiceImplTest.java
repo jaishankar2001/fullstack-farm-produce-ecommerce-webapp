@@ -25,10 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AdminServiceImplTest {
+
+    static final int ORDER_VALUE = 100;
+    static final int ORDER_VALUE_SECOND = 200;
+    static final int EXPECTED_ORDER_SALES = 4;
 
     @Mock
     private FarmRepository farmRepository;
@@ -50,7 +55,6 @@ class AdminServiceImplTest {
         Principal principal = mock(Principal.class);
         when(principal.getName()).thenReturn("admin@example.com");
 
-
         User adminUser = new User();
         adminUser.setEmail("admin@example.com");
         adminUser.setRole(Role.valueOf("ADMIN"));
@@ -61,9 +65,7 @@ class AdminServiceImplTest {
         when(orderRepository.findAll()).thenReturn(new ArrayList<>());
         when(userRepository.findAll()).thenReturn(new ArrayList<>());
 
-
         AdminResponse adminResponse = adminService.getAllInfo(principal);
-
 
         assertNotNull(adminResponse);
         assertTrue(adminResponse.getFarms().isEmpty());
@@ -79,49 +81,41 @@ class AdminServiceImplTest {
         Principal principal = mock(Principal.class);
         when(principal.getName()).thenReturn("user@example.com");
 
-
         User normalUser = new User();
         normalUser.setEmail("user@example.com");
         normalUser.setRole(Role.valueOf("CUSTOMER"));
 
-
         when(userRepository.findByEmail("user@example.com")).thenReturn(normalUser);
-
 
         assertThrows(ApiRequestException.class, () -> adminService.getAllInfo(principal));
 
         verifyNoInteractions(farmRepository, productRepository, orderRepository);
     }
+
     @Test
     void testGetOrderByMonth() {
         List<Order> orders = new ArrayList<>();
         Order order1 = new Order();
-        order1.setOrderValue(100);
+        order1.setOrderValue(ORDER_VALUE);
         order1.setOrderType(OrderType.valueOf("ORDER"));
         orders.add(order1);
         Order order2 = new Order();
-        order2.setOrderValue(200);
+        order2.setOrderValue(ORDER_VALUE_SECOND);
         order2.setOrderType(OrderType.valueOf("SUBSCRIPTION"));
         orders.add(order2);
         when(orderRepository.findByOrderDateBetween(any(), any())).thenReturn(orders);
 
-
         SalesDTO sales = adminService.getOrderByMonth();
 
-
         assertNotNull(sales);
-        assertEquals(4, sales.getOrderSales().size());
-        assertEquals(4, sales.getSubscriptionSales().size());
-
+        assertEquals(EXPECTED_ORDER_SALES, sales.getOrderSales().size());
+        assertEquals(EXPECTED_ORDER_SALES, sales.getSubscriptionSales().size());
 
         LocalDate endDate = LocalDate.now();
         int currentMonthValue = endDate.getMonthValue();
         String currentMonthString = Month.of(currentMonthValue).name();
-        assertEquals(100, sales.getOrderSales().get(currentMonthString));
-        assertEquals(200, sales.getSubscriptionSales().get(currentMonthString));
+        assertEquals(ORDER_VALUE, sales.getOrderSales().get(currentMonthString));
+        assertEquals(ORDER_VALUE_SECOND, sales.getSubscriptionSales().get(currentMonthString));
     }
 
-
 }
-
-

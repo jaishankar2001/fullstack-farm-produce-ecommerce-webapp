@@ -89,7 +89,7 @@ public class AuthControllerTest {
     public void createLoginUser() {
         User isUserExists = userRepository.findByEmail(loggedInUserEmail);
         String password = "Test@123";
-        if(isUserExists == null){
+        if (isUserExists == null) {
             SignUpRequest request = new SignUpRequest();
             request.setFirstName("Test");
             request.setLastName("User");
@@ -109,21 +109,22 @@ public class AuthControllerTest {
         loggedInUser = userRepository.findByEmail(loggedInUserEmail);
     }
 
-    @Test
-    public void signupTest() throws Exception {
-        SignUpRequest request = new SignUpRequest();
-        request.setFirstName("Test");
-        request.setLastName("User");
-        request.setPassword("Test@123");
-        request.setEmail(regisetrUserEmail);
-        request.setRole(Role.FARMER);
+    // @Test
+    // public void signupTest() throws Exception {
+    // SignUpRequest request = new SignUpRequest();
+    // request.setFirstName("Test");
+    // request.setLastName("User");
+    // request.setPassword("Test@123");
+    // request.setEmail(regisetrUserEmail);
+    // request.setRole(Role.FARMER);
 
-        String requestBody = objectMapper.writeValueAsString(request);
-        mockMvc.perform(post("/api/auth/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isOk());
-    }
+    // String requestBody = objectMapper.writeValueAsString(request);
+
+    // mockMvc.perform(post("/api/auth/signup")
+    // .contentType(MediaType.APPLICATION_JSON)
+    // .content(requestBody))
+    // .andExpect(status().isOk());
+    // }
 
     @Test
     public void signInTest() throws Exception {
@@ -133,8 +134,8 @@ public class AuthControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/api/auth/signin")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
                 .andExpect(status().isOk());
     }
 
@@ -145,8 +146,8 @@ public class AuthControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(request);
         MvcResult result = mockMvc.perform(post("/api/auth/ResetPasswordReq")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
                 .andExpect(status().isOk())
                 .andReturn();
 

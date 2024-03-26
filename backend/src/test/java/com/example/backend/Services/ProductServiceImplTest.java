@@ -61,9 +61,12 @@ public class ProductServiceImplTest {
     User user;
 
     static final int id = 1;
+    static final int PRODUCT_ID = 2;
+    static final double PRODUCT_PRICE = 99.99;
+    static final int PRODUCT_STOCK = 100;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
 
         MockitoAnnotations.openMocks(this);
         addProductRequest.setFarm_id(id);
@@ -88,13 +91,14 @@ public class ProductServiceImplTest {
     @Test
     void testAddProduct() {
         Principal principal = () -> "test@example.com";
-        MockMultipartFile[] mockFiles = {new MockMultipartFile("file1", new byte[0]), new MockMultipartFile("file2", new byte[0])};
+        MockMultipartFile[] mockFiles = { new MockMultipartFile("file1", new byte[0]),
+                new MockMultipartFile("file2", new byte[0]) };
         List<ProductDto> productAdded = productService.addProduct(addProductRequest, mockFiles, principal);
         assertTrue(productAdded instanceof List<ProductDto>);
     }
 
     @Test
-    void testDeleteProduct(){
+    void testDeleteProduct() {
 
         when(productRepository.findById(id)).thenReturn(product);
         productService.deleteProduct(id);
@@ -103,28 +107,29 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testDeleteProductWhenNullTest(){
+    void testDeleteProductWhenNullTest() {
         when(productRepository.findById(anyInt())).thenReturn(null);
-        assertThrows(ApiRequestException.class,()-> productService.deleteProduct(anyInt()));
+        assertThrows(ApiRequestException.class, () -> productService.deleteProduct(anyInt()));
     }
 
     @Test
-    void testEditProduct(){
+    void testEditProduct() {
 
         EditProductRequest mockEditProductRequest = new EditProductRequest();
-        mockEditProductRequest.setId(2); // Set valid ID for testing
+        mockEditProductRequest.setId(PRODUCT_ID); // Set valid ID for testing
         mockEditProductRequest.setProductName("Updated Product Name");
         mockEditProductRequest.setProductDescription("Updated Product Description");
-        mockEditProductRequest.setPrice(99.99);
-        mockEditProductRequest.setStock(100);
+        mockEditProductRequest.setPrice(PRODUCT_PRICE);
+        mockEditProductRequest.setStock(PRODUCT_STOCK);
         mockEditProductRequest.setUnit("kg");
 
-        MultipartFile[] mockFiles = { new MockMultipartFile("file1", "test.txt", "text/plain", "test file".getBytes()) };
+        MultipartFile[] mockFiles = {
+                new MockMultipartFile("file1", "test.txt", "text/plain", "test file".getBytes()) };
         Principal mockPrincipal = () -> "user1";
 
         when(productRepository.findById(anyInt())).thenReturn(product);
-        when(awsutils.uploadFileToS3(any(MultipartFile.class), anyString(), anyInt())).thenReturn("https://test-URL/test/file1");
-
+        when(awsutils.uploadFileToS3(any(MultipartFile.class), anyString(), anyInt()))
+                .thenReturn("https://test-URL/test/file1");
 
         Product updatedProduct = productService.editProduct(mockEditProductRequest, mockFiles, mockPrincipal);
 
@@ -137,30 +142,32 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void testEditProductWhenNull(){
-        MultipartFile[] mockFiles = { new MockMultipartFile("file1", "test.txt", "text/plain", "test file".getBytes()) };
+    void testEditProductWhenNull() {
+        MultipartFile[] mockFiles = {
+                new MockMultipartFile("file1", "test.txt", "text/plain", "test file".getBytes()) };
         Principal mockPrincipal = () -> "user1";
         EditProductRequest mockEditProductRequest = new EditProductRequest();
         when(productRepository.findById(anyInt())).thenReturn(null);
-        assertThrows(ApiRequestException.class, () -> productService.editProduct(mockEditProductRequest, mockFiles, mockPrincipal));
+        assertThrows(ApiRequestException.class,
+                () -> productService.editProduct(mockEditProductRequest, mockFiles, mockPrincipal));
     }
 
     @Test
-    void testGetProductById(){
+    void testGetProductById() {
         when(productRepository.findById(id)).thenReturn(product);
         Object result = productService.getProductById(id);
         assertEquals(productService.getProductById(id).getId(), productDto.getId());
     }
 
     @Test
-    void testGetProductByIdWhenNull(){
+    void testGetProductByIdWhenNull() {
         when(productRepository.findById(anyInt())).thenReturn(null);
-        assertThrows(ApiRequestException.class, ()-> productService.getProductById(id));
+        assertThrows(ApiRequestException.class, () -> productService.getProductById(id));
     }
 
     @Test
-    void testGetFarmerProducts(){
-        Principal mockPrincipal = ()-> "testUser@ecopick.com" ;
+    void testGetFarmerProducts() {
+        Principal mockPrincipal = () -> "testUser@ecopick.com";
         user.setEmail("testUser@ecopick.com");
         farm.setId(id);
         product.setId(id);
@@ -181,11 +188,12 @@ public class ProductServiceImplTest {
         verify(productRepository, times(1)).findByFarm(any(Farms.class));
 
     }
+
     @Test
-    void testGetFarmerProductsWhenNull(){
-        Principal mockPrincipal = ()-> "testUser@ecopick.com" ;
+    void testGetFarmerProductsWhenNull() {
+        Principal mockPrincipal = () -> "testUser@ecopick.com";
         when(userRepository.findById(anyInt())).thenReturn(null);
-        assertThrows(ApiRequestException.class, ()-> productService.getFarmerProducts(mockPrincipal));
+        assertThrows(ApiRequestException.class, () -> productService.getFarmerProducts(mockPrincipal));
     }
 
     @Test
@@ -218,6 +226,5 @@ public class ProductServiceImplTest {
         assertTrue(testArr1.isEmpty());
 
     }
-
 
 }
