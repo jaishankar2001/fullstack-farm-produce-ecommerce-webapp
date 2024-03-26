@@ -4,9 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./UserDropdown.css";
 
 const UserDropdown = ({ handleLogout }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [userMeta, setUserMeta] = React.useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setUserMeta(JSON.parse(localStorage.getItem("userMeta")));
@@ -30,13 +28,21 @@ else{
                 <a className="dropdown-item">Start Selling</a>
               </Link>
 
-              <Link to="/farmer-farms">
+              {userMeta.role === 'FARMER' && (
+                <>
+                <Link to="/farmer-farms">
                 <a className="dropdown-item">My farm</a>
               </Link>
 
               <Link to="/farmer-products">
                 <a className="dropdown-item">My products</a>
               </Link>
+
+              <Link to="/farmer-subscriptions">
+                <a className="dropdown-item">Subscribed Products</a>
+              </Link>
+                </>
+              )}
 
               <Link to="/wallet">
                 <a className="dropdown-item">Wallet</a>

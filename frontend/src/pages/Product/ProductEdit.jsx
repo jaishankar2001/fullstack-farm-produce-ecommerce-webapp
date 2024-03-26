@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useRecoilState } from "recoil";
 import api from "../../api/index";
 import DropzoneComponent from "../../components/DropzoneComponent";
 import Dropdown from "../../components/Dropdown";
-import { productState } from "../../recoil/atoms/product";
 
 function ProductEdit() {
   const { id } = useParams();
