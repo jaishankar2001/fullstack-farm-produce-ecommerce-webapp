@@ -51,7 +51,7 @@ test:
   only: 
     - main
 
-quality: 
+maven-code-quality: 
   stage: quality
   image: maven:latest
   script: 
@@ -65,6 +65,16 @@ quality:
       - $CI_PROJECT_DIR/backend/code-smells
   only: 
     - main
+
+code-format-frontend:
+  stage: quality
+  image: node:latest
+  script:
+    - echo "Frontend code format start..."
+    - cd frontend
+    - npm install prettier --save-dev
+    - npm run format
+    - echo "Frontend code format completed.."
 
 publish:
   image: docker:latest
