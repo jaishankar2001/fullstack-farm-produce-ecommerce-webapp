@@ -10,6 +10,6 @@ export const productState = atom({
     unit: "",
     farm_id: "",
     category_id: "",
-    files: null
+    files: null,
   },
 });

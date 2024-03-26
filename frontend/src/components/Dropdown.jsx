@@ -5,7 +5,7 @@ function Dropdown({ options, onSelect, selectedValue }) {
 
   useEffect(() => {
     setSelectedOption(selectedValue);
-  })
+  });
 
   const handleOptionChange = (event) => {
     const selectedValue = event.target.value;
@@ -20,7 +20,9 @@ function Dropdown({ options, onSelect, selectedValue }) {
         onChange={handleOptionChange}
         class="form-control dropdown-toggle"
       >
-        <option value="" disabled>Select an option</option>
+        <option value="" disabled>
+          Select an option
+        </option>
         {options.map((option) => (
           <option key={option.id} value={option.name}>
             {option.name}

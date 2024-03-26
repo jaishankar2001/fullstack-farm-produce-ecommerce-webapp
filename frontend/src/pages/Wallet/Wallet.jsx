@@ -99,7 +99,7 @@ function Wallet() {
                                   <div className="ms-3">
                                     <span className="h5">
                                       {moment(wallet.createdAt).format(
-                                        "MM/DD/YYYY"
+                                        "MM/DD/YYYY",
                                       )}
                                     </span>
                                   </div>

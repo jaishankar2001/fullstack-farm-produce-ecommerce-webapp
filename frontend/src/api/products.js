@@ -27,12 +27,11 @@ export async function deleteProduct(id) {
   }
 }
 
-
 export async function getFarmerProducts(payload) {
-    try {
-      const response = await api.post("/products/delete", payload);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+  try {
+    const response = await api.post("/products/delete", payload);
+    return response;
+  } catch (error) {
+    throw error;
   }
+}

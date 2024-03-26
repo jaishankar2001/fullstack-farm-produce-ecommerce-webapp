@@ -39,7 +39,7 @@ const MapView = ({
 
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${google_api_key}`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${google_api_key}`,
       );
 
       const addressComponents = response.data.results[0].address_components;
@@ -83,7 +83,7 @@ const MapView = ({
               onPlaceSelected={(place) =>
                 handlePlaceSelect(
                   place.geometry.location.lat(),
-                  place.geometry.location.lng()
+                  place.geometry.location.lng(),
                 )
               }
               componentRestrictions={{ country: "canada" }}

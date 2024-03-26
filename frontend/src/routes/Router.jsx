@@ -116,7 +116,6 @@ export const Router = () => {
           path: "/Admin-dashboard",
           element: <AdminDashboard />,
         },
-
       ],
     },
   ]);

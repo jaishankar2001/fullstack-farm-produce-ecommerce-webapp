@@ -22,7 +22,7 @@ const SubscriptionModal = ({
     setCustomDays((prevDays) =>
       prevDays.includes(day)
         ? prevDays.filter((d) => d !== day)
-        : [...prevDays, day]
+        : [...prevDays, day],
     );
   };
 

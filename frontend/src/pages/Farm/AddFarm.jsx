@@ -40,7 +40,7 @@ function AddFarm() {
           method: "POST",
           headers: headers,
           body: formData,
-        }
+        },
       );
 
       navigate("/");

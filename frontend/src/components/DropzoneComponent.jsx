@@ -37,12 +37,12 @@ function DropzoneComponent({ onFilesSelected }) {
       const updatedFiles = acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
-        })
+        }),
       );
 
       setFiles(updatedFiles);
     },
-    [onFilesSelected]
+    [onFilesSelected],
   );
 
   const {
@@ -63,7 +63,7 @@ function DropzoneComponent({ onFilesSelected }) {
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isDragActive, isDragReject, isDragAccept]
+    [isDragActive, isDragReject, isDragAccept],
   );
 
   const thumbs = files.map((file) => (

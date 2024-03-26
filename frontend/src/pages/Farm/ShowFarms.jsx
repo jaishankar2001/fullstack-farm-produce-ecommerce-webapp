@@ -7,7 +7,7 @@ import DropzoneComponent from "../../components/DropzoneComponent";
 import axios from "axios";
 import Map from "../../components/Map";
 
-function ShowFarms(){
+function ShowFarms() {
   const [farmName, setFarmName] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -29,8 +29,8 @@ function ShowFarms(){
       }
       return newFarmLoc;
     });
-  }
-    
+  };
+
   const handleInputChange = (e) => {
     setFarmName(e.target.value);
   };
@@ -40,15 +40,17 @@ function ShowFarms(){
       const token = localStorage?.getItem("token");
       const config = {
         headers: {
-
-            'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         params: {
-            "farmName": `${farmName}`
-        }
-    }
+          farmName: `${farmName}`,
+        },
+      };
 
-      const responseFromBackend = axios.get(`${process.env.REACT_APP_BASE_URL}/customer/listfarms`, config);
+      const responseFromBackend = axios.get(
+        `${process.env.REACT_APP_BASE_URL}/customer/listfarms`,
+        config,
+      );
       setFarmData((await responseFromBackend).data);
     } catch (error) {
       console.log(error);
@@ -74,82 +76,106 @@ function ShowFarms(){
     event.preventDefault();
     fetchData();
   };
-  
 
-  return(
+  return (
     <>
       <div className="container py-3">
-      <ToastContainer />
-      <div className="bg-secondary">
-        <div className="container">
-          <div className="row py-4 px-2">
-            <div className="col-lg-7">
-            <div className="col-lg-7">
-            <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search Farms..."
-                  value={farmName}
-                  onChange={(e) => setFarmName(e.target.value)}
-                />
-                <button className="btn btn-outline-primary" type="button" onClick={handleSubmit}>
-                  Search
-                </button>
+        <ToastContainer />
+        <div className="bg-secondary">
+          <div className="container">
+            <div className="row py-4 px-2">
+              <div className="col-lg-7">
+                <div className="col-lg-7">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Search Farms..."
+                      value={farmName}
+                      onChange={(e) => setFarmName(e.target.value)}
+                    />
+                    <button
+                      className="btn btn-outline-primary"
+                      type="button"
+                      onClick={handleSubmit}
+                    >
+                      Search
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="container-fluid fruite py-1">
+      <div class="container-fluid fruite py-1">
         <div class="container py-2">
-            <div class="tab-class text-center">
-                <div class="row g-2">
-                    <div class="col-lg-4 text-start">
-                        <h1>Explore Our Farms</h1>
-                    </div>
-                </div>
-                <div class="tab-content mt-5">
-                     <div id="tab-1" class="tab-pane fade show p-0 active ">
-                        <div class="row g-4">
-                            <div  class="col-lg-6">
-                                <div class="row g-3">
-                                {farmData.length > 0 ? (farmData.map(farm =>
-                                    <div key = {farm.id} class='col-md-6 col-lg-12 col-xl-6 shadow lg '>
-                                        <div class="hoverable">
-                                            <div class="rounded position-relative fruite-item">
-                                                <div class="fruite-img">
-                                                    <img src={farm.images[0].img_url} class="img-fluid w-100 rounded-top" alt=""></img>
-                                                </div>
-                                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style={{ top: '10px', left: '10px' }}>{farm.id}</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4>{farm.name}</h4>
-                                                    <p>{farm.description}</p>
-                                                    <div class="d-flex justify-content-center flex-lg-wrap">
-                                                        <a href={`/farm/${farm.id}`} class="btn border border-secondary rounded-pill px-3 text-primary"> Visit the farm</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    )):""}
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                            <Map
-                              farmLoc={farmLoc}
-                              setSelectedLocation={setSelectedLocation}
-                              selectedLocation={selectedLocation} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <div class="tab-class text-center">
+            <div class="row g-2">
+              <div class="col-lg-4 text-start">
+                <h1>Explore Our Farms</h1>
+              </div>
             </div>
+            <div class="tab-content mt-5">
+              <div id="tab-1" class="tab-pane fade show p-0 active ">
+                <div class="row g-4">
+                  <div class="col-lg-6">
+                    <div class="row g-3">
+                      {farmData.length > 0
+                        ? farmData.map((farm) => (
+                            <div
+                              key={farm.id}
+                              class="col-md-6 col-lg-12 col-xl-6 shadow lg "
+                            >
+                              <div class="hoverable">
+                                <div class="rounded position-relative fruite-item">
+                                  <div class="fruite-img">
+                                    <img
+                                      src={farm.images[0].img_url}
+                                      class="img-fluid w-100 rounded-top"
+                                      alt=""
+                                    ></img>
+                                  </div>
+                                  <div
+                                    class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                                    style={{ top: "10px", left: "10px" }}
+                                  >
+                                    {farm.id}
+                                  </div>
+                                  <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <h4>{farm.name}</h4>
+                                    <p>{farm.description}</p>
+                                    <div class="d-flex justify-content-center flex-lg-wrap">
+                                      <a
+                                        href={`/farm/${farm.id}`}
+                                        class="btn border border-secondary rounded-pill px-3 text-primary"
+                                      >
+                                        {" "}
+                                        Visit the farm
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        : ""}
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <Map
+                      farmLoc={farmLoc}
+                      setSelectedLocation={setSelectedLocation}
+                      selectedLocation={selectedLocation}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
-  </>
+      </div>
+    </>
   );
 }
 export default ShowFarms;

@@ -6,16 +6,15 @@ import DropzoneComponent from "../../components/DropzoneComponent";
 import api from "../../api/index";
 import Dropdown from "../../components/Dropdown";
 
-
 function AddProduct() {
   const [productName, setProductName] = useState("");
-  const [categoryID, setCategoryID]= useState("");
-  const [farmID, setFarmID]= useState("");
-  const [price, setPrice]= useState("");
-  const [stock, setStock]= useState("");
+  const [categoryID, setCategoryID] = useState("");
+  const [farmID, setFarmID] = useState("");
+  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
   const [categories, setCategories] = useState([]);
   const [productDescription, setProductDescription] = useState();
-  const [unit, setUnit]= useState("");
+  const [unit, setUnit] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
@@ -58,11 +57,14 @@ function AddProduct() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await fetch("http://localhost:8080/api/products/addproduct", {
-        method: "POST",
-        headers: headers,
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/products/addproduct",
+        {
+          method: "POST",
+          headers: headers,
+          body: formData,
+        },
+      );
 
       navigate("/farmer-products");
     } catch (error) {
@@ -80,18 +82,15 @@ function AddProduct() {
     }
   };
 
-
   useEffect(() => {
     api.category
       .getCategories()
       .then((response) => {
         setCategories(response);
-      
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
-
   }, []);
 
   const handleFilesSelected = (selectedFiles) => {
@@ -99,10 +98,9 @@ function AddProduct() {
   };
 
   const handleFarmSelect = (selectedFarm) => {
-    const farm = allFarms.find(farm => farm.name === selectedFarm);
+    const farm = allFarms.find((farm) => farm.name === selectedFarm);
     setFarmID(farm.id);
   };
-
 
   const getFarmerFarms = async () => {
     const response = await api.farm.getFarmerFarms();
@@ -114,13 +112,15 @@ function AddProduct() {
   }, []);
 
   const handleCategorySelect = (selectedCategory) => {
-    const category = categories.find(category => category.name === selectedCategory);
+    const category = categories.find(
+      (category) => category.name === selectedCategory,
+    );
     setCategoryID(category?.id);
     setCategoryName(category?.name);
   };
 
   const handleUnitSelect = (selectedUnit) => {
-    const unit = unitOptions.find(unit => unit.name === selectedUnit);
+    const unit = unitOptions.find((unit) => unit.name === selectedUnit);
     setUnit(unit.name);
   };
 
@@ -132,7 +132,9 @@ function AddProduct() {
           <div className="card border-1 shadow-sm">
             <div className="card-body">
               <form className="row g-3">
-                <h4 className="fw-bold py-1 mb-0 row justify-content-center mt-2">Add Product</h4>
+                <h4 className="fw-bold py-1 mb-0 row justify-content-center mt-2">
+                  Add Product
+                </h4>
 
                 <div className="col-md-4 fw-semibold mt-4">
                   <label className="form-label ">Farm</label>
@@ -164,7 +166,9 @@ function AddProduct() {
                 </div>
 
                 <div className="col-md-4 fw-semibold mb-0">
-                  <label className="form-label fw-semibold">Price (in CAD)</label>
+                  <label className="form-label fw-semibold">
+                    Price (in CAD)
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -203,22 +207,25 @@ function AddProduct() {
                   />
                 </div> */}
 
-                
                 <div class="dropdown">
-                <label className="form-label fw-semibold">Unit</label>
+                  <label className="form-label fw-semibold">Unit</label>
                   <Dropdown
                     options={unitOptions}
                     onSelect={handleUnitSelect}
                     selectedValue={unit}
                   />
-        </div>
-        
+                </div>
 
                 <h6 className="fw-semibold mb-0">About your Product</h6>
                 <div>
-                  <input type="textarea" className="form-control"  value={productDescription} onChange={(e) => {
+                  <input
+                    type="textarea"
+                    className="form-control"
+                    value={productDescription}
+                    onChange={(e) => {
                       setProductDescription(e.target.value);
-                    }}/>
+                    }}
+                  />
                 </div>
 
                 <div className="col-md-12">

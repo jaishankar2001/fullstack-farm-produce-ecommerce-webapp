@@ -7,7 +7,7 @@ function ProductDetailCard({ id }) {
         <img
           className="rounded"
           src={`https://source.unsplash.com/random/100x100?random=${Math.floor(
-            Math.random() * 50
+            Math.random() * 50,
           )}`}
           width={80}
           height={80}

@@ -28,11 +28,10 @@ function Login() {
           balance: response.wallet_balance,
         };
         localStorage.setItem("userMeta", JSON.stringify(userMeta));
-        if(userMeta.email === "admin123@gmail.com"){
+        if (userMeta.email === "admin123@gmail.com") {
           window.location.replace("/Admin-dashboard");
-        }
-        else{
-        window.location.replace("/");
+        } else {
+          window.location.replace("/");
         }
       }
     } catch (error) {

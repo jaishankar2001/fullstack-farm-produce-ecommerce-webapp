@@ -3,6 +3,6 @@ import { atom } from "recoil";
 export const userState = atom({
   key: "userState",
   default: {
-    farm_id: ""
+    farm_id: "",
   },
 });

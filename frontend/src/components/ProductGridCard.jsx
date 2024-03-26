@@ -26,16 +26,16 @@ function ProductGridCard({ product, from }) {
               </h4>
             </div>
             <div className="d-flex flex-lg-wrap justify-content-center mt-2">
-              <p className="text-center">
-                {product.productDescription}
-              </p>
+              <p className="text-center">{product.productDescription}</p>
             </div>
           </div>
           <div className="hstack gap-2 justify-content-center">
             <button
               className="btn btn-sm btn-secondary text-primary flex-grow-1 d-none d-lg-block"
               onClick={() => {
-                  navigate(`/product/${product.id}`,{ state: { previousPath: from } });
+                navigate(`/product/${product.id}`, {
+                  state: { previousPath: from },
+                });
               }}
             >
               View Product

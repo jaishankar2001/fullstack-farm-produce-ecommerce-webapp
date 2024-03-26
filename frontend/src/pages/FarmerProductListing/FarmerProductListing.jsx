@@ -13,25 +13,26 @@ function FarmerProductListing() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    api.category.getCategories()
-    .then(response => {
-      setCategories(response);
-    })
-    .catch(error => {
-      console.error("Error fetching categories:", error);
-    });
+    api.category
+      .getCategories()
+      .then((response) => {
+        setCategories(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
   }, []);
 
-
-  const getAllProducts = async() => {
-    const response = await api.products.getProducts({ productName: searchTerm });
+  const getAllProducts = async () => {
+    const response = await api.products.getProducts({
+      productName: searchTerm,
+    });
     setAllProducts(response);
-
-  }
+  };
 
   useEffect(() => {
     getAllProducts();
-   }, [searchTerm])
+  }, [searchTerm]);
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
@@ -57,7 +58,7 @@ function FarmerProductListing() {
 
     // Filter products based on selected categories
     return allProducts.filter((product) =>
-      selectedCategories.includes(product?.category?.id)
+      selectedCategories.includes(product?.category?.id),
     );
   };
 
@@ -69,20 +70,20 @@ function FarmerProductListing() {
         <div className="container">
           <div className="row py-4 px-2">
             <div className="col-lg-7">
-            <div className="col-lg-7">
-            <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search products..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-                <button className="btn btn-outline-primary" type="button">
-                  Search
-                </button>
+              <div className="col-lg-7">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                  <button className="btn btn-outline-primary" type="button">
+                    Search
+                  </button>
+                </div>
               </div>
-            </div>
               {/* <nav aria-label="breadcrumb">
                 <ol className="breadcrumb mb-1">
                   <li className="breadcrumb-item">
@@ -121,7 +122,9 @@ function FarmerProductListing() {
                             type="checkbox"
                             className="form-check-input"
                             checked={selectedCategories.includes(category?.id)}
-                            onChange={() => handleCategoryCheckboxChange(category?.id)}
+                            onChange={() =>
+                              handleCategoryCheckboxChange(category?.id)
+                            }
                           />
                           {category.name}
                         </label>
@@ -133,25 +136,25 @@ function FarmerProductListing() {
             </div>
           </div>
           <div className="col-lg-9">
-          <div className="hstack justify-content-between mb-3">
-            <span className="text-dark">{allProducts?.length} Items found</span>
-            <div className="btn-group" role="group">
-              <Link to="/add-product">
-            <button
-            className="btn btn-primary px-md-4 col col-md-auto me-2"
-          >
-            Add Product
-          </button>
-          </Link>
+            <div className="hstack justify-content-between mb-3">
+              <span className="text-dark">
+                {allProducts?.length} Items found
+              </span>
+              <div className="btn-group" role="group">
+                <Link to="/add-product">
+                  <button className="btn btn-primary px-md-4 col col-md-auto me-2">
+                    Add Product
+                  </button>
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-3">
-            {filteredProducts.map((product, index) => (
-       <div className="col">
-        <ProductGridCard product={product} from="farmerProducts"/>
-     </div>
-      ))}
-          </div>
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-3">
+              {filteredProducts.map((product, index) => (
+                <div className="col">
+                  <ProductGridCard product={product} from="farmerProducts" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

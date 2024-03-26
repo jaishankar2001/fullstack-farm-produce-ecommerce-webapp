@@ -6,7 +6,7 @@ import {
   CAT1,
   CarousalImage,
   FarmCarousal,
-  background_1
+  background_1,
 } from "../../assets/images/index";
 import "./styles.css";
 

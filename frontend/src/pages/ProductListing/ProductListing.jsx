@@ -18,15 +18,16 @@ function ProductListing() {
     });
     setAllProducts(response);
   };
-  
+
   useEffect(() => {
-    api.category.getCategories()
-    .then(response => {
-      setCategories(response);
-    })
-    .catch(error => {
-      console.error("Error fetching categories:", error);
-    });
+    api.category
+      .getCategories()
+      .then((response) => {
+        setCategories(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
   }, []);
 
   useEffect(() => {
@@ -49,7 +50,6 @@ function ProductListing() {
     }
   };
 
-
   const getFilteredProducts = () => {
     // If no categories are selected, return all products
     if (selectedCategories.length === 0) {
@@ -58,7 +58,7 @@ function ProductListing() {
 
     // Filter products based on selected categories
     return allProducts.filter((product) =>
-      selectedCategories.includes(product.category.id)
+      selectedCategories.includes(product.category.id),
     );
   };
 
@@ -122,7 +122,9 @@ function ProductListing() {
                             type="checkbox"
                             className="form-check-input"
                             checked={selectedCategories.includes(category.id)}
-                            onChange={() => handleCategoryCheckboxChange(category.id)}
+                            onChange={() =>
+                              handleCategoryCheckboxChange(category.id)
+                            }
                           />
                           {category.name}
                         </label>

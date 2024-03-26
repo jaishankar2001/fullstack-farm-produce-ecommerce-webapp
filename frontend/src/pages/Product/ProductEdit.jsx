@@ -105,7 +105,7 @@ function ProductEdit() {
           method: "POST",
           headers: headers,
           body: formData,
-        }
+        },
       );
       navigate("/farmer-products");
     } catch (error) {
@@ -128,7 +128,7 @@ function ProductEdit() {
 
   const handleCategorySelect = (selectedCategory) => {
     const category = categories.find(
-      (category) => category.name === selectedCategory
+      (category) => category.name === selectedCategory,
     );
     setCategoryID(category?.id);
     setCategoryName(category?.name);
@@ -198,7 +198,9 @@ function ProductEdit() {
                 </div>
 
                 <div className="col-md-4 fw-semibold mb-0">
-                  <label className="form-label fw-semibold">Price (in CAD)</label>
+                  <label className="form-label fw-semibold">
+                    Price (in CAD)
+                  </label>
                   <input
                     type="text"
                     className="form-control"

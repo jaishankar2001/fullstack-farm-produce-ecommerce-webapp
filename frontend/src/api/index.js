@@ -3,11 +3,11 @@ import * as farmApi from "./farm";
 import * as walletApi from "./wallet";
 import * as productApi from "./products";
 import * as homeApi from "./home";
-import * as categoryApi from './category';
-import * as orderApi from './order';
-import * as subscriptionApi from './subscription';
-import * as adminApi from './admin';
-import * as cronApi from './cron';
+import * as categoryApi from "./category";
+import * as orderApi from "./order";
+import * as subscriptionApi from "./subscription";
+import * as adminApi from "./admin";
+import * as cronApi from "./cron";
 
 const api = {
   auth: authApi,
@@ -19,7 +19,7 @@ const api = {
   order: orderApi,
   subscription: subscriptionApi,
   admin: adminApi,
-  cron: cronApi
+  cron: cronApi,
 };
 
 export default api;

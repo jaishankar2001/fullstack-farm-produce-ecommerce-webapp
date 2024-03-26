@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import api from '../../api/index';
-import Layout from '../../common/Layout/Layout';
+import api from "../../api/index";
+import Layout from "../../common/Layout/Layout";
 
 function ForgotPassword() {
-
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 

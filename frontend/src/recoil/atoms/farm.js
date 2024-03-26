@@ -7,6 +7,6 @@ export const farmState = atom({
     lng: 0,
     Address: "",
     files: null,
-    name: ""
+    name: "",
   },
 });

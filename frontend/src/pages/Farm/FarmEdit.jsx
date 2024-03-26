@@ -56,7 +56,7 @@ function FarmEdit() {
           method: "POST",
           headers: headers,
           body: formData,
-        }
+        },
       );
       navigate("/farmer-farms");
     } catch (error) {
