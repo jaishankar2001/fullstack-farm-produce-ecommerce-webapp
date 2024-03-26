@@ -57,7 +57,6 @@ public class CategoryControllerTest {
         User isUserExists = userRepository.findByEmail(loggedInUserEmail);
         String password = "Test@123";
         if(isUserExists == null){
-            System.out.println("SHOULD NOT GO HEREEEEEE!");
             SignUpRequest request = new SignUpRequest();
             request.setFirstName("Test");
             request.setLastName("User");
