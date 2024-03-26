@@ -30,10 +30,18 @@ import java.io.IOException;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
+    static final int START_INDEX = 7;
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+
         final String authHeader = request.getHeader("Authorization");
 
         final String jwt;
@@ -44,7 +52,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
-            jwt = authHeader.substring(7);
+            jwt = authHeader.substring(START_INDEX);
             userEmail = jwtService.extractUserName(jwt);
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
