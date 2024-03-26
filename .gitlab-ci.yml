@@ -75,6 +75,9 @@ code-format-frontend:
     - npm install prettier --save-dev
     - npm run format
     - echo "Frontend code format completed.."
+  only: 
+    - main
+  
 
 publish:
   image: docker:latest
