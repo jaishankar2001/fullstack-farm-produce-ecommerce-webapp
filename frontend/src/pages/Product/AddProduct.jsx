@@ -58,7 +58,7 @@ function AddProduct() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await fetch("http://localhost:8080/api/products/addproduct", {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/products/addproduct`, {
         method: "POST",
         headers: headers,
         body: formData,
