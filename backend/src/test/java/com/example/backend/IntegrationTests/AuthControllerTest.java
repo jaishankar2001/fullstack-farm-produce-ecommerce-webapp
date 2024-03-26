@@ -1,6 +1,8 @@
+
 package com.example.backend.IntegrationTests;
 
 import com.example.backend.controller.AuthController;
+import com.example.backend.dto.request.ResetPasswordRequest;
 import com.example.backend.dto.request.SignInRequest;
 import com.example.backend.entities.*;
 import com.example.backend.repository.UserMetaRepository;
@@ -11,11 +13,16 @@ import com.example.backend.services.VerificationService;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.example.backend.dto.request.SignUpRequest;
+import com.example.backend.dto.response.LoginResponse;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.http.MediaType;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,8 +62,8 @@ public class AuthControllerTest {
 
     private String regisetrUserEmail = "IntegrateTest@gmail.com";
 
-    private String loggedInUserEmail = "loggedinUser@gmail.com";
-    private static User logeedinUser;
+    private String loggedInUserEmail = "ecopickasdc@gmail.com";
+    private static User loggedInUser;
     private static String token;
 
     @BeforeEach
@@ -68,7 +75,6 @@ public class AuthControllerTest {
     @AfterEach()
     public void clear() {
         removeUser(regisetrUserEmail);
-        removeUser(loggedInUserEmail);
     }
 
     public void removeUser(String email) {
@@ -81,20 +87,26 @@ public class AuthControllerTest {
     }
 
     public void createLoginUser() {
-        SignUpRequest request = new SignUpRequest();
-        request.setFirstName("Test");
-        request.setLastName("User");
-        request.setPassword("Test@123");
-        request.setEmail(loggedInUserEmail);
-        request.setRole(Role.FARMER);
+        User isUserExists = userRepository.findByEmail(loggedInUserEmail);
+        String password = "Test@123";
+        if(isUserExists == null){
+            SignUpRequest request = new SignUpRequest();
+            request.setFirstName("Test");
+            request.setLastName("User");
+            request.setPassword(password);
+            request.setEmail(loggedInUserEmail);
+            request.setRole(Role.FARMER);
 
-        logeedinUser = authService.signUp(request);
-        VerificationCode verificationCode = verificationCodeRepository.findByEmail(loggedInUserEmail);
-        verificationService.verify(verificationCode.getCode(), loggedInUserEmail);
-
-        User xx = userRepository.findByEmail(loggedInUserEmail);
-
-        UserMeta userMeta = xx.getUserMeta();
+            authService.signUp(request);
+            VerificationCode verificationCode = verificationCodeRepository.findByEmail(loggedInUserEmail);
+            verificationService.verify(verificationCode.getCode(), loggedInUserEmail);
+        }
+        SignInRequest loginReq = new SignInRequest();
+        loginReq.setEmail(loggedInUserEmail);
+        loginReq.setPassword(password);
+        LoginResponse res = authService.signIn(loginReq);
+        token = res.getToken();
+        loggedInUser = userRepository.findByEmail(loggedInUserEmail);
     }
 
     @Test
@@ -108,8 +120,8 @@ public class AuthControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/api/auth/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
                 .andExpect(status().isOk());
     }
 
@@ -121,8 +133,25 @@ public class AuthControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/api/auth/signin")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testForgotpasswordReq() throws Exception {
+        ResetPasswordRequest request = new ResetPasswordRequest();
+        request.setEmail(loggedInUser.getEmail());
+
+        String requestBody = objectMapper.writeValueAsString(request);
+        MvcResult result = mockMvc.perform(post("/api/auth/ResetPasswordReq")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String responseString = result.getResponse().getContentAsString();
+
+        assertEquals("Please check email for password reset link", responseString);
     }
 }
