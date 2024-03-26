@@ -89,7 +89,7 @@ public class AuthControllerTest {
     public void createLoginUser() {
         User isUserExists = userRepository.findByEmail(loggedInUserEmail);
         String password = "Test@123";
-        if(isUserExists == null){
+        if (isUserExists == null) {
             SignUpRequest request = new SignUpRequest();
             request.setFirstName("Test");
             request.setLastName("User");
@@ -119,9 +119,10 @@ public class AuthControllerTest {
         request.setRole(Role.FARMER);
 
         String requestBody = objectMapper.writeValueAsString(request);
+
         mockMvc.perform(post("/api/auth/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
                 .andExpect(status().isOk());
     }
 
@@ -133,8 +134,8 @@ public class AuthControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/api/auth/signin")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
                 .andExpect(status().isOk());
     }
 
@@ -145,8 +146,8 @@ public class AuthControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(request);
         MvcResult result = mockMvc.perform(post("/api/auth/ResetPasswordReq")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
                 .andExpect(status().isOk())
                 .andReturn();
 

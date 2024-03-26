@@ -2,6 +2,7 @@ package com.example.backend.Services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -23,6 +24,10 @@ import com.example.backend.dto.response.OrderDto;
 import com.example.backend.services.impl.OrderServiceImpl;
 
 public class OrderServiceTest {
+        static final int WALLET_BALANCE = 200;
+        static final int PRODUCT_PRICE = 100;
+        static final int INSUFF_BALANCE = 10;
+
         @Mock
         private UserRepository userRepository;
 
@@ -51,10 +56,10 @@ public class OrderServiceTest {
         static final double ORDER_VALUE = 100.0;
         static final int ORDER_QUANTITY = 2;
 
-//        @BeforeEach
-//        public void setUp() {
-//                MockitoAnnotations.openMocks(this);
-//        }
+        // @BeforeEach
+        // public void setUp() {
+        // MockitoAnnotations.openMocks(this);
+        // }
 
         @BeforeEach
         void setUp() {
@@ -62,7 +67,8 @@ public class OrderServiceTest {
                 int productid = 1;
                 MockitoAnnotations.openMocks(this);
 
-                orderService = new OrderServiceImpl(userRepository, userMetaRepository, productRepository, farmRepository, orderRepository, walletRepository);
+                orderService = new OrderServiceImpl(userRepository, userMetaRepository, productRepository,
+                                farmRepository, orderRepository, walletRepository);
                 mockUser = new User();
                 mockUser.setEmail("test@example.com");
 
@@ -126,20 +132,20 @@ public class OrderServiceTest {
         }
 
         @Test
-        public void testPlaceOrderSuccess(){
+        public void testPlaceOrderSuccess() {
                 OrderRequest orderRequest = new OrderRequest();
                 orderRequest.setProduct_id(1);
                 orderRequest.setFarm_id(1);
                 orderRequest.setQuantity(1);
 
                 UserMeta userMeta = new UserMeta();
-                userMeta.setWallet_balance(200);
+                userMeta.setWallet_balance(WALLET_BALANCE);
                 User user = new User();
                 user.setUserMeta(userMeta);
 
                 Product product = new Product();
                 product.setStock(1);
-                product.setPrice(100.0);
+                product.setPrice(PRODUCT_PRICE);
 
                 Farms farms = new Farms();
                 String email = "test@gmail.com";
@@ -163,10 +169,10 @@ public class OrderServiceTest {
 
                 when(productRepository.findById(anyInt())).thenReturn(null);
 
-                //ASSERT
+                // ASSERT
                 Throwable thrown = assertThrows(
-                        ApiRequestException.class,
-                        () -> orderService.placeOrder(orderRequest, principal));
+                                ApiRequestException.class,
+                                () -> orderService.placeOrder(orderRequest, principal));
 
                 assertEquals("Product not found", thrown.getMessage());
         }
@@ -179,10 +185,10 @@ public class OrderServiceTest {
                 when(productRepository.findById(anyInt())).thenReturn(product);
                 when(farmRepository.findById(anyInt())).thenReturn(null);
 
-                //ASSERT
+                // ASSERT
                 Throwable thrown = assertThrows(
-                        ApiRequestException.class,
-                        () -> orderService.placeOrder(orderRequest, principal));
+                                ApiRequestException.class,
+                                () -> orderService.placeOrder(orderRequest, principal));
 
                 assertEquals("Farm not found", thrown.getMessage());
         }
@@ -192,22 +198,20 @@ public class OrderServiceTest {
                 OrderRequest orderRequest = new OrderRequest();
                 orderRequest.setProduct_id(1);
                 orderRequest.setFarm_id(1);
-                orderRequest.setQuantity(2);
+                orderRequest.setQuantity(ORDER_QUANTITY);
 
                 Product product = new Product();
                 product.setStock(1);
 
                 Farms farms = new Farms();
 
-                UserMeta userMeta = new UserMeta();
-
                 when(productRepository.findById(anyInt())).thenReturn(product);
                 when(farmRepository.findById(anyInt())).thenReturn(farms);
 
-                //ASSERT
+                // ASSERT
                 Throwable thrown = assertThrows(
-                        ApiRequestException.class,
-                        () -> orderService.placeOrder(orderRequest, principal));
+                                ApiRequestException.class,
+                                () -> orderService.placeOrder(orderRequest, principal));
 
                 assertEquals("Order cannot have more quantity than total stock", thrown.getMessage());
         }
@@ -220,13 +224,13 @@ public class OrderServiceTest {
                 orderRequest.setQuantity(1);
 
                 UserMeta userMeta = new UserMeta();
-                userMeta.setWallet_balance(10);
+                userMeta.setWallet_balance(INSUFF_BALANCE);
                 User user = new User();
                 user.setUserMeta(userMeta);
 
                 Product product = new Product();
                 product.setStock(1);
-                product.setPrice(100.0);
+                product.setPrice(PRODUCT_PRICE);
 
                 Farms farms = new Farms();
                 String email = "test@gmail.com";
@@ -236,10 +240,10 @@ public class OrderServiceTest {
                 when(productRepository.findById(anyInt())).thenReturn(product);
                 when(farmRepository.findById(orderRequest.getFarm_id())).thenReturn(farms);
 
-                //ASSERT
+                // ASSERT
                 Throwable thrown = assertThrows(
-                        ApiRequestException.class,
-                        () -> orderService.placeOrder(orderRequest, principal));
+                                ApiRequestException.class,
+                                () -> orderService.placeOrder(orderRequest, principal));
 
                 assertEquals("You do not have sufficient balance to buy this product", thrown.getMessage());
         }
