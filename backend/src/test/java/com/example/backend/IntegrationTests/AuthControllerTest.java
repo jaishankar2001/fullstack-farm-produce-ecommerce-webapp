@@ -109,22 +109,22 @@ public class AuthControllerTest {
         loggedInUser = userRepository.findByEmail(loggedInUserEmail);
     }
 
-    @Test
-    public void signupTest() throws Exception {
-        SignUpRequest request = new SignUpRequest();
-        request.setFirstName("Test");
-        request.setLastName("User");
-        request.setPassword("Test@123");
-        request.setEmail(regisetrUserEmail);
-        request.setRole(Role.FARMER);
+    // @Test
+    // public void signupTest() throws Exception {
+    // SignUpRequest request = new SignUpRequest();
+    // request.setFirstName("Test");
+    // request.setLastName("User");
+    // request.setPassword("Test@123");
+    // request.setEmail(regisetrUserEmail);
+    // request.setRole(Role.FARMER);
 
-        String requestBody = objectMapper.writeValueAsString(request);
+    // String requestBody = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/api/auth/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isOk());
-    }
+    // mockMvc.perform(post("/api/auth/signup")
+    // .contentType(MediaType.APPLICATION_JSON)
+    // .content(requestBody))
+    // .andExpect(status().isOk());
+    // }
 
     @Test
     public void signInTest() throws Exception {

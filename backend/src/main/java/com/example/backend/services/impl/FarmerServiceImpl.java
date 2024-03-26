@@ -121,9 +121,10 @@ public class FarmerServiceImpl implements FarmerService {
         }
         List<Farms> userFarms = farmRepository.findByUser(user);
         if (farmerOwnFarmRequest.getSearchTerm() != null) {
+            String searchTerm = farmerOwnFarmRequest.getSearchTerm().toLowerCase();
             Stream<Farms> filteredFarms = userFarms.stream()
                     .filter(farm -> farm.getName().toLowerCase()
-                            .contains(farmerOwnFarmRequest.getSearchTerm().toLowerCase()));
+                            .contains(searchTerm));
 
             Stream<FarmDto> mappedResponses = filteredFarms
                     .map(ResponseUtils::convertFarmResponse);
