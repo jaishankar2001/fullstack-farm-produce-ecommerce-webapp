@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.request.EditFarmRequest;
-import com.example.backend.dto.request.FarmerOwnFarmRequest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +31,10 @@ public class FarmerController {
 
     private final FarmerService farmerService;
 
-    @PostMapping("/own-farms")
-    public ResponseEntity<List<FarmDto>> getFarms(@RequestBody FarmerOwnFarmRequest farmerOwnFarmRequest,
+    @GetMapping("/own-farms")
+    public ResponseEntity<List<FarmDto>> getFarms(@RequestParam(name = "searchTerm", required = false) String searchTerm,
             Principal principal) {
-        List<FarmDto> userFarms = farmerService.getFarms(farmerOwnFarmRequest, principal);
+        List<FarmDto> userFarms = farmerService.getFarms(searchTerm, principal);
         return ResponseEntity.ok(userFarms);
     }
 

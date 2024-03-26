@@ -1,7 +1,6 @@
 package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.EditFarmRequest;
-import com.example.backend.dto.request.FarmerOwnFarmRequest;
 
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -114,17 +113,16 @@ public class FarmerServiceImpl implements FarmerService {
     }
 
     @Override
-    public List<FarmDto> getFarms(FarmerOwnFarmRequest farmerOwnFarmRequest, Principal principal) {
+    public List<FarmDto> getFarms(String searchTerm, Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
         if (user == null) {
             throw new ApiRequestException("User not found");
         }
         List<Farms> userFarms = farmRepository.findByUser(user);
-        if (farmerOwnFarmRequest.getSearchTerm() != null) {
-            String searchTerm = farmerOwnFarmRequest.getSearchTerm().toLowerCase();
+        if (searchTerm != null) {
             Stream<Farms> filteredFarms = userFarms.stream()
                     .filter(farm -> farm.getName().toLowerCase()
-                            .contains(searchTerm));
+                            .contains(searchTerm.toLowerCase()));
 
             Stream<FarmDto> mappedResponses = filteredFarms
                     .map(ResponseUtils::convertFarmResponse);
