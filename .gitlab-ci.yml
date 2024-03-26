@@ -67,7 +67,7 @@ maven-code-quality:
   #   - main
 
 code-format-frontend:
-  stage: code-quality-check
+  stage: quality
   script:
     - echo "Frontend code format start..."
     - cd frontend
