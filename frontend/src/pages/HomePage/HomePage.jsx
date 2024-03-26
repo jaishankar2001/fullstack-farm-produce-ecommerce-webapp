@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
+import { useNavigate } from "react-router-dom";
 import api from "../../api/index";
 import {
   BannerImage,
@@ -11,9 +12,9 @@ import {
 import "./styles.css";
 
 export const HomePage = () => {
-  const list = [1, 2, 3, 4];
   const [homeFarms, setHomeFarms] = useState([]);
   const [homeProducts, setHomeProducts] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const getHomeMeta = async () => {
       const response = await api.home.getHomeMeta();
@@ -22,8 +23,6 @@ export const HomePage = () => {
 
       setHomeProducts(response.products);
     };
-    console.log("In useeffect");
-
     getHomeMeta();
   }, []);
   return (
@@ -114,7 +113,8 @@ export const HomePage = () => {
               <div class="position-relative mx-auto">
                 <button
                   type="submit"
-                  class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded text-white h-200 shadow lg"
+                  className="btn btn-primary d-none d-md-block ms-2 py-3 px-4 position-absolute rounded text-white h-200 shadow lg"
+                  onClick={() => {navigate("/show-farms")}}
                 >
                   Explore the Farms
                 </button>
@@ -161,7 +161,7 @@ export const HomePage = () => {
                                       <p>{farm.description}</p>
                                       <div class="d-flex justify-content-center flex-lg-wrap">
                                         <a
-                                          href="#"
+                                          href={`/farm/${farm.id}`}
                                           class="btn border rounded-pill px-3 text-primary"
                                         >
                                           <i class="fa fa-shopping-bag me-2 text-primary"></i>{" "}
@@ -256,7 +256,6 @@ export const HomePage = () => {
                       <div class="row g-3">
                         {homeProducts.length > 0 &&
                           homeProducts.map((product) => {
-                            console.log("productproduct", product);
                             return (
                               <div class="col-md-5 col-lg-4 col-xl-3 shadow lg ">
                                 <div class="hoverable">
@@ -283,8 +282,8 @@ export const HomePage = () => {
                                           ${product.price} / {product.unit}
                                         </p>
                                         <a
-                                          href="#"
-                                          class="btn border border-secondary rounded-pill px-3 text-primary"
+                                          href={`/product/${product.id}`}
+                                          class="btn border rounded-pill px-3 text-primary"
                                         >
                                           <i class="fa fa-shopping-bag me-2 text-primary"></i>
                                           View Product

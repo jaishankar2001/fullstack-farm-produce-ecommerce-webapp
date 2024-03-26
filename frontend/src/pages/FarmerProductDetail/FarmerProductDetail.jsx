@@ -236,14 +236,28 @@ console.log(product);
                     <>
                       <button
                         className="btn btn-primary px-md-4 col col-md-auto me-2"
-                        onClick={openOrderConfirmationModal}
+                        onClick={() => {
+                          if (localStorage.getItem("token")) {
+                              openOrderConfirmationModal();
+                          } else {
+                              // Redirect to the login page
+                              window.location.href = '/login';
+                          }
+                      }}
                       >
                         Buy now
                       </button>
 
                       <button
                         className="btn btn-outline-primary col col-md-auto"
-                        onClick={() => setIsSubscriptionModalOpen(true)}
+                        onClick={() => {
+                          if (localStorage.getItem("token")) {
+                              setIsSubscriptionModalOpen(true);
+                          } else {
+                              // Redirect to the login page
+                              window.location.href = '/login';
+                          }
+                      }}
                       >
                         &nbsp;Subscribe
                       </button>
