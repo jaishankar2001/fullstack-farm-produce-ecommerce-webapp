@@ -3,7 +3,7 @@ import { Carousel } from "react-responsive-carousel";
 import api from "../../api/index";
 import {
   BannerImage,
-  CAT1,
+  BannerImg,
   CarousalImage,
   FarmCarousal,
   background_1
@@ -182,6 +182,50 @@ export const HomePage = () => {
             </div>
           </div>
         </div>
+        <div class="container bg-secondary my-2" >
+            <div class="container py-5 ">
+                <div class="row g-4 ">
+                    <div class="col-lg-6">
+                            <h1 class="display-3 text-primary ">Fresh Exotic Fruits & Vegetables</h1>
+                            <p class="fw-normal display-3 text-primary mb-4">from Our Farms</p>
+                            <p class="mb-4 text-dark">Discover the freshest produce straight from our local farms. With a commitment to sustainable farming practices, we bring you quality fruits and vegetables bursting with flavor and nutrition.</p>
+                            <a href="#" class="banner-btn btn btn-primary border-2 border-primary rounded-pill  text-white py-3 px-5">BUY NOW</a>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="py-5">
+                        <div class="position-relative">
+                            <img src={BannerImg} class="img-fluid w-100 rounded" alt=""></img>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {/* <div className="container py-5" style={{ backgroundImage: `url(${Spinach})`, backgroundSize: "cover", backgroundPosition: "center",opacity: "0.9" }}>
+          <div style={{ backdropFilter: "blur(15px)", backgroundColor: "secondary" }} className="container py-5">
+            <div className="container py-5">
+              <div className="row g-7 align-items-left">
+                <div className="col-lg-7 col-lg-7">
+                  <h4 className="mb-3 display-4 text-white fw-bold">Fresh Exotic Fruits</h4>
+                  <h1 className="mb-5 display-5 text-white">
+                    from Our Farms
+                  </h1>
+                  <p class="mb-4 text-white">Discover the freshest produce straight from our local farms. With a commitment to sustainable farming practices, we bring you quality fruits and vegetables bursting with flavor and nutrition.</p>
+                          <a href="/product-listing" class="banner-btn btn btn-primary rounded-pill text-white py-2 px-4" style={{borderWidth: '2px'}} >BUY NOW</a>
+                </div>
+                <div class="col-lg-5">
+                      <div class="position-relative">
+                        <img
+                            src={BannerImg}
+                            class="img-fluid w-100 rounded-top rounded-3"
+                            alt=""
+                          ></img>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div> */}
         <div class="container-fluid fruite py-1">
           <div class="container py-1">
             <div class="tab-class text-center">
@@ -189,65 +233,6 @@ export const HomePage = () => {
                 <div class="col-lg-4 text-start">
                   <h1>Our Organic Products</h1>
                 </div>
-                {/* <div class="col-lg-8 text-end">
-                  <ul class="nav nav-pills d-inline-flex text-center mb-5">
-                    <li class="nav-item">
-                      <a
-                        class="d-flex m-2 py-2 bg-light rounded-pill"
-                        data-bs-toggle="pill"
-                        href="#tab-1"
-                      >
-                        <span class="text-dark" style={{ width: "130px" }}>
-                          All Products
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="d-flex py-2 m-2 bg-light rounded-pill"
-                        data-bs-toggle="pill"
-                        href="#tab-2"
-                      >
-                        <span class="text-dark" style={{ width: "130px" }}>
-                          Vegetables
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="d-flex m-2 py-2 bg-light rounded-pill"
-                        data-bs-toggle="pill"
-                        href="#tab-3"
-                      >
-                        <span class="text-dark" style={{ width: "130px" }}>
-                          Fruits
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="d-flex m-2 py-2 bg-light rounded-pill"
-                        data-bs-toggle="pill"
-                        href="#tab-4"
-                      >
-                        <span class="text-dark" style={{ width: "130px" }}>
-                          Bread
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="d-flex m-2 py-2 bg-light rounded-pill"
-                        data-bs-toggle="pill"
-                        href="#tab-5"
-                      >
-                        <span class="text-dark" style={{ width: "130px" }}>
-                          Meat
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </div> */}
               </div>
               <div class="tab-content">
                 <div id="tab-1" class="tab-pane fade show py-4 active ">
@@ -300,210 +285,11 @@ export const HomePage = () => {
                     </div>
                   </div>
                 </div>
-                <div id="tab-4" class="tab-pane fade show p-0">
-                  <div class="row g-4">
-                    <div class="col-lg-12">
-                      <div class="row g-4">
-                        <div class="col-md-6 col-lg-4 col-xl-3 shadow lg">
-                          <div class="rounded position-relative fruite-item">
-                            <div class="fruite-img">
-                              <img
-                                src={CAT1}
-                                class="img-fluid w-100 rounded-top"
-                                alt=""
-                              ></img>
-                            </div>
-                            <div
-                              class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                              style={{ top: "10px", left: "10px" }}
-                            >
-                              Fruits
-                            </div>
-                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                              <h4>Grapes</h4>
-                              <p>
-                                Our grapes boast unparalleled flavor, grown with
-                                care using organic practices on our family farm.
-                              </p>
-                              <div class="d-flex justify-content-between flex-lg-wrap">
-                                <p class="text-dark fs-5 fw-bold mb-0">
-                                  $4.99 / kg
-                                </p>
-                                <a
-                                  href="#"
-                                  class="btn border border-secondary rounded-pill px-3 text-primary"
-                                >
-                                  <i class="fa fa-shopping-bag me-2 text-primary"></i>{" "}
-                                  View Product
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3 shadow lg">
-                          <div class="rounded position-relative fruite-item">
-                            <div class="fruite-img">
-                              <img
-                                src={CAT1}
-                                class="img-fluid w-100 rounded-top"
-                                alt=""
-                              ></img>
-                            </div>
-                            <div
-                              class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                              style={{ top: "10px", left: "10px" }}
-                            >
-                              Fruits
-                            </div>
-                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                              <h4>Apricots</h4>
-                              <p>
-                                Our apricots boast unparalleled flavor, grown
-                                with care using organic practices on our family
-                                farm.
-                              </p>
-                              <div class="d-flex justify-content-between flex-lg-wrap">
-                                <p class="text-dark fs-5 fw-bold mb-0">
-                                  $4.99 / kg
-                                </p>
-                                <a
-                                  href="#"
-                                  class="btn border border-secondary rounded-pill px-3 text-primary"
-                                >
-                                  <i class="fa fa-shopping-bag me-2 text-primary"></i>{" "}
-                                  View Product
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div id="tab-5" class="tab-pane fade show p-0">
-                  <div class="row g-4">
-                    <div class="col-lg-12 ">
-                      <div class="row g-4">
-                        <div class="col-md-6 col-lg-4 col-xl-3 shadow lg">
-                          <div class="rounded position-relative fruite-item">
-                            <div class="fruite-img">
-                              <img
-                                src={CAT1}
-                                class="img-fluid w-100 rounded-top"
-                                alt=""
-                              ></img>
-                            </div>
-                            <div
-                              class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                              style={{ top: "10px", left: "10px" }}
-                            >
-                              Fruits
-                            </div>
-                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                              <h4>Banana</h4>
-                              <p>
-                                Our banana boast unparalleled flavor, grown with
-                                care using organic practices on our family farm.
-                              </p>
-                              <div class="d-flex justify-content-between flex-lg-wrap">
-                                <p class="text-dark fs-5 fw-bold mb-0">
-                                  $4.99 / kg
-                                </p>
-                                <a
-                                  href="#"
-                                  class="btn border border-secondary rounded-pill px-3 text-primary"
-                                >
-                                  <i class="fa fa-shopping-bag me-2 text-primary"></i>{" "}
-                                  Add to cart
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3 shadow lg">
-                          <div class="rounded position-relative fruite-item">
-                            <div class="fruite-img">
-                              <img
-                                src={CAT1}
-                                class="img-fluid w-100 rounded-top"
-                                alt=""
-                              ></img>
-                            </div>
-                            <div
-                              class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                              style={{ top: "10px", left: "10px" }}
-                            >
-                              Fruits
-                            </div>
-                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                              <h4>Raspberries</h4>
-                              <p>
-                                Our raspberries boast unparalleled flavor, grown
-                                with care using organic practices on our family
-                                farm.
-                              </p>
-                              <div class="d-flex justify-content-between flex-lg-wrap">
-                                <p class="text-dark fs-5 fw-bold mb-0">
-                                  $4.99 / kg
-                                </p>
-                                <a
-                                  href="#"
-                                  class="btn border border-secondary rounded-pill px-3 text-primary"
-                                >
-                                  <i class="fa fa-shopping-bag me-2 text-primary"></i>{" "}
-                                  Add to cart
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4 col-xl-3 shadow lg">
-                          <div class="rounded position-relative fruite-item">
-                            <div class="fruite-img">
-                              <img
-                                src={CAT1}
-                                class="img-fluid w-100 rounded-top"
-                                alt=""
-                              ></img>
-                            </div>
-                            <div
-                              class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                              style={{ top: "10px", left: "10px" }}
-                            >
-                              Fruits
-                            </div>
-                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                              <h4>Oranges</h4>
-                              <p>
-                                Our oranges boast unparalleled flavor, grown
-                                with care using organic practices on our family
-                                farm.
-                              </p>
-                              <div class="d-flex justify-content-between flex-lg-wrap">
-                                <p class="text-dark fs-5 fw-bold mb-0">
-                                  $4.99 / kg
-                                </p>
-                                <a
-                                  href="#"
-                                  class="btn border border-secondary rounded-pill px-3 text-primary"
-                                >
-                                  <i class="fa fa-shopping-bag me-2 text-primary"></i>{" "}
-                                  Add to cart
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
-            </div>
           </div>
         </div>
       </div>
+    </div>
     </>
   );
 };
