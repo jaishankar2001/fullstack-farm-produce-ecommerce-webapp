@@ -31,11 +31,11 @@ else{
               {userMeta.role === 'FARMER' && (
                 <>
                 <Link to="/farmer-farms">
-                <a className="dropdown-item">My farm</a>
+                <a className="dropdown-item">My Farms</a>
               </Link>
 
               <Link to="/farmer-products">
-                <a className="dropdown-item">My products</a>
+                <a className="dropdown-item">My Products</a>
               </Link>
 
               <Link to="/farmer-subscriptions">

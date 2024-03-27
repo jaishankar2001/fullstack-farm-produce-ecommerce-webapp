@@ -186,8 +186,8 @@ export const HomePage = () => {
             <div class="container py-5 ">
                 <div class="row g-4 ">
                     <div class="col-lg-6">
-                            <h1 class="display-3 text-primary ">Fresh Exotic Fruits & Vegetables</h1>
-                            <p class="fw-normal display-3 text-primary mb-4">from Our Farms</p>
+                            <h1 class="display-4 text-primary">Fresh Exotic Fruits & Vegetables</h1>
+                            <p class="fw-normal display-5 text-primary mb-4">from Our Farms</p>
                             <p class="mb-4 text-dark">Discover the freshest produce straight from our local farms. With a commitment to sustainable farming practices, we bring you quality fruits and vegetables bursting with flavor and nutrition.</p>
                             <a href="#" class="banner-btn btn btn-primary border-2 border-primary rounded-pill  text-white py-3 px-5">BUY NOW</a>
                     </div>
@@ -226,7 +226,7 @@ export const HomePage = () => {
             </div>
           </div>
         </div> */}
-        <div class="container-fluid fruite py-1">
+        <div class="container-fluid fruite py-5">
           <div class="container py-1">
             <div class="tab-class text-center">
               <div class="row g-4">

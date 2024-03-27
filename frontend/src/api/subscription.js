@@ -35,3 +35,16 @@ export async function placeSubscription(payload) {
       throw error;
     }
   }
+
+
+/**
+ * Delete a subscription
+ */
+export async function unsubscribeProduct(id) {
+  try {
+    const response = await api.del(`/subscribe/unSubscribe/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
