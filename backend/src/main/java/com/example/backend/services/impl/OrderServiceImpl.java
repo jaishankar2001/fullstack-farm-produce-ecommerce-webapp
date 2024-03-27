@@ -112,6 +112,7 @@ public class OrderServiceImpl implements OrderService {
             orderDto.setOrderValue(orderPlaced.getOrderValue());
             orderDto.setQuantity(orderPlaced.getQuantity());
             orderDto.setOrderPaymentMethod(orderPlaced.getOrderPaymentMethod());
+            orderDto.setOrderType(String.valueOf(orderPlaced.getOrderType()));
 
             for (Images image : orderPlaced.getProduct().getImages()) {
                 orderDto.addImage(image);
