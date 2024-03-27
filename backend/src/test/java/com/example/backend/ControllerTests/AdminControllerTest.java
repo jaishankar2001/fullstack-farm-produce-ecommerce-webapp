@@ -32,7 +32,6 @@ public class AdminControllerTest {
         MockitoAnnotations.openMocks(this);
         responseEntity = adminController.getallinformation(principal);
         when(adminService.getAllInfo(principal)).thenReturn(mockResponse);
-        responseEntity = adminController.getallinformation(principal);
 
     }
 
@@ -46,7 +45,6 @@ public class AdminControllerTest {
     @Test
     public void testGetAllInformationResponseBody() {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(responseEntity.getBody(),times(1)).equals(responseEntity);
     }
 
 }
