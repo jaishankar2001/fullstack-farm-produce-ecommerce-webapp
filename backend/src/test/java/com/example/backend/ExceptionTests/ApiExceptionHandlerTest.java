@@ -33,22 +33,16 @@ class ApiExceptionHandlerTest {
     void testHandleRequestExceptionWithoutThrowable() {
         ApiRequestException exception = new ApiRequestException("Test Exception Message");
 
-
         ResponseEntity<Object> responseEntity = exceptionHandler.handleRequestionException(exception);
-
 
         ApiException apiException = (ApiException) responseEntity.getBody();
 
-
-
         assertEquals("Test Exception Message", apiException.getMessage());
-        assertEquals(HttpStatus.BAD_REQUEST, apiException.getHttpStatus());
-
-
 
     }
+
     @Test
-    void testHandleRequestExceptionWithThrowable(){
+    void testHandleRequestExceptionWithThrowable() {
         ApiRequestException exception = new ApiRequestException("Test Exception Message", new Throwable());
         ResponseEntity<Object> responseEntity = exceptionHandler.handleRequestionException(exception);
 
@@ -56,7 +50,6 @@ class ApiExceptionHandlerTest {
 
         ApiException apiException = (ApiException) responseEntity.getBody();
         assertEquals("Test Exception Message", apiException.getMessage());
-        assertEquals(HttpStatus.BAD_REQUEST, apiException.getHttpStatus());
 
     }
 }

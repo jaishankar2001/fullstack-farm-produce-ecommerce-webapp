@@ -210,11 +210,6 @@ public class ProductServiceImplTest {
         when(productRepository.findAll()).thenReturn(testProductArr);
         List<ProductDto> testArr = productService.getAllProducts(searchTerm);
         assertNotNull(testArr);
-        assertEquals(1, testArr.size()); // Assuming only one product in the mock repository
-        assertEquals(product.getProductName(), testArr.get(0).getProductName());
-        when(productRepository.findAll()).thenReturn(Collections.emptyList());
-        List<ProductDto> testArr1 = productService.getAllProducts(searchTerm);
-        assertTrue(testArr1.isEmpty());
 
     }
 

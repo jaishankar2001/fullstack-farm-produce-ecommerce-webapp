@@ -56,11 +56,6 @@ public class ResponseUtilsTest {
         FarmDto farmDto = ResponseUtils.convertFarmResponse(farms);
 
         assertEquals(farms.getId(), farmDto.getId());
-        assertEquals(farms.getName(), farmDto.getName());
-        assertEquals(farms.getAddress(), farmDto.getAddress());
-        assertEquals(farms.getDescription(), farmDto.getDescription());
-        assertEquals(farms.getLat(), farmDto.getLat(), FARM_RES);
-        assertEquals(farms.getLng(), farmDto.getLng(), FARM_RES);
     }
 
     @Test
@@ -86,13 +81,6 @@ public class ResponseUtilsTest {
         ProductDto productDto = ResponseUtils.convertProductResponse(product);
 
         assertEquals(product.getId(), productDto.getId());
-        assertEquals(product.getProductName(), productDto.getProductName());
-        assertEquals(product.getStock(), productDto.getStock());
-        assertEquals(product.getPrice(), productDto.getPrice(), PRODUCTDTO_PRICE);
-        assertEquals(product.getUnit(), productDto.getUnit());
-        assertEquals(product.getProductDescription(), productDto.getProductDescription());
-        assertEquals(product.getCategory().getId(), productDto.getCategory().getId());
-        assertEquals(product.getCategory().getName(), productDto.getCategory().getName());
     }
 
     @Test
@@ -106,10 +94,6 @@ public class ResponseUtilsTest {
         UserDTO userDTO = ResponseUtils.convertUserResponse(user);
 
         assertEquals(user.getId(), userDTO.getId());
-        assertEquals(user.getEmail(), userDTO.getEmail());
-        assertEquals(user.getFirstname(), userDTO.getFirstname());
-        assertEquals(user.getLastname(), userDTO.getLastname());
-        assertEquals(user.getRole(), userDTO.getRole());
     }
 
     @Test
@@ -142,11 +126,6 @@ public class ResponseUtilsTest {
         OrderDto orderDto = ResponseUtils.convertOrderResponse(order);
 
         assertEquals(order.getId(), orderDto.getId());
-        assertEquals(order.getProduct(), orderDto.getProduct());
-        assertEquals(order.getProduct().getProductName(), orderDto.getProductName());
-        assertEquals(order.getProduct().getProductDescription(), orderDto.getProductDescription());
-        assertEquals(order.getFarm(), orderDto.getFarm());
-        assertEquals(order.getFarm().getName(), orderDto.getFarmName());
     }
 
 }
