@@ -4,10 +4,10 @@ import * as api from "./utils";
 /**
  * Retrieves all products
  */
-
-export async function getProducts(payload) {
+export async function getProducts(searchTerm) {
   try {
-    const response = await api.post("/products/all-products", payload);
+    const queryParams = searchTerm ? `?searchTerm=${searchTerm}` : '';
+    const response = await api.get(`/products/all-products${queryParams}`);
     return response;
   } catch (error) {
     throw error;

@@ -14,4 +14,6 @@ public interface SubscriptionService {
     List<GetSubscriptionResponse> getOwnSubscription(Principal principal);
 
     List<GetSubscriptionResponse> getMySubscribedProduct(Principal principal);
+
+    String cancelSubscription(Principal principal, int productId);
 }
