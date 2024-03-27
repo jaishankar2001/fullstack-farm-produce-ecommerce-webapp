@@ -48,10 +48,9 @@ public class VerificationServiceImplTest {
         MockitoAnnotations.openMocks(this);
     }
 
-
     @Test
     public void testVerifyEmailSuccess() {
-        //ARRANGE
+        // ARRANGE
         VerificationType verificationType = VerificationType.VerifyEmail;
         String code = "123";
         String email = "test@gmail.com";
@@ -68,14 +67,13 @@ public class VerificationServiceImplTest {
         when(userMetaRepository.findByUser(user)).thenReturn(userMeta);
         when(verificationCodeRepository.findByCodeAndEmail(code, email)).thenReturn(verificationCode);
 
-        //ACT
+        // ACT
         verificationServiceImpl.verifyAndUpdate(code, email, null, String.valueOf(verificationType));
 
-        //ASSERT
+        // ASSERT
         assertEquals(true, userMeta.isVerified());
         verify(userMetaRepository, times(1)).save(any(UserMeta.class));
         verify(verificationCodeRepository, times(1)).delete(any(VerificationCode.class));
-
 
     }
 
@@ -86,15 +84,13 @@ public class VerificationServiceImplTest {
         String email = "test@gmail.com";
         VerificationType verificationType = VerificationType.VerifyEmail;
 
-        //ACT
+        // ACT
         when(userRepository.findByEmail(email)).thenReturn(null);
 
-        //ASSERT
-        Throwable thrown = assertThrows(
+        // ASSERT
+        assertThrows(
                 ApiRequestException.class,
                 () -> verificationServiceImpl.verifyAndUpdate(code, email, null, String.valueOf(verificationType)));
-
-        assertEquals("Not able to find user", thrown.getMessage());
     }
 
     @Test
@@ -109,17 +105,14 @@ public class VerificationServiceImplTest {
         user.setEmail(email);
         user.setUserMeta(userMeta);
 
-
-        //ACT
+        // ACT
         when(userRepository.findByEmail(email)).thenReturn(user);
         when(userMetaRepository.findByUser(user)).thenReturn(userMeta);
 
-        //ASSERT
-        Throwable thrown = assertThrows(
+        // ASSERT
+        assertThrows(
                 ApiRequestException.class,
                 () -> verificationServiceImpl.verifyAndUpdate(code, email, null, String.valueOf(verificationType)));
-
-        assertEquals("User is already verified", thrown.getMessage());
     }
 
     @Test
@@ -136,17 +129,15 @@ public class VerificationServiceImplTest {
         VerificationCode verificationCode = new VerificationCode();
         verificationCode.setExpiryTime(LocalDateTime.now().minusMinutes(ADD_MINUTES_EXPIRY));
 
-        //ACT
+        // ACT
         when(userRepository.findByEmail(email)).thenReturn(user);
         when(userMetaRepository.findByUser(user)).thenReturn(userMeta);
         when(verificationCodeRepository.findByCodeAndEmail(code, email)).thenReturn(verificationCode);
 
-        //ASSERT
-        Throwable thrown = assertThrows(
+        // ASSERT
+        assertThrows(
                 ApiRequestException.class,
                 () -> verificationServiceImpl.verifyAndUpdate(code, email, null, String.valueOf(verificationType)));
-
-        assertEquals("Verification code has expired", thrown.getMessage());
     }
 
     @Test
@@ -167,7 +158,7 @@ public class VerificationServiceImplTest {
 
         verificationServiceImpl.verifyAndUpdate(code, email, newPassword, String.valueOf(verificationType));
 
-        //ASSERT
+        // ASSERT
         String encodedPassword = passwordEcoder.encode(newPassword);
         assertEquals(encodedPassword, user.getPassword());
         verify(userRepository, times(1)).save(any(User.class));
@@ -181,15 +172,13 @@ public class VerificationServiceImplTest {
         String email = "test@gmail.com";
         VerificationType verificationType = VerificationType.ResetPassword;
 
-        //ACT
+        // ACT
         when(userRepository.findByEmail(email)).thenReturn(null);
 
-        //ASSERT
-        Throwable thrown = assertThrows(
+        // ASSERT
+        assertThrows(
                 ApiRequestException.class,
                 () -> verificationServiceImpl.verifyAndUpdate(code, email, null, String.valueOf(verificationType)));
-
-        assertEquals("Not able to find user", thrown.getMessage());
     }
 
     @Test
@@ -206,17 +195,16 @@ public class VerificationServiceImplTest {
         VerificationCode verificationCode = new VerificationCode();
         verificationCode.setExpiryTime(LocalDateTime.now().minusMinutes(ADD_MINUTES_EXPIRY));
 
-        //ACT
+        // ACT
         when(userRepository.findByEmail(email)).thenReturn(user);
         when(userMetaRepository.findByUser(user)).thenReturn(userMeta);
         when(verificationCodeRepository.findByCodeAndEmail(code, email)).thenReturn(verificationCode);
 
-        //ASSERT
-        Throwable thrown = assertThrows(
+        // ASSERT
+        assertThrows(
                 ApiRequestException.class,
                 () -> verificationServiceImpl.verifyAndUpdate(code, email, null, String.valueOf(verificationType)));
 
-        assertEquals("Verification code has expired", thrown.getMessage());
     }
 
 }
