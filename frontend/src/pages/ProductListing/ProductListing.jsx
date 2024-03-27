@@ -13,9 +13,9 @@ function ProductListing() {
   const [categories, setCategories] = useState([]);
 
   const getAllProducts = async () => {
-    const response = await api.products.getProducts({
-      productName: searchTerm,
-    });
+    const response = await api.products.getProducts(
+      searchTerm,
+    );
     setAllProducts(response);
   };
   

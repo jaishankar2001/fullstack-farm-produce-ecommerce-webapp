@@ -1,14 +1,22 @@
 import * as api from "./utils";
 
-export async function getProducts(payload) {
+
+/**
+ * Retrieves all products
+ */
+export async function getProducts(searchTerm) {
   try {
-    const response = await api.post("/products/all-products", payload);
+    const queryParams = searchTerm ? `?searchTerm=${searchTerm}` : '';
+    const response = await api.get(`/products/all-products${queryParams}`);
     return response;
   } catch (error) {
     throw error;
   }
 }
 
+/**
+ * Retrieves product by id
+ */
 export async function getProductById(id) {
   try {
     const response = await api.get(`/products/getProduct/${id}`);
@@ -18,6 +26,9 @@ export async function getProductById(id) {
   }
 }
 
+/**
+ * Delete a product by a farmer
+ */
 export async function deleteProduct(id) {
   try {
     const response = await api.del(`/products/delete/${id}`);
@@ -27,7 +38,9 @@ export async function deleteProduct(id) {
   }
 }
 
-
+/**
+ * Retrieves products added by a particular farmer.
+ */
 export async function getFarmerProducts(payload) {
     try {
       const response = await api.post("/products/delete", payload);
