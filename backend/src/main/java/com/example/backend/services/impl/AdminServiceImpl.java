@@ -13,8 +13,8 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.services.AdminService;
 import com.example.backend.utils.ResponseUtils;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
+import java.time.LocalTime;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -77,8 +77,11 @@ public class AdminServiceImpl implements AdminService {
             double subscriptionSalesValue = 0;
             LocalDate startDate = LocalDate.of(year, month, 1);
             String currentMonthString = Month.of(month).name();
+
+            LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.of(23, 59, 59));
+
             List<Order> orders = orderRepository.findByOrderDateBetween(startDate.atStartOfDay(),
-                    endDate.atStartOfDay());
+                    endDateTime);
             for (Order order : orders) {
                 if (Objects.equals(String.valueOf(order.getOrderType()), "SUBSCRIPTION")) {
                     subscriptionSalesValue += order.getOrderValue();
