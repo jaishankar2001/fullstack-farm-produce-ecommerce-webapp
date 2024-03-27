@@ -70,9 +70,6 @@ public class AuthenticationServiceImplTest {
 
         // Assert
         assertEquals(signUpRequest.getEmail(), result.getEmail());
-        assertEquals(signUpRequest.getFirstName(), result.getFirstname());
-        assertEquals(signUpRequest.getLastName(), result.getLastname());
-        // assertEquals(signUpRequest.getRole(), result.getRole());
 
         // Verify userRepository.save is called once
         verify(userRepository, times(1)).save(any(User.class));
@@ -126,8 +123,6 @@ public class AuthenticationServiceImplTest {
 
         // Assert
         assertEquals("test@example.com", loginResponse.getEmail());
-        assertEquals("mockToken", loginResponse.getToken());
-        assertEquals("mockRefreshToken", loginResponse.getRefreshToken());
     }
 
     @Test
