@@ -211,7 +211,7 @@ public class ControllerIntegrationTest {
 
     @Test
     public void testGetFarm() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/farmer/getFarm/{farmId}", 3)
+        MvcResult result = mockMvc.perform(get("/api/farmer/getFarm/{farmId}", 6)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn();
