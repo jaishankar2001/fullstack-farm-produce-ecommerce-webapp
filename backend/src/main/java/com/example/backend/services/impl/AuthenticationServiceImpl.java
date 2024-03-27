@@ -5,6 +5,7 @@ import com.example.backend.dto.request.ResetPasswordRequest;
 import com.example.backend.dto.request.SignInRequest;
 import com.example.backend.dto.request.SignUpRequest;
 import com.example.backend.dto.response.JwtAuthenticationResponse;
+import com.example.backend.dto.response.LoginResponse;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserMeta;
 import com.example.backend.entities.VerificationType;
@@ -20,9 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashMap;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
-    private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JWTService jwtService;
     private final UserDetailsService userDetailsService;
@@ -62,7 +60,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return user;
 
     }
-    public String forgotPassword(ResetPasswordRequest resetPasswordRequest){
+
+    public String forgotPassword(ResetPasswordRequest resetPasswordRequest) {
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail());
         if (user == null) {
             throw new ApiRequestException("User doesn't exist");
@@ -72,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return "Please check email for password reset link";
     }
 
-    public JwtAuthenticationResponse signIn(SignInRequest signInRequest) {
+    public LoginResponse signIn(SignInRequest signInRequest) {
 
         UserMeta userMeta;
         // User tempUser =
@@ -84,15 +83,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             if (password) {
                 userMeta = userMetaRepository.findByUser(tempUser);
-
                 if (userMeta.isVerified() == true) {
                     var jwt = jwtService.generateToken(tempUser);
                     var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), tempUser);
 
-                    JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
-                    jwtAuthenticationResponse.setToken(jwt);
-                    jwtAuthenticationResponse.setRefreshToken(refreshToken);
-                    return jwtAuthenticationResponse;
+                    LoginResponse loginResponse = new LoginResponse();
+                    loginResponse.setToken(jwt);
+                    loginResponse.setRefreshToken(refreshToken);
+                    loginResponse.setEmail(tempUser.getEmail());
+                    loginResponse.setFirstname(tempUser.getFirstname());
+                    loginResponse.setLastname(tempUser.getLastname());
+                    loginResponse.setRole(tempUser.getRole());
+                    loginResponse.setWallet_balance(userMeta.getWallet_balance());
+                    return loginResponse;
                 } else {
                     throw new ApiRequestException("please varify your email");
                 }
@@ -111,9 +114,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (jwtService.isTokenValid(refreshTokenRequest.getToken(), userDetails)) {
             var jwt = jwtService.generateToken(userDetails);
-
-            System.out.println("TOKEN JWTT : " + jwt);
-
             JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
             jwtAuthenticationResponse.setToken(jwt);
             jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());

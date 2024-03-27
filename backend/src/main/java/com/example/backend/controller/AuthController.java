@@ -11,6 +11,7 @@ import com.example.backend.dto.request.RefreshTokenRequest;
 import com.example.backend.dto.request.SignInRequest;
 import com.example.backend.dto.request.SignUpRequest;
 import com.example.backend.dto.response.JwtAuthenticationResponse;
+import com.example.backend.dto.response.LoginResponse;
 import com.example.backend.entities.User;
 import com.example.backend.services.AuthenticationService;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthController {
     private final AuthenticationService authenticationService;
 
-    @GetMapping("/demo")
-    public ResponseEntity<String> customerHome() {
-        return ResponseEntity.ok("Hi Customer");
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         return ResponseEntity.ok(authenticationService.signUp(signUpRequest));
@@ -39,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody @Valid SignInRequest signInRequest) {
+    public ResponseEntity<LoginResponse> signin(@RequestBody @Valid SignInRequest signInRequest) {
         return ResponseEntity.ok(authenticationService.signIn(signInRequest));
     }
 

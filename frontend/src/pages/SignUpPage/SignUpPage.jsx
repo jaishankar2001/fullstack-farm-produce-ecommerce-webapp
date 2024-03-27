@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Layout from "../../common/Layout/Layout";
 import api from "../../api/index";
+import Layout from "../../common/Layout/Layout";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -55,7 +55,7 @@ function SignUp() {
       <ToastContainer />
       <div className="row my-4">
         <div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-          <div className="card border-0 shadow-sm">
+          <div className="card border-0 shadow-lg">
             <div className="card-body px-4">
               <h4 className="card-title fw-bold mt-2 mb-4">Sign Up</h4>
               <form className="row g-3" onSubmit={handleSubmit}>

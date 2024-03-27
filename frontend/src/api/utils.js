@@ -1,21 +1,24 @@
-import axios from 'axios';
+import axios from "axios";
+
+// Base URL for API requests obtained from environment variable
+const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 
-// TODO : to be changed later
-const API_BASE_URL = 'http://localhost:8080';
-
+// Create an instance of Axios with base URL and default headers
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
+
+// Interceptor to add Authorization header with token from localStorage to each request
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage?.getItem('token');
-    if (token && token != 'undefined') {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    const token = localStorage?.getItem("token");
+    if (token && token != "undefined") {
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -24,7 +27,9 @@ api.interceptors.request.use(
   }
 );
 
-const handleResponse = response => {
+
+// handle successful response
+const handleResponse = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response.data;
   } else {
@@ -32,11 +37,12 @@ const handleResponse = response => {
   }
 };
 
-const handleError = error => {
+// handle errors in HTTP requests
+const handleError = (error) => {
   console.error(error?.response?.status);
   if (error?.response?.status === 401) {
-    localStorage.removeItem('token');
-    window.location.href = '/';
+    localStorage.removeItem("token");
+    window.location.href = "/";
   }
   throw error;
 };
@@ -69,7 +75,7 @@ export const put = async (url, data = {}) => {
   }
 };
 
-export const del = async url => {
+export const del = async (url) => {
   try {
     const response = await api.delete(url);
     return handleResponse(response);
