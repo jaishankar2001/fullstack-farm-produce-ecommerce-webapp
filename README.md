@@ -18,7 +18,6 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 [![stripe](https://img.shields.io/badge/Stripe-v22.7-red)](https://img.shields.io/badge/Stripe-v22.7-red)
 [![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://img.shields.io/badge/GoogleMap-v2.19.2-brown)
 
-
 # Ecopick backend Setup
 
 ## Backend Dependencies
@@ -44,37 +43,42 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 | com.stripe               | Stripe API for Java                                       | stripe-java                    | 22.7.0   |
 | junit                    | JUnit testing framework for Java                          | junit                          | 4.13.2   |
 
-
 ## Prerequisites
 
 - Java `v17.0.2`
 - JDK `v17`
 - Maven `v3.9.6`
-  
+
 ## Getting Started
 
 Follow these steps to set up and run the project locally.
 
 ### 1. Clone the Repository
+
 ```bash
- git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git 
+ git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git
  OR
  git clone https://git.cs.dal.ca/courses/2024-winter/csci5308/Group09.git
 ```
 
 ### 2. Navigate to the project directory
+
 ```bash
 cd Group09/backend
 ```
 
 ### 3. Build the project
+
 - Run the following command to install backend dependencies:
+
 ```bash
 mvn clean install
 ```
 
 ### 5. Run the application
+
 - After installing dependencies, start the Spring Boot backend server by running:
+
 ```bash
 mvn spring-boot:run
 ```
@@ -89,28 +93,35 @@ The application will be accessible at `http://localhost:8080`.
 - [npm](https://www.npmjs.com/) `v6.x`
 
 ## Getting Started
+
 Follow these steps to set up and run the project locally.
 
 ### 1. Clone the Repository
+
 ```bash
- git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git 
+ git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git
  OR
  git clone https://git.cs.dal.ca/courses/2024-winter/csci5308/Group09.git
 ```
 
 ### 2. Navigate to the project directory
+
 ```bash
 cd Group09/frontend
 ```
 
 ### 3. Install dependencies
+
 - Run the following command to install frontend dependencies:
+
 ```bash
 npm install
 ```
 
 ### 4. start the development
+
 - After installing dependencies, start the React.js development server by running:
+
 ```bash
 npm run start
 ```
@@ -150,7 +161,6 @@ npm run start
 | sass                                | ^1.70.0 | CSS preprocessor extension for writing structured stylesheets.                  | `npm install sass`                                |
 | web-vitals                          | ^2.1.4  | Library for measuring web vital metrics in web pages.                           | `npm install web-vitals`                          |
 
-
 # Deploy in VM
 
 ## Overview
@@ -173,8 +183,7 @@ We have deployes our application on the virtual machine provided. For backend we
 
 ### Frontend deployment steps
 
-
-- Following is the nginx configuration in VM : - 
+- Following is the nginx configuration in VM : -
 
 ```
 server {
@@ -198,7 +207,6 @@ sudo systemctl start nginx
 
 - once you have done above configuration inside etc/nginx/sites-enabled folder, yoi will be able to access nginx index file.
 
-
 - cd into frontend directory and run install command.
 
 ```bash
@@ -206,12 +214,11 @@ cd frontend
 npm install
 ```
 
-- We will run npm build command to get build package of react 
+- We will run npm build command to get build package of react
 
 ```bash
 npm build
 ```
-
 
 - Once build folder is created we will move build folder to Vm to : /var/www/html, following is command we have used in CI CD pipeline to copy our build folder
 
@@ -221,13 +228,9 @@ scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${
 
 - Once it copied all of the build files, it will serve index.html on port :80 by default
 
-
-
-
-
 ### Backend deployment steps
 
-- Go to backend folder 
+- Go to backend folder
 
 - run mvn package command to generate the war file in target folder
 
@@ -251,13 +254,13 @@ docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
 docker container rm -f ecopick-backend
 ```
 
-- Run the docker container in VM : - 
+- Run the docker container in VM : -
 
 ```bash
 docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
 ```
 
-- Once the above command is run successfully, it will be accessible at 8080 port number. 
+- Once the above command is run successfully, it will be accessible at 8080 port number.
 
 # Usage Scenario
 
@@ -310,7 +313,6 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - On the Admin Dashboard page, they can review statistics, such as number of farms, number of products, total sales, etc.
 - They can also track the Order sales and Subscription sales.
 
-
 # Features
 
 ## Registration Page
@@ -344,6 +346,15 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Users can navigate directly to the Products page by clicking on 'Products' on the navigation bar.
 <center>
 <img src="./assets/HomePage.png" alt="Landing Page">
+</center>
+
+---
+
+## Banner Page
+
+- From the banner page user will be redirected to the products section.
+<center>
+<img src="./assets/bannerPage.png" alt="Banner Page">
 </center>
 
 ---
