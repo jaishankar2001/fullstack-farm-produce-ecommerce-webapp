@@ -12,7 +12,7 @@ export const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    // Simulate logout by removing the token from localStorage
+    // logout by removing the token from localStorage
     setIsLoggedIn(false);
     localStorage.removeItem("token");
     navigate("/");

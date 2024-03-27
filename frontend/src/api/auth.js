@@ -1,5 +1,9 @@
 import * as api from "./utils";
 
+/**
+ * API for user login
+ */
+
 export async function login(payload) {
   try {
     const response = await api.post("/auth/signin", payload);
@@ -10,6 +14,10 @@ export async function login(payload) {
   }
 }
 
+/**
+ * API for register user
+ */
+
 export async function register(payload) {
   try {
     const response = await api.post("/auth/signup", payload);
@@ -19,6 +27,10 @@ export async function register(payload) {
   }
 }
 
+/**
+ * Requests to reset the password for a user.
+ */
+
 export async function ResetPasswordReq(payload) {
   try {
     const response = await api.post("/auth/ResetPasswordReq", payload);
@@ -27,6 +39,10 @@ export async function ResetPasswordReq(payload) {
     throw error;
   }
 }
+
+/**
+ * Resets the password for a user.
+ */
 
 export async function resetPassword(email, code, password) {
   try {
@@ -38,21 +54,27 @@ export async function resetPassword(email, code, password) {
   }
 }
 
+/**
+ * Verifies the user's email address.
+ */
 export async function verifyEmail(email, code, type) {
   try {
     const apiUrl = `/auth/verify?email=${email}&code=${code}&type=${type}`;
     const response = await api.get(apiUrl);
-    return response; // Assuming the response contains the data you need
+    return response;
   } catch (error) {
     throw error;
   }
 }
 
+/**
+ * Initializes wallet with specified amount.
+ */
 export async function walletInit(amount) {
   try {
     const apiUrl = `/wallet/create-payment-intent?amount=${amount}`;
     const response = await api.post(apiUrl);
-    return response; // Assuming the response contains the data you need
+    return response;
   } catch (error) {
     throw error;
   }
