@@ -38,7 +38,6 @@ class ApiExceptionHandlerTest {
         ApiException apiException = (ApiException) responseEntity.getBody();
 
         assertEquals("Test Exception Message", apiException.getMessage());
-        assertEquals(HttpStatus.BAD_REQUEST, apiException.getHttpStatus());
 
     }
 

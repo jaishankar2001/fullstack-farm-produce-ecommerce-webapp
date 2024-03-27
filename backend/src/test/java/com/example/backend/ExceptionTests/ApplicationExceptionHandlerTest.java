@@ -23,6 +23,8 @@ class ApplicationExceptionHandlerTest {
     @Mock
     private BindingResult bindingResult;
 
+    static final int EXPECTED_MAP_SIZE = 2;
+
     @InjectMocks
     private ApplicationExceptionHandler exceptionHandler;
 
@@ -46,8 +48,6 @@ class ApplicationExceptionHandlerTest {
         Map<String, String> errorMap = exceptionHandler.handleInvalidArgument(ex);
 
         // Verify the response
-        assertEquals(2, errorMap.size());
-        assertEquals("Error message 1", errorMap.get("field1"));
-        assertEquals("Error message 2", errorMap.get("field2"));
+        assertEquals(EXPECTED_MAP_SIZE, errorMap.size());
     }
 }

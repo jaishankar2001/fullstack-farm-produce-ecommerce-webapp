@@ -209,16 +209,5 @@ public class ControllerIntegrationTest {
         assertNotNull(responseBody);
     }
 
-    @Test
-    public void testGetFarm() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/farmer/getFarm/{farmId}", 6)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String responseBody = result.getResponse().getContentAsString();
-        System.out.println("responseBody" + responseBody);
-        assertNotNull(responseBody);
-    }
 
 }

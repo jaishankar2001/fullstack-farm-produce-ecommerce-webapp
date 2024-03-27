@@ -9,6 +9,7 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.WalletRepository;
 import com.example.backend.services.impl.WalletServiceImpl;
 import com.stripe.Stripe;
+import static org.mockito.Mockito.*;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,12 +89,7 @@ public class WalletServiceImplTest {
         when(userRepositoryMock.findByEmail(email)).thenReturn(user);
 
         // Act
-        walletService.addMoney(email, ADDED_AMOUNT);
-
-        // Assert
-        verify(userRepositoryMock, times(1)).findByEmail(email);
-        verify(userMetaRepositoryMock, never()).save(any(UserMeta.class));
-        verify(walletRepositoryMock, never()).save(any(Wallet.class));
+        assertThrows(ApiRequestException.class, () -> walletService.addMoney(email, ADDED_AMOUNT));
     }
 
     @Test
