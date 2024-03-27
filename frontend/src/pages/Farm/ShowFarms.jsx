@@ -37,8 +37,11 @@ function ShowFarms(){
   const fetchData = async () => {
     try {
       setIsLoading(true);
+      const token = localStorage?.getItem("token");
       const config = {
         headers: {
+
+            'Authorization': `Bearer ${token}`,
         },
         params: {
             "farmName": `${farmName}`
