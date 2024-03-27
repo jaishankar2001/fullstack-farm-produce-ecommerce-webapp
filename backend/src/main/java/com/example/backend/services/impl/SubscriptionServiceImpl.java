@@ -1,5 +1,7 @@
 package com.example.backend.services.impl;
 
+import static org.mockito.ArgumentMatchers.nullable;
+
 import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -27,12 +29,16 @@ import com.example.backend.repository.SubscriptionRepository;
 import com.example.backend.repository.UserMetaRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.services.SubscriptionService;
+
+import jakarta.transaction.Transactional;
+
 import java.time.LocalDate;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SubscriptionServiceImpl implements SubscriptionService {
 
     static final int SUBSCTRING_END_INDEX = 3;
@@ -245,5 +251,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             }
         }
         return subscribeDays;
+    }
+
+    public String cancelSubscription(Principal principal, int productId){
+        User user = userRepository.findByEmail(principal.getName());
+        Product product = productRepository.findById(productId);
+        if(user==null) throw new ApiRequestException("user not present");
+        if(product == null) throw new ApiRequestException("product not found for this subscription");
+        List<Subscription> subscription = subscriptionRepository.findByUser(user);
+        if(subscription.isEmpty())throw new ApiRequestException("No Subscription found for you "+user.getFirstname());
+        subscriptionRepository.deleteByUserIdAndProductId(user.getId(),product.getId());
+        return "UnSubscribed Successfully";
     }
 }
