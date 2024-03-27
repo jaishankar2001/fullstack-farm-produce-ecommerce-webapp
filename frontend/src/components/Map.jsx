@@ -57,6 +57,14 @@ const Map = ({ farmLoc, selectedLocation, setSelectedLocation }) => {
       delayedLoadGoogleMapsScript();
     }
   }, [farmLoc, selectedLocation]);
+  
+  useEffect(() => {
+    if (!window.google) {
+      loadGoogleMapsScript();
+    } else {
+      initializeMap();
+    }
+  }, []);
 
   return (
     <div
