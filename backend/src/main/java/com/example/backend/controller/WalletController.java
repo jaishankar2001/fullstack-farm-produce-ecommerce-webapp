@@ -11,7 +11,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import com.example.backend.dto.request.WalletRequest;
-import com.example.backend.dto.response.WalletResponse;
 import com.example.backend.entities.Wallet;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.services.WalletService;
