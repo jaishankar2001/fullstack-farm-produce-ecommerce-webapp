@@ -1,5 +1,8 @@
 import * as api from "./utils";
 
+/**
+ * API to place a order
+ */
 export async function placeSubscription(payload) {
     try {
       const response = await api.post("/subscribe/product", payload);
@@ -9,6 +12,9 @@ export async function placeSubscription(payload) {
     }
   }
 
+/**
+ * Retrieves the list of subscriptions placed by customer
+ */
   export async function subscriptionHistory() {
     try {
       const response = await api.get("/subscribe/my-subscription");
@@ -18,6 +24,9 @@ export async function placeSubscription(payload) {
     }
   }
 
+/**
+ * Retrieves the list of products subscribed 
+ */
   export async function farmerSubscription() {
     try {
       const response = await api.get("/subscribe/my-subscribed-products");
@@ -26,3 +35,16 @@ export async function placeSubscription(payload) {
       throw error;
     }
   }
+
+
+/**
+ * Delete a subscription
+ */
+export async function unsubscribeProduct(id) {
+  try {
+    const response = await api.del(`/subscribe/unSubscribe/${id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

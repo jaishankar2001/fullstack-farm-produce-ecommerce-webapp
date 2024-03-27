@@ -9,6 +9,7 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.WalletRepository;
 import com.example.backend.services.impl.WalletServiceImpl;
 import com.stripe.Stripe;
+import static org.mockito.Mockito.*;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 public class WalletServiceImplTest {
-
 
     static final int INITIAL_BALANCE = 100;
     static final int ADDED_AMOUNT = 50;
@@ -66,11 +66,13 @@ public class WalletServiceImplTest {
         when(walletRepositoryMock.save(any(Wallet.class))).thenAnswer(invocation -> invocation.getArguments()[0]);
 
         // Act
-//        UserService userService = new UserService(userRepository, userMetaRepository, walletRepository);
+        // UserService userService = new UserService(userRepository, userMetaRepository,
+        // walletRepository);
         walletService.addMoney(email, ADDED_AMOUNT);
 
         // Assert
-        assertEquals(INITIAL_BALANCE + ADDED_AMOUNT, userMeta.getWallet_balance()); // Assuming a delta of 0.01 for double comparison
+        assertEquals(INITIAL_BALANCE + ADDED_AMOUNT, userMeta.getWallet_balance()); // Assuming a delta of 0.01 for
+                                                                                    // double comparison
         verify(userRepositoryMock, times(1)).findByEmail(email);
         verify(userMetaRepositoryMock, times(1)).save(any(UserMeta.class));
         verify(walletRepositoryMock, times(1)).save(any(Wallet.class));
@@ -87,12 +89,7 @@ public class WalletServiceImplTest {
         when(userRepositoryMock.findByEmail(email)).thenReturn(user);
 
         // Act
-        walletService.addMoney(email, ADDED_AMOUNT);
-
-        // Assert
-        verify(userRepositoryMock, times(1)).findByEmail(email);
-        verify(userMetaRepositoryMock, never()).save(any(UserMeta.class));
-        verify(walletRepositoryMock, never()).save(any(Wallet.class));
+        assertThrows(ApiRequestException.class, () -> walletService.addMoney(email, ADDED_AMOUNT));
     }
 
     @Test
@@ -107,8 +104,9 @@ public class WalletServiceImplTest {
         List<Wallet> expectedWallets = Arrays.asList(new Wallet(), new Wallet());
 
         // Mock repository behavior
+        Sort sortByCreatedAtDesc = Sort.by(Sort.Direction.DESC, "createdAt");
         when(userRepositoryMock.findByEmail(email)).thenReturn(user);
-        when(walletRepositoryMock.findAllByUserId(user.getId(), Sort.by(Sort.Direction.DESC, "createdAt"))).thenReturn(expectedWallets);
+        when(walletRepositoryMock.findAllByUserId(user.getId(), sortByCreatedAtDesc)).thenReturn(expectedWallets);
 
         List<Wallet> actualWallets = walletService.gethistory(principal);
 

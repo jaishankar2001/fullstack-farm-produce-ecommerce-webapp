@@ -12,6 +12,7 @@ import com.example.backend.dto.response.OrderDto;
 import com.example.backend.entities.Farms;
 import com.example.backend.entities.Images;
 import com.example.backend.entities.Order;
+import com.example.backend.entities.OrderType;
 import com.example.backend.entities.Product;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserMeta;
@@ -72,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDate(LocalDateTime.now());
         order.setOrderValue(total_price);
         order.setOrderPaymentMethod("Wallet");
+        order.setOrderType(OrderType.ORDER);
         orderRepository.save(order);
 
         Wallet wallet = new Wallet();
@@ -110,6 +112,7 @@ public class OrderServiceImpl implements OrderService {
             orderDto.setOrderValue(orderPlaced.getOrderValue());
             orderDto.setQuantity(orderPlaced.getQuantity());
             orderDto.setOrderPaymentMethod(orderPlaced.getOrderPaymentMethod());
+            orderDto.setOrderType(String.valueOf(orderPlaced.getOrderType()));
 
             for (Images image : orderPlaced.getProduct().getImages()) {
                 orderDto.addImage(image);

@@ -186,24 +186,6 @@ function AddProduct() {
                     }}
                   />
                 </div>
-
-                {/* <div className="col-md-4 fw-semibold mb-0">
-                  <label className="form-label fw-semibold">Unit</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={unit}
-                    onChange={(e) => {
-                      setUnit(e.target.value);
-                      setProductData((prevProductData) => ({
-                        ...prevProductData,
-                        unit: unit, // Update address in Recoil state
-                      }));
-                    }}
-                  />
-                </div> */}
-
-                
                 <div class="dropdown">
                 <label className="form-label fw-semibold">Unit</label>
                   <Dropdown

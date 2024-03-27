@@ -95,10 +95,6 @@ function FarmEdit() {
                     value={farmName}
                     onChange={(e) => {
                       setFarmName(e.target.value);
-                      //   setFarmData((prevFarmData) => ({
-                      //     ...prevFarmData,
-                      //     name: farmName, // Update address in Recoil state
-                      //   }));
                     }}
                   />
                 </div>
@@ -111,10 +107,6 @@ function FarmEdit() {
                     value={farmDescription}
                     onChange={(e) => {
                       setFarmDescription(e.target.value);
-                      //   setFarmData((prevFarmData) => ({
-                      //     ...prevFarmData,
-                      //     description: farmDescription, // Update address in Recoil state
-                      //   }));
                     }}
                   />
                 </div>

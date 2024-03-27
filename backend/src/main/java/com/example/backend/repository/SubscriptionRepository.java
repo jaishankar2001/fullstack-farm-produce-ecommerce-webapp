@@ -17,4 +17,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Inte
 
     List<Subscription> findByUser(User user);
 
+    void deleteByUserIdAndProductId(int id, int id2);
+
 }

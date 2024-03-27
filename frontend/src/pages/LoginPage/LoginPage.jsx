@@ -26,6 +26,7 @@ function Login() {
           name: response.firstname,
           email: response.email,
           balance: response.wallet_balance,
+          role: response.role
         };
         localStorage.setItem("userMeta", JSON.stringify(userMeta));
         if(userMeta.email === "admin123@gmail.com"){
@@ -54,9 +55,9 @@ function Login() {
       <ToastContainer />
       <div className="row my-4">
         <div className="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
-          <div className="card border-0 shadow-sm">
+          <div className="card border-0 shadow-lg">
             <div className="card-body px-4">
-              <h4 className="card-title fw-bold mt-2 mb-4">Sign In</h4>
+              <h4 className="card-title fw-bold mt-2 mb-4">Log In</h4>
               <form className="row g-2" onSubmit={handleSubmit}>
                 <div className="col-md-12">
                   <label className="form-label">Email</label>

@@ -1,5 +1,8 @@
 import * as api from "./utils";
 
+/**
+ * Add new farmer by  farmer
+ */
 export async function addFarm(payload) {
   try {
     const response = await api.post("/farmer/addfarm", payload);
@@ -9,14 +12,23 @@ export async function addFarm(payload) {
   }
 }
 
-export async function getFarmerFarms(payload) {
+/**
+ * Gets the list of farms owned by a farmer
+ */
+export async function getFarmerFarms(searchTerm) {
   try {
-    const response = await api.post("/farmer/own-farms", payload);
+    const queryParams = searchTerm ? `?searchTerm=${encodeURIComponent(searchTerm)}` : '';
+    const response = await api.get(`/farmer/own-farms${queryParams}`);
     return response;
   } catch (error) {
     throw error;
   }
 }
+
+
+/**
+ * Allows farmer to delete farm.
+ */
 
 export async function deleteFarm(id) {
   try {
@@ -27,6 +39,9 @@ export async function deleteFarm(id) {
   }
 }
 
+/**
+ * Get details of a farm
+ */
 export async function getFarmById(id) {
   try {
     const response = await api.get(`/farmer/getFarm/${id}`);

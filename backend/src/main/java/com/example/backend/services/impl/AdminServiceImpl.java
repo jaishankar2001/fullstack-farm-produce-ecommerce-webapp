@@ -13,8 +13,8 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.services.AdminService;
 import com.example.backend.utils.ResponseUtils;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.springframework.stereotype.Service;
+import java.time.LocalTime;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -25,17 +25,18 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
     private final FarmRepository farmRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
-
+    static final int TOTAL_MONTH = 12;
+    static final int MONTH_STATISTICS = 4;
 
     @Override
-    public AdminResponse getAllInfo(Principal principal){
+    public AdminResponse getAllInfo(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        if(!Objects.equals(String.valueOf(user.getRole()), "ADMIN")){
+        if (!Objects.equals(String.valueOf(user.getRole()), "ADMIN")) {
             throw new ApiRequestException("Unauthorized");
         }
         AdminResponse adminResponse = new AdminResponse();
@@ -60,33 +61,36 @@ public class AdminServiceImpl implements AdminService{
         return adminResponse;
     }
 
-
     public SalesDTO getOrderByMonth() {
 
         LocalDate endDate = LocalDate.now(TimeZone.getTimeZone("AST").toZoneId());
         int year = endDate.getYear();
-        int month = endDate.getMonthValue()+1;
+        int month = endDate.getMonthValue() + 1;
         SalesDTO sale = new SalesDTO();
-        for (int i=0; i<4; i++){
+        for (int i = 0; i < MONTH_STATISTICS; i++) {
             month -= 1;
-            if(month==0){
+            if (month == 0) {
                 year -= 1;
-                month = 12;
+                month = TOTAL_MONTH;
             }
             double orderSalesValue = 0;
             double subscriptionSalesValue = 0;
             LocalDate startDate = LocalDate.of(year, month, 1);
             String currentMonthString = Month.of(month).name();
-            List<Order> orders = orderRepository.findByOrderDateBetween(startDate.atStartOfDay(), endDate.atStartOfDay());
+
+            LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.of(23, 59, 59));
+
+            List<Order> orders = orderRepository.findByOrderDateBetween(startDate.atStartOfDay(),
+                    endDateTime);
             for (Order order : orders) {
-                if(Objects.equals(String.valueOf(order.getOrderType()), "SUBSCRIPTION")){
+                if (Objects.equals(String.valueOf(order.getOrderType()), "SUBSCRIPTION")) {
                     subscriptionSalesValue += order.getOrderValue();
-                }else{
+                } else {
                     orderSalesValue += order.getOrderValue();
                 }
             }
             sale.addValue(currentMonthString, orderSalesValue, "ORDER");
-            sale.addValue(currentMonthString,subscriptionSalesValue, "SUBSCRIPTION");
+            sale.addValue(currentMonthString, subscriptionSalesValue, "SUBSCRIPTION");
             endDate = startDate;
         }
         return sale;

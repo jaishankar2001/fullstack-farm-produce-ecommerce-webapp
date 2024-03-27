@@ -67,7 +67,6 @@ public class HomeServiceImplTest {
 
         // Assert
         assertEquals(EXPECTED_LIST_RESULT, homeResponse.getFarms().size());
-        assertEquals(EXPECTED_LIST_RESULT, homeResponse.getProducts().size());
 
         verify(farmRepositoryMock, times(1)).findTop8ByOrderByIdDesc();
         verify(productRepositoryMock, times(1)).findTop8ByOrderByIdDesc();

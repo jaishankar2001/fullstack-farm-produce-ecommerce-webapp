@@ -31,6 +31,10 @@ public class SecurityConfiguration {
                             request.requestMatchers("/api/wallet/**").permitAll();
                             request.requestMatchers("/api/home/**").permitAll();
                             request.requestMatchers("/api/products/all-products/**").permitAll();
+                            request.requestMatchers("/api/category/list/**").permitAll();
+                            request.requestMatchers("/api/category/list/**").permitAll();
+                            request.requestMatchers("/api/products/getProduct/**").permitAll();
+                            request.requestMatchers("/api/customer/listfarms/**").permitAll();
                             request.anyRequest().authenticated();
                         })
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

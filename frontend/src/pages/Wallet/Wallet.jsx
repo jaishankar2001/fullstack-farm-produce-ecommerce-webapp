@@ -75,11 +75,6 @@ function Wallet() {
                 <h5 className="my-2">Wallet History</h5>
               </div>
               <div className="card-body p-2">
-                {/* <CartItem />
-              <hr className="text-muted my-1" />
-              <CartItem />
-              <hr className="text-muted my-1" />
-              <CartItem /> */}
                 <div className="table-responsive">
                   <table className="table table-borderless align-middle mb-0">
                     <thead>

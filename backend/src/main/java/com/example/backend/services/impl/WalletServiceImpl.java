@@ -54,7 +54,7 @@ public class WalletServiceImpl implements WalletService {
             userMeta.save(userInfo);
             walletRepository.save(amountInfo);
         } else {
-            System.out.println("OOPS: Wallet Info not found for the pertaining user: " + email);
+            throw new ApiRequestException("OOPS: Wallet Info not found for the pertaining user: " + email);
         }
     }
 

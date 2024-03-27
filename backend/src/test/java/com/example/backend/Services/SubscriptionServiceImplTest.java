@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SubscriptionServiceImplTest {
@@ -50,8 +51,18 @@ public class SubscriptionServiceImplTest {
         @Mock
         private UserMetaRepository userMetaRepositoryMock;
 
+        @Mock
+        private Principal principal;
+
         @InjectMocks
         private SubscriptionServiceImpl subscriptionServiceImpl;
+
+        @Mock
+        Subscription subscription;
+        @Mock
+        Product product;
+        @Mock
+        User user;
 
         @Test
         public void testProductNull() {
@@ -285,6 +296,17 @@ public class SubscriptionServiceImplTest {
                 // Assertions
                 assertEquals(EXPECTED_SUBSCRIPTION, responses.size()); // Expecting two subscriptions
 
+        }
+
+        @Test
+        public void testCancelSubscription(){
+                when(principal.getName()).thenReturn("testemail");
+                when(userRepositoryMock.findByEmail("testemail")).thenReturn(user);
+                when(productRepositoryMock.findById(anyInt())).thenReturn(product);
+                subscription.setUser(user);
+                subscription.setProduct(product);
+                when(subscriptionRepositoryMock.findByUser(any(User.class))).thenReturn(new ArrayList<>(Arrays.asList(subscription)));
+                assertEquals("UnSubscribed Successfully",subscriptionServiceImpl.cancelSubscription(principal,product.getId()));
         }
 
 }

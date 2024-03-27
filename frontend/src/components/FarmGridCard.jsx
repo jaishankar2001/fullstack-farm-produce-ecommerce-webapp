@@ -1,6 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { CAT1 } from "../assets/images/index";
 
 function FarmGridCard({ farm }) {
   const navigate = useNavigate();

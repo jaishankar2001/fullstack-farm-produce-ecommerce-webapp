@@ -83,7 +83,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             if (password) {
                 userMeta = userMetaRepository.findByUser(tempUser);
-
                 if (userMeta.isVerified() == true) {
                     var jwt = jwtService.generateToken(tempUser);
                     var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), tempUser);
@@ -115,9 +114,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (jwtService.isTokenValid(refreshTokenRequest.getToken(), userDetails)) {
             var jwt = jwtService.generateToken(userDetails);
-
-            System.out.println("TOKEN JWTT : " + jwt);
-
             JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
             jwtAuthenticationResponse.setToken(jwt);
             jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());

@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// Base URL for API requests obtained from environment variable
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
+
+// Create an instance of Axios with base URL and default headers
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -9,6 +12,8 @@ const api = axios.create({
   },
 });
 
+
+// Interceptor to add Authorization header with token from localStorage to each request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage?.getItem("token");
@@ -22,6 +27,8 @@ api.interceptors.request.use(
   }
 );
 
+
+// handle successful response
 const handleResponse = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response.data;
@@ -30,6 +37,7 @@ const handleResponse = (response) => {
   }
 };
 
+// handle errors in HTTP requests
 const handleError = (error) => {
   console.error(error?.response?.status);
   if (error?.response?.status === 401) {

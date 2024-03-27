@@ -16,11 +16,6 @@ function ResetPassword() {
     // Call API with username and password
     try {
       const response = await api.auth.resetPassword(email, code, newPassword);
-
-      // Assuming the response contains a token
-      //   localStorage.setItem("token", response.token);
-      //   localStorage.setItem("refreshToken", response.refreshToken);
-
       // Navigate to desired location upon successful login
       navigate("/");
     } catch (error) {
@@ -57,20 +52,8 @@ function ResetPassword() {
                 <div className="col-md-12 mt-3">
                   <button className="btn btn-primary w-100">Reset</button>
                 </div>
-                {/* <div className="col-md-12">
-                  <div className="border border-1 rounded bg-light px-3 py-2 small">
-                    Password reset link will be sent to this email.
-                  </div>
-                </div> */}
               </form>
             </div>
-            {/* <hr className="text-muted my-0" />
-            <div className="text-center p-3">
-              Don&lsquo;t hanve an account?{" "}
-              <Link to="/signup">
-                <a className="text-decoration-none fw-medium">Register</a>
-              </Link>
-            </div> */}
           </div>
         </div>
       </div>

@@ -1,10 +1,10 @@
 package com.example.backend.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.dto.request.*;
-import com.example.backend.dto.request.ProductSearchRequest;
 import com.example.backend.dto.response.*;
 import com.example.backend.entities.Product;
 import com.example.backend.services.ProductService;
@@ -40,10 +40,10 @@ public class ProductController {
         return ResponseEntity.ok(userProducts);
     }
 
-    @PostMapping("/all-products")
-    public ResponseEntity<List<ProductDto>> getAllProducts(
-            @RequestBody @Valid ProductSearchRequest productSearchRequest) {
-        List<ProductDto> allProducts = productService.getAllProducts(productSearchRequest);
+    @GetMapping("/all-products")
+    public ResponseEntity<List<ProductDto>> getAllProducts(@RequestParam(name = "searchTerm", required = false) String searchTerm
+            ) {
+        List<ProductDto> allProducts = productService.getAllProducts(searchTerm);
         return ResponseEntity.ok(allProducts);
     }
 
