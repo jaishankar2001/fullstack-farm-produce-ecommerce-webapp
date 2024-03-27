@@ -31,6 +31,12 @@ public class FarmerController {
 
     private final FarmerService farmerService;
 
+    /**
+     * Endpoint to get the farms of a particular user
+     * @param searchTerm infix used to filter the search
+     * @param principal user token
+     * @return returns a list of farms
+     */
     @GetMapping("/own-farms")
     public ResponseEntity<List<FarmDto>> getFarms(@RequestParam(name = "searchTerm", required = false) String searchTerm,
             Principal principal) {
@@ -38,6 +44,13 @@ public class FarmerController {
         return ResponseEntity.ok(userFarms);
     }
 
+    /**
+     * Endpoint to add farms
+     * @param farmRequest request containing new farm information
+     * @param files images of the farms
+     * @param principal user token
+     * @return all farms of the farmer
+     */
     @PostMapping("/addfarm")
     public ResponseEntity<Map> addFarm(@ModelAttribute AddFarmRequest farmRequest,
             @RequestParam(value = "files") MultipartFile[] files, Principal principal) {
@@ -49,6 +62,13 @@ public class FarmerController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /**
+     * 
+     * @param farmRequest
+     * @param files
+     * @param principal
+     * @return
+     */
     @PostMapping("/editfarm")
     public ResponseEntity<Map> editFarm(@ModelAttribute EditFarmRequest farmRequest,
             @RequestPart(value = "files", required = false) MultipartFile[] files, Principal principal) {

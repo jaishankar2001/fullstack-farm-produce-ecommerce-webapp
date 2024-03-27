@@ -106,6 +106,11 @@ public class WalletServiceImpl implements WalletService {
         }
     }
 
+    /**
+     * gets the wallet history for a user
+     * @param principal user token
+     * @return returns the list of transaction that happened on the wallet
+     */
     public List<Wallet> gethistory(Principal principal) {
         try {
             User user = userRepository.findByEmail(principal.getName());
