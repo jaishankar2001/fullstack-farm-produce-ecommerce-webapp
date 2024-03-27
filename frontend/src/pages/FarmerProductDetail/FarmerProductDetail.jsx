@@ -10,7 +10,6 @@ import OrderConfirmationModal from "../../components/OrderConfirmationModal";
 import SubscriptionModal from "../../components/SubscriptionModal";
 
 function FarmerProductDetail() {
-  const images = [2, 4, 6, 8, 1];
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
@@ -141,28 +140,6 @@ console.log(product);
                   </div>
                 </div>
               </div>
-              {/* <div className="row mt-3 d-none d-lg-block">
-                <div className="col-12 d-flex justify-content-center">
-                  {images.map((img) => {
-                    return (
-                      (<div
-                        key={img}
-                        style={{ width: 60 }}
-                        className="me-2 ratio ratio-1x1"
-                      >
-                        <img
-                          className="rounded"
-                          src={img.img_url}
-                          width={60}
-                          height={60}
-                          alt="Product image."
-                          key={img}
-                        />
-                      </div>)
-                    );
-                  })}
-                </div>
-              </div> */}
             </div>
 
             <div className="col-lg-7">
@@ -184,7 +161,6 @@ console.log(product);
 
               <div className="vstack">
                 <div className="d-flex mb-3 gap-2 mt-2">
-                  {/* <ProductRating /> */}
                   <span className="text-success small">
                     <FontAwesomeIcon icon={["fas", "check-circle"]} />
                     &nbsp;In Stock

@@ -11,18 +11,11 @@ function ForgotPassword() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Call API with username and password
     try {
       const response = await api.auth.ResetPasswordReq({ email });
-
-      // Assuming the response contains a token
-      // localStorage.setItem("token", response.token);
-      // localStorage.setItem("refreshToken", response.refreshToken);
-
-      // Navigate to desired location upon successful login
       navigate("/verify-email");
     } catch (error) {
-      console.log("Errrorr?", error);
+      console.log(error);
       if (
         error.response &&
         error.response.data &&

@@ -42,7 +42,7 @@ export async function verifyEmail(email, code, type) {
   try {
     const apiUrl = `/auth/verify?email=${email}&code=${code}&type=${type}`;
     const response = await api.get(apiUrl);
-    return response; // Assuming the response contains the data you need
+    return response;
   } catch (error) {
     throw error;
   }
@@ -52,7 +52,7 @@ export async function walletInit(amount) {
   try {
     const apiUrl = `/wallet/create-payment-intent?amount=${amount}`;
     const response = await api.post(apiUrl);
-    return response; // Assuming the response contains the data you need
+    return response;
   } catch (error) {
     throw error;
   }

@@ -83,13 +83,6 @@ function FarmerProductListing() {
                 </button>
               </div>
             </div>
-              {/* <nav aria-label="breadcrumb">
-                <ol className="breadcrumb mb-1">
-                  <li className="breadcrumb-item">
-                    <a href="#">{selectedTab === "allProducts" ? "All Products" : "My Products"}</a>
-                  </li>
-                </ol>
-              </nav> */}
             </div>
           </div>
         </div>
