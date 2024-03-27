@@ -1,23 +1,35 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const Map = ({ farmLoc, selectedLocation, setSelectedLocation }) => {
+const Map = ({ farmLoc, callMap }) => {
+  const [selectedLocation, setSelectedLocation] = useState({
+    lat: 44.6475811,
+    lng: -63.5727683,
+  });
   const mapRef = useRef(null);
+  const googleMapsScriptLoaded = useRef(false);
   const google_api_key = process.env.REACT_APP_MAP_KEY;
   const loadGoogleMapsScript = () => {
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&libraries=places`;
-    script.defer = true;
-    script.async = true;
+    if (!googleMapsScriptLoaded.current) {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${google_api_key}&libraries=places`;
+      script.defer = true;
+      script.async = true;
 
-    document.head.appendChild(script);
+      script.onload = () => {
+        googleMapsScriptLoaded.current = true;
+      };
+      document.head.appendChild(script);
+    }else{
+      initializeMap();
+    }
   };
   const initializeMap = () => {
     const mapOptions = {
       center: selectedLocation,
       zoom: 12,
     };
-
     const map = new window.google.maps.Map(mapRef.current, mapOptions);
+    
     var mIcon = {
       path: window.google.maps.SymbolPath.Marker,
       fillOpacity: 1,
@@ -27,6 +39,9 @@ const Map = ({ farmLoc, selectedLocation, setSelectedLocation }) => {
       strokeColor: "#333",
       scale: 14,
     };
+    map.data.forEach((feature) => {
+      map.data.remove(feature);
+    });
     farmLoc.forEach(({ name, lat, long }) => {
       var infowindow = new window.google.maps.InfoWindow({
         content: `${name}`,
@@ -46,25 +61,15 @@ const Map = ({ farmLoc, selectedLocation, setSelectedLocation }) => {
       });
     });
   };
-  const delayedLoadGoogleMapsScript = () => {
-    setTimeout(loadGoogleMapsScript, 500);
-  };
 
   useEffect(() => {
     if (window.google) {
       initializeMap();
-    } else {
-      delayedLoadGoogleMapsScript();
-    }
-  }, [farmLoc, selectedLocation]);
-  
-  useEffect(() => {
-    if (!window.google) {
+    }else if(callMap==1){
       loadGoogleMapsScript();
-    } else {
-      initializeMap();
     }
-  }, []);
+  }, [callMap]);
+  
 
   return (
     <div
