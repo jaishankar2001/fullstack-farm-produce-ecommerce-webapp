@@ -39,6 +39,11 @@ public class WalletServiceImpl implements WalletService {
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
 
+    /**
+     * Adds money to the wallet of the user
+     * @param email email id of the user
+     * @param amount amount that needs to be added
+     */
     public void addMoney(String email, double amount) {
         // Retrieving the user's wallet info.
         User user = userRepository.findByEmail(email);
@@ -58,6 +63,12 @@ public class WalletServiceImpl implements WalletService {
         }
     }
 
+    /**
+     * Creates the Stripe session for adding money to the wallet
+     * @param amount amount to be added
+     * @param principal user token
+     * @return wallet balance
+     */
     public String createPaymentIntent(String amount, Principal principal) {
         try {
 

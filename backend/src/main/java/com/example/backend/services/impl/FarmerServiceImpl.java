@@ -39,6 +39,13 @@ public class FarmerServiceImpl implements FarmerService {
     private final ImagesRepository imagesRepository;
     private final ProductRepository productRepository;
 
+    /**
+     * creates new farm and stores the data in the database
+     * @param farmRequest Contains all details needed to create a new farm
+     * @param multipartFiles Used to add images of the farm
+     * @param principal user token
+     * @return returns the farm object
+     */
     @Override
     public List<FarmDto> addFarm(AddFarmRequest farmRequest, final MultipartFile[] multipartFiles,
             Principal principal) {
@@ -65,6 +72,13 @@ public class FarmerServiceImpl implements FarmerService {
         return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
+    /**
+     * Edits the farm based on data provided
+     * @param farmRequest contains all data about a farm, if change is not needed the field will be null
+     * @param multipartFiles for new images of the farm, null if no change is needed
+     * @param principal user token
+     * @return success confirmation
+     */
     @Override
     public String editFarm(EditFarmRequest farmRequest, MultipartFile[] multipartFiles, Principal principal) {
         Farms farm = farmRepository.findById(farmRequest.getId());
@@ -90,6 +104,10 @@ public class FarmerServiceImpl implements FarmerService {
         return "Farm details edited successfully";
     }
 
+    /**
+     * Removes a farm and all its related objects from the database
+     * @param id farm id
+     */
     @Override
     public void deleteFarm(int id) {
         Farms farm = farmRepository.findById(id);
@@ -112,6 +130,12 @@ public class FarmerServiceImpl implements FarmerService {
         farmRepository.deleteById(id);
     }
 
+    /**
+     * gets all farms of an user
+     * @param searchTerm infix of the farm name to be searched for
+     * @param principal user token
+     * @return List of farms of the user
+     */
     @Override
     public List<FarmDto> getFarms(String searchTerm, Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
@@ -142,6 +166,11 @@ public class FarmerServiceImpl implements FarmerService {
         return userFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
+    /**
+     * gets all farms that matchjes the infix
+     * @param farmName infix of the farm name
+     * @return all farms that matches the given infix
+     */
     @Override
     public List<FarmDto> getAllFarms(String farmName) {
         List<Farms> allFarms;
@@ -158,6 +187,11 @@ public class FarmerServiceImpl implements FarmerService {
         return allFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
     }
 
+    /**
+     * Gets farm with its ID
+     * @param id farm ID
+     * @return returns the farmID
+     */
     @Override
     public GetFarmByIdResponse getFarmById(int id) {
         Farms farm = farmRepository.findById(id);
@@ -180,6 +214,11 @@ public class FarmerServiceImpl implements FarmerService {
 
     }
 
+    /**
+     * to update the farm values, used by editFarm method
+     * @param farmRequest contains the data that is meant to replace the existing data
+     * @param farm farm that needs to be edited
+     */
     public void updateIndividualFields(EditFarmRequest farmRequest, Farms farm) {
         if (farmRequest.getName() != null) {
             farm.setName(farmRequest.getName());

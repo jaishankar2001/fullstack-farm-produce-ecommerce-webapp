@@ -25,6 +25,10 @@ public class HomeServiceImpl implements HomeService {
         private final FarmRepository farmRepository;
         private final ProductRepository productRepository;
 
+        /**
+         * Gets information required for the HOMEPAGE
+         * @return returns the top 8 farms and top 8 products to be displayed on the home page
+         */
         @Override
         public HomeResponse getHomeMeta() {
                 List<Farms> topFarms = farmRepository.findTop8ByOrderByIdDesc();

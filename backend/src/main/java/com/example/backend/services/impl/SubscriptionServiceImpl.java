@@ -43,6 +43,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final OrderRepository orderRepository;
 
+    /**
+     * Subscribes to a product
+     * @param request contains the information for subscribing
+     * @param principal user token
+     */
     @Override
     public void subscribeProduct(ProductSubscribeRequest request, Principal principal) {
 
@@ -87,10 +92,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
+    /**
+     * runs the CRON job, available on admin dashboard
+     */
     public void runCron() {
         CronForMakeOrder();
     }
 
+    /**
+     * Gets the subscriptions made by a user
+     * @param principal user token
+     * @return returns the list of all subscriptions made by the user
+     */
     @Override
     public List<GetSubscriptionResponse> getOwnSubscription(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
@@ -136,6 +149,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return responses;
     }
 
+    /**
+     * Gets the products of a farmer that have been subscribed to
+     * @param principal user token
+     * @return list of all products that belong to a farmer that have at least one active subscription
+     */
     @Override
     public List<GetSubscriptionResponse> getMySubscribedProduct(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
@@ -189,6 +207,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return responses;
     }
 
+    /**
+     * Cron Job that runs everyday at 11:55 pm
+     */
     // @Scheduled(cron = "0 * * * * *") // running every minute
     // @Scheduled(cron = "* * * * * *") // every second
     @Scheduled(cron = "55 23 * * * *") // Runs everyday at 11:55 PM
@@ -226,6 +247,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
+    /**
+     * gets days of that are part of the subscription
+     * @param request DTO containing the subscription information
+     * @return a list of days
+     */
     public List<String> getSubScribedDays(ProductSubscribeRequest request) {
         List<String> subscribeDays = new ArrayList<>();
 

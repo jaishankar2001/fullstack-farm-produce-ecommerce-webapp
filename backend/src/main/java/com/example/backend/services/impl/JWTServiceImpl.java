@@ -22,6 +22,11 @@ public class JWTServiceImpl implements JWTService {
     @Value("${jwt.expiration}")
     private int expirationTimeInMiliSecond;
 
+    /**
+     * Generates a JWT token
+     * @param userDetails the details of the user
+     * @return returns the token
+     */
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMiliSecond))
@@ -29,6 +34,12 @@ public class JWTServiceImpl implements JWTService {
                 .compact();
     }
 
+    /**
+     * Generates the refresh token
+     * @param extraClaims
+     * @param userDetails details of the user
+     * @return generated refresh token
+     */
     public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
@@ -38,6 +49,10 @@ public class JWTServiceImpl implements JWTService {
                 .compact();
     }
 
+    /**
+     *
+     * @return
+     */
     private Key getSignInKey() {
         byte[] key = Decoders.BASE64.decode("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz");
         return Keys.hmacShaKeyFor(key);
@@ -56,6 +71,12 @@ public class JWTServiceImpl implements JWTService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    /**
+     * checks if the token has expired or not
+     * @param token JWT token
+     * @param userDetails details of the user
+     * @return returns if the token is expired or not
+     */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUserName(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
