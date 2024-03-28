@@ -218,7 +218,7 @@ npm install
 npm build
 ```
 
-- Once build folder is created we will move build the folder the Vm : /var/www/html, following is the command that we have used in our CI-CD pipeline to copy our build folder
+- Once build folder is created, we will move the build folder to the Vm : /var/www/html, following is the command that we have used in our CI-CD pipeline to copy our build folder
 
 ```bash
 scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
@@ -660,14 +660,99 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## ✅Test
 
-### ▪️ Coverage
+- We have used Junit for unit test cases and mockito, following are depdencies we have used for that
 
-Jacoco is used to show code coverage of the test cases. The project's service layer has 75% Line Coverage.
+```
+<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+</dependency>
+<dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>3.9.0</version>
+</dependency>
+```
 
-### ️▪️ Integration tests
+## Coverage
 
-We have followed best practices for mocking the dependent classes. System under test is beign tested in isolation.
+Our current class coverage is 92%, method coverage is 79% and line coverage is 82%.
 
-### ▪️ TDD adherence
+<center>
+<img src="./assets/branch_coverage.png" alt="Coverage" width="600 px" height="550 px">
+</center>
 
-Some of our APIs are developed by following Test Driven Developement approach.
+## Integration tests
+
+We have added integration test cases([Here](./backend/src/test/java/com/example/backend/IntegrationTests/ControllerIntegrationTest.java)) for following controllers : - - FarmerController - SubscriptionController - OrderController - HomeController - CategoryController
+
+## TDD adherence
+
+We have followed TDD adherence for some of the functionalities and APIs which includes Subscriptions, Orders, Home, and Admin.
+
+- Following is the one screenshot supporting TDD adherance.
+
+<center>
+<img src="./assets/TDD.png" alt="TDD">
+</center>
+
+### Test best practices
+
+We have followed Test best practice such as writing small test cases, testing one thing at a time and dividng the structure.
+
+- our Test folder structure
+
+```
+    ├── test                    # Test root folder
+    │   ├── ControllerTests     # All the controller unit tests
+    │   ├── entities            # All the Entities unit tests
+    │   └── ExceptionTests      # All the Expception unit tests
+    │   └── Services            # All the Services with implementation unit tests
+    │   └── Utils               # All the Utils unit tests
+    │   └── Integrations        # Integration Test cases
+    └── BackendApplicationTest
+```
+
+- We have resolved Test smells and currently there are only 8 test smells which are justified [here](./Smell_analysis_summary//Test_smells.xlsx)
+
+# Design Pattern
+
+## Single Responsibility Principle
+
+- We have followed Single responsibility principle by separating the concern and facilating the modification, testing and reuse of the code.
+
+- Following is the screenshot of our current folder structure : -
+
+<center>
+<img src="./assets/Folder_structure.png" alt="Registration Page" width="60%">
+</center>
+
+## Open/closed Principle
+
+- A class should open for extension and closed for modification. We had make sure that, services and implementation will be able to extend without modifying other old implementation.
+
+## Liskov Substitution Principle (LSP)
+
+- subtype should be able to replace base type without changing the correctness of the program. In abstract class or interface it will be able to replace with its parents.
+
+## Interface Segregation Principle (ISP)
+
+- The ISP tells us that larger interfacses should be splitted into smaller interfaces. To implement this we have created different interfacses for different services such as for senMail, authentication, wallet etc. Following is screenshot of Mail service which have only one method sendMail
+
+<center>
+<img src="./assets/Mail_service.png" alt="Registration Page">
+</center>
+
+## Dependency Inversion Principle (DIP)
+
+It states that high level modules should not depend on low level modules. We have implemented separate controllers and services as per Spring boot best practice to reduce the dependancy on individual classes.
+
+# Code smell analysis
+
+| Smells               | Total number | Refactored | Justified | Link                                                                        |
+| -------------------- | ------------ | ---------- | --------- | --------------------------------------------------------------------------- |
+| Architecture Smell   | 18           | 2          | 16        | [Architecture Smell](./Smell_analysis_summary/Architecture_smells.xlsx)     |
+| Design Smell         | 73           | 16         | 57        | [Design Smell](./Smell_analysis_summary/Design_smells.xlsx)                 |
+| Implementation Smell | 56           | 27         | 29        | [implementation Smell](./Smell_analysis_summary/Implementation_smells.xlsx) |
