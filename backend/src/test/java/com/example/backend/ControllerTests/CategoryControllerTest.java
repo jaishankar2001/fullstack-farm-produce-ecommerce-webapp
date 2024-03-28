@@ -19,8 +19,6 @@ public class CategoryControllerTest {
     @InjectMocks
     CategoryController categoryController;
     @Mock
-    Category category;
-    @Mock
     CategoryService categoryService;
 
     @BeforeEach
