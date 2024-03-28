@@ -342,18 +342,18 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - After successful login, users are redirected to the Home Page.
 - Users can navigate directly to the Farms page by clicking on 'Farms' on the navigation bar.
 - Users can navigate directly to the Products page by clicking on 'Products' on the navigation bar.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/HomePage.png" alt="Landing Page">
-</center>
+</table>
 
 ---
 
 **User Dropdown**
 
 - Users can navigate to different pages by clicking on the options provided in the User Dropdown menu.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/userDropdown.png" alt="User Dropdown menu">
-</center>
+</table>
 
 ---
 
@@ -362,9 +362,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - On the Home page, In the Farms section, latest 8 farms are displayed.
 - User can view the farm details by clicking on the 'Visit the farm' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/farms.png" alt="Farms Section">
-</center>
+</table>
 
 ---
 
@@ -376,9 +376,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ---
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/myFarms.png" alt="Farmer farm page" >
-</center>
+</table>
 
 ---
 
@@ -386,18 +386,18 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Once adding necessary details like Farm name, Farm description, Farm images and Farm address, farmer can click on 'Submit' button to add the farm
 .
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/addFarm.png" alt="Add Farm" >
-</center>
+</table>
 
 ---
 
 - Farmers can edit their farm details by clicking on the 'Edit Farm' button.
 - Farmers can delete their farm by clicking on the 'Delete Farm' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/farmerFarm.png" alt="Farmer farm page" >
-</center>
+</table>
 
 ---
 
@@ -405,18 +405,18 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Once making changes to the farm details, farmer can click on 'Update' button to update the farm details.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/editFarm.png" alt="Edit Farm page" >
-</center>
+</table>
 
 ---
 
 **Delete Farm**
 
 - Farmer can delete the farm by clicking on 'Delete' button.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/deleteFarm.png" alt="Delete Farm page" >
-</center>
+</table>
 
 ---
 
@@ -424,18 +424,18 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Customers can view the farm details by navigating to the Farms page from the title bar.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/customerFarm.png" alt="Customer farm page" >
-</center>
+</table>
 
 ## Products section
 
 - On the Home page, In the Products section, latest 8 products are displayed.
 - User can view the product details by clicking on the 'View Product' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/products.png" alt="Product Section" >
-</center>
+</table>
 
 ---
 
@@ -449,18 +449,18 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ---
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/myProducts.png" alt="Farmer farm page" >
-</center>
+</table>
 
 ---
 
 - Farmers can edit the product details by clicking on the 'Edit Product' button.
 - Farmers can delete the product by clicking on the 'Delete Product' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/farmerProduct.png" alt="Farmer Product page" >
-</center>
+</table>
 
 ---
 
@@ -468,27 +468,27 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Once adding necessary details like Product name, Product category, Product price, etc. farmer can click on 'Submit' button to add the product
 .
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/addProduct.png" alt="Add Product" >
-</center>
+</table>
 
 ---
 
 **Editing Product details**
 
 - Once making changes to the product details, farmer can click on 'Update' button to update the product details.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/editProduct.png" alt="Edit Product page" >
-</center>
+</table>
 
 ---
 
 **Deleting Product**
 
 - Farmer can delete the product by clicking on 'Delete' button.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/deleteProduct.png" alt="Delete Product page" >
-</center>
+</table>
 
 ---
 
@@ -498,9 +498,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Customers can buy the product by clicking on the 'Buy Now' button.
 - Customers can subscribe the product for recurring delivery by clicking on the 'Subscribe' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/productPage.png" alt="Customer Product page" >
-</center>
+</table>
 
 ---
 
@@ -508,9 +508,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Customers can buy the product by clicking on the 'Buy Now' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/buyProduct.png" alt="Product Buying" >
-</center>
+</table>
 
 ---
 
@@ -519,9 +519,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - From the given options, customer can choose their subscription plan.
 - Once chosen, they can confirm the subscription by clicking on the 'Confirm Subscription' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/subscription.png" alt="Product Subscription" >
-</center>
+</table>
 
 ---
 
@@ -529,25 +529,25 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Customers can customize the subscription as well.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/customSubscription.png" alt="Product Subscription" >
-</center>
+</table>
 
 ## Subscription History
 
 - Customers can view the the list of the products they have subscribed for.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/subscriptionHistory.png" alt="Subscription History" >
-</center>
+</table>
 
 ---
 
 - Customer can also check which days they have subscribed for.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/customSubscriptionData.png" alt="Subscription Data" >
-</center>
+</table>
 
 ---
 
@@ -555,9 +555,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Footer section
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/footer.png" alt="Footer Section" >
-</center>
+</table>
 
 ## Admin Dashboard
 
@@ -567,21 +567,21 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Customers can use these funds while making the purchase.
 - If ht user has subscribed for a product, funds will be deducted from the wallet on the day before the delivery.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/wallet.png" alt="Wallet Page" >
-</center>
+</table>
 
 ## Wallet History
 
 - Customer can track their transactions on the by navigating to the 'Wallet History' page from the User dropdown menu.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/walletHistory.png" alt="Wallet History Page" >
-</center>
+</table>
 
 ## Order History
 
 - Customers can view the list of products they have purchased by navigating to the 'Order History' page from the User dropdown menu.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/orderHistory.png" alt="Order History Page" >
-</center>
+</table>
