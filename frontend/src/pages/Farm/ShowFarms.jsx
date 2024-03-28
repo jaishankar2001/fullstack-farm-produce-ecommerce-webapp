@@ -117,7 +117,7 @@ function ShowFarms(){
                             <div  class="col-lg-6">
                                 <div class="row g-3">
                                 {farmData.length > 0 ? (farmData.map(farm =>
-                                    <div key = {farm.id} class='col-md-6 col-lg-12 col-xl-6 shadow lg '>
+                                    <div key = {farm.id} class='col-md-6 col-lg-12 col-xl-6'>
                                         <div class="hoverable">
                                             <div class="rounded position-relative fruite-item">
                                                 <div class="fruite-img">
@@ -128,7 +128,7 @@ function ShowFarms(){
                                                     <h4>{farm.name}</h4>
                                                     <p>{farm.description}</p>
                                                     <div class="d-flex justify-content-center flex-lg-wrap">
-                                                        <a href={`/farm/${farm.id}`} class="btn border border-secondary rounded-pill px-3 text-primary"> Visit the farm</a>
+                                                        <a href={`/farm/${farm.id}`} class="btn border rounded-pill px-3 text-primary"> Visit the farm</a>
                                                     </div>
                                                 </div>
                                             </div>
