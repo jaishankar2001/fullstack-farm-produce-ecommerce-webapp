@@ -21,7 +21,7 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 ## Backend Dependencies
 
 | Dependency Group         | Description                                               | Artifact                       | Version  |
-| ------------------------ | --------------------------------------------------------- | ------------------------------ | -------- |
+|  |  |  | -- |
 | org.springframework.boot | Starter for using Spring Boot's Actuator endpoints        | spring-boot-starter-actuator   |          |
 | org.springframework.boot | Starter for using Spring Data JPA                         | spring-boot-starter-data-jpa   |          |
 | org.springframework.boot | Starter for building web, including RESTful, applications | spring-boot-starter-web        |          |
@@ -129,7 +129,7 @@ npm run start
 ## Frontend Dependencies
 
 | Dependency                          | Version | Description                                                                     | Installation Command                              |
-| ----------------------------------- | ------- | ------------------------------------------------------------------------------- | ------------------------------------------------- |
+| -- | - | - | - |
 | @fortawesome/fontawesome-svg-core   | ^6.5.1  | SVG icon library core for Font Awesome.                                         | `npm install @fortawesome/fontawesome-svg-core`   |
 | @fortawesome/free-brands-svg-icons  | ^6.5.1  | Free SVG icons for brands from Font Awesome.                                    | `npm install @fortawesome/free-brands-svg-icons`  |
 | @fortawesome/free-regular-svg-icons | ^6.5.1  | Free SVG icons in regular style from Font Awesome.                              | `npm install @fortawesome/free-regular-svg-icons` |
@@ -322,7 +322,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
     <img src="./assets/SignUp.png" alt="Registration Page" width="600 px" height="550 px">
 </table>
 
----
+
 
 - After successful registration, verification mail is sent to the registered Email address
 
@@ -342,9 +342,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - After successful login, users are redirected to the Home Page.
 - Users can navigate directly to the Farms page by clicking on 'Farms' on the navigation bar.
 - Users can navigate directly to the Products page by clicking on 'Products' on the navigation bar.
-<!-- <table align="center"><tr><td align="center" width="9999"> -->
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/HomePage.png" alt="Landing Page">
-<!-- </table> -->
+</table>
 
 **User Dropdown**
 
@@ -353,7 +353,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/userDropdown.png" alt="User Dropdown menu">
 </table>
 
----
+
 
 ## Farms section
 
@@ -364,21 +364,19 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/farms.png" alt="Farms Section">
 </table>
 
----
-
 ### Farm page for Farmer
 
 - Farmers can view their farms by clicking on 'My Farms' from the dropdown list.
 - Farmers can view their farm details by clicking on 'View Farm' button.
 - Farmers can add new farm by clicking on the 'Add Farm' button
 
----
+
 
 <table align="center"><tr><td align="center" width="9999">
 <img src="./assets/myFarms.png" alt="Farmer farm page" >
 </table>
 
----
+
 
 **Adding Farm**
 
@@ -388,7 +386,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/addFarm.png" alt="Add Farm" >
 </table>
 
----
+
 
 - Farmers can edit their farm details by clicking on the 'Edit Farm' button.
 - Farmers can delete their farm by clicking on the 'Delete Farm' button.
@@ -397,7 +395,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/farmerFarm.png" alt="Farmer farm page" >
 </table>
 
----
+
 
 **Edit Farm details**
 
@@ -407,7 +405,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/editFarm.png" alt="Edit Farm page" >
 </table>
 
----
+
 
 **Delete Farm**
 
@@ -416,7 +414,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/deleteFarm.png" alt="Delete Farm page" >
 </table>
 
----
+
 
 ### Farm page for Customer
 
@@ -435,9 +433,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/products.png" alt="Product Section" >
 </table>
 
----
 
----
+
+
 
 ### Product page for Farmer
 
@@ -445,13 +443,13 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Farmers can view their farm details by clicking on 'View Product' button.
 - Farmers can add new farm by clicking on the 'Add Product' button
 
----
+
 
 <table align="center"><tr><td align="center" width="9999">
 <img src="./assets/myProducts.png" alt="Farmer farm page" >
 </table>
 
----
+
 
 - Farmers can edit the product details by clicking on the 'Edit Product' button.
 - Farmers can delete the product by clicking on the 'Delete Product' button.
@@ -460,7 +458,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/farmerProduct.png" alt="Farmer Product page" >
 </table>
 
----
+
 
 **Adding Product**
 
@@ -470,7 +468,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/addProduct.png" alt="Add Product" >
 </table>
 
----
+
 
 **Editing Product details**
 
@@ -479,7 +477,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/editProduct.png" alt="Edit Product page" >
 </table>
 
----
+
 
 **Deleting Product**
 
@@ -488,7 +486,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/deleteProduct.png" alt="Delete Product page" >
 </table>
 
----
+
 
 ### Product page for Customer
 
@@ -500,7 +498,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/productPage.png" alt="Customer Product page" >
 </table>
 
----
+
 
 **Buying Product**
 
@@ -510,7 +508,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/buyProduct.png" alt="Product Buying" >
 </table>
 
----
+
 
 **Subscribing Product**
 
@@ -521,7 +519,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/subscription.png" alt="Product Subscription" >
 </table>
 
----
+
 
 **Customizing the Subscription**
 
@@ -539,7 +537,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/subscriptionHistory.png" alt="Subscription History" >
 </table>
 
----
+
 
 - Customer can also check which days they have subscribed for.
 
@@ -547,7 +545,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/customSubscriptionData.png" alt="Subscription Data" >
 </table>
 
----
+
 
 ## Banner section
 
