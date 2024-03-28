@@ -13,6 +13,5 @@ public interface WalletService {
 
     String createPaymentIntent(String amount, Principal principal);
 
-    // void spendMoney(int payerId, int receiverId, double amount);
 
 }
