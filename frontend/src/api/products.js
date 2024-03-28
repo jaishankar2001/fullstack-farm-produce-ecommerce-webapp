@@ -41,9 +41,10 @@ export async function deleteProduct(id) {
 /**
  * Retrieves products added by a particular farmer.
  */
-export async function getFarmerProducts(payload) {
+  export async function getFarmerProducts(searchTerm) {
     try {
-      const response = await api.post("/products/delete", payload);
+      const queryParams = searchTerm ? `?searchTerm=${searchTerm}` : '';
+      const response = await api.get(`/products/farmer-products${queryParams}`);
       return response;
     } catch (error) {
       throw error;
