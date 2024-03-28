@@ -9,14 +9,11 @@ import Map from "../../components/Map";
 
 function ShowFarms(){
   const [farmName, setFarmName] = useState("");
+  const [callMap, setCallMap] = useState(0);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [farmData, setFarmData] = useState([]);
   const [farmLoc, setFarmLoc] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState({
-    lat: 44.6475811,
-    lng: -63.5727683,
-  });
 
   const changeFarmLoc = () => {
     setFarmLoc((prevFarmLoc) => {
@@ -50,6 +47,7 @@ function ShowFarms(){
 
       const responseFromBackend = axios.get(`${process.env.REACT_APP_BASE_URL}/customer/listfarms`, config);
       setFarmData((await responseFromBackend).data);
+      changeFarmLoc();
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -66,7 +64,8 @@ function ShowFarms(){
   };
   useEffect(() => {
     changeFarmLoc();
-  }, [farmData]);
+    setCallMap(callMap+1);
+    }, [farmData]);
   useEffect(() => {
     fetchData();
   }, [farmName]);
@@ -74,6 +73,7 @@ function ShowFarms(){
     event.preventDefault();
     fetchData();
   };
+
   
 
   return(
@@ -140,8 +140,8 @@ function ShowFarms(){
                             <div class="col-lg-6">
                             <Map
                               farmLoc={farmLoc}
-                              setSelectedLocation={setSelectedLocation}
-                              selectedLocation={selectedLocation} />
+                              callMap = {callMap}
+                               />
                             </div>
                         </div>
                     </div>
