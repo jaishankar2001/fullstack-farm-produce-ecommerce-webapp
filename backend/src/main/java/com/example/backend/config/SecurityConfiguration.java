@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                             request.requestMatchers("/api/category/list/**").permitAll();
                             request.requestMatchers("/api/products/getProduct/**").permitAll();
                             request.requestMatchers("/api/customer/listfarms/**").permitAll();
+                            request.requestMatchers("/api/farmer/getFarm/**").permitAll();
                             request.anyRequest().authenticated();
                         })
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
