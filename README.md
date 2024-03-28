@@ -60,48 +60,6 @@ mvn spring-boot:run
 
 The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
-## Prerequisites
-
-- Java `v17.0.2`
-- JDK `v17`
-- Maven `v3.9.6`
-
-## Getting Started
-
-Follow these steps to set up and run the project locally.
-
-### 1. Clone the Repository
-
-```bash
- git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git
- OR
- git clone https://git.cs.dal.ca/courses/2024-winter/csci5308/Group09.git
-```
-
-### 2. Navigate to the project directory
-
-```bash
-cd Group09/backend
-```
-
-### 3. Build the project
-
-- Run the following command to install backend dependencies:
-
-```bash
-mvn clean install
-```
-
-### 5. Run the application
-
-- After installing dependencies, start the Spring Boot backend server by running:
-
-```bash
-mvn spring-boot:run
-```
-
-The application will be accessible at `http://localhost:8080`.
-
 ## Backend Dependencies
 
 | Dependency Group         | Description                                               | Artifact                       | Version  |
