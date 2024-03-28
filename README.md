@@ -14,33 +14,10 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 [![React.js](https://img.shields.io/badge/React.js-16.x-purple)](https://reactjs.org/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-4.x-red)](https://getbootstrap.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-v8.0-yellow)](https://www.mysql.com/)
-[![stripe](https://img.shields.io/badge/Stripe-v22.7-blue)](https://img.shields.io/badge/Stripe-v22.7-red)
-[![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://img.shields.io/badge/GoogleMap-v2.19.2-brown)
+[![stripe](https://img.shields.io/badge/Stripe-v22.7-blue)](https://stripe.com/en-ca)
+[![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://developers.google.com/maps)
 
 # Ecopick backend Setup
-
-## Backend Dependencies
-
-| Dependency Group         | Description                                               | Artifact                       | Version  |
-| ------------------------ | --------------------------------------------------------- | ------------------------------ | -------- |
-| org.springframework.boot | Starter for using Spring Boot's Actuator endpoints        | spring-boot-starter-actuator   |          |
-| org.springframework.boot | Starter for using Spring Data JPA                         | spring-boot-starter-data-jpa   |          |
-| org.springframework.boot | Starter for building web, including RESTful, applications | spring-boot-starter-web        |          |
-| org.apache.commons       | Apache Commons Lang library                               | commons-lang3                  |          |
-| org.mockito              | Mocking framework for unit tests                          | mockito-core                   | 3.9.0    |
-| com.mysql                | MySQL JDBC driver                                         | mysql-connector-j              |          |
-| org.projectlombok        | Lombok library for reducing boilerplate code              | lombok                         |          |
-| org.springframework.boot | Starter for testing Spring Boot applications              | spring-boot-starter-test       |          |
-| org.springframework.boot | Starter for using Spring Boot's validation support        | spring-boot-starter-validation |          |
-| org.springframework.boot | Starter for using Spring Security                         | spring-boot-starter-security   |          |
-| io.jsonwebtoken          | Java JWT: JSON Web Token for Java                         | jjwt-api                       | 0.11.2   |
-| io.jsonwebtoken          | Implementation of Java JWT                                | jjwt-impl                      | 0.11.2   |
-| io.jsonwebtoken          | Jackson support for Java JWT                              | jjwt-jackson                   | 0.11.2   |
-| com.amazonaws            | AWS SDK for Amazon S3                                     | aws-java-sdk-s3                | 1.12.433 |
-| org.springframework.boot | Starter for using Spring Boot's email support             | spring-boot-starter-mail       |          |
-| org.modelmapper          | Object mapping library                                    | modelmapper                    | 3.1.1    |
-| com.stripe               | Stripe API for Java                                       | stripe-java                    | 22.7.0   |
-| junit                    | JUnit testing framework for Java                          | junit                          | 4.13.2   |
 
 ## Prerequisites
 
@@ -127,6 +104,29 @@ npm run start
 
 - Open your web browser and go to [http://localhost:3000](http://localhost:3000) to access the website.
 
+## Backend Dependencies
+
+| Dependency Group         | Description                                               | Artifact                       | Version  |
+| ------------------------ | --------------------------------------------------------- | ------------------------------ | -------- |
+| org.springframework.boot | Starter for using Spring Boot's Actuator endpoints        | spring-boot-starter-actuator   |          |
+| org.springframework.boot | Starter for using Spring Data JPA                         | spring-boot-starter-data-jpa   |          |
+| org.springframework.boot | Starter for building web, including RESTful, applications | spring-boot-starter-web        |          |
+| org.apache.commons       | Apache Commons Lang library                               | commons-lang3                  |          |
+| org.mockito              | Mocking framework for unit tests                          | mockito-core                   | 3.9.0    |
+| com.mysql                | MySQL JDBC driver                                         | mysql-connector-j              |          |
+| org.projectlombok        | Lombok library for reducing boilerplate code              | lombok                         |          |
+| org.springframework.boot | Starter for testing Spring Boot applications              | spring-boot-starter-test       |          |
+| org.springframework.boot | Starter for using Spring Boot's validation support        | spring-boot-starter-validation |          |
+| org.springframework.boot | Starter for using Spring Security                         | spring-boot-starter-security   |          |
+| io.jsonwebtoken          | Java JWT: JSON Web Token for Java                         | jjwt-api                       | 0.11.2   |
+| io.jsonwebtoken          | Implementation of Java JWT                                | jjwt-impl                      | 0.11.2   |
+| io.jsonwebtoken          | Jackson support for Java JWT                              | jjwt-jackson                   | 0.11.2   |
+| com.amazonaws            | AWS SDK for Amazon S3                                     | aws-java-sdk-s3                | 1.12.433 |
+| org.springframework.boot | Starter for using Spring Boot's email support             | spring-boot-starter-mail       |          |
+| org.modelmapper          | Object mapping library                                    | modelmapper                    | 3.1.1    |
+| com.stripe               | Stripe API for Java                                       | stripe-java                    | 22.7.0   |
+| junit                    | JUnit testing framework for Java                          | junit                          | 4.13.2   |
+
 ## Frontend Dependencies
 
 | Dependency                          | Version | Description                                                                     | Installation Command                              |
@@ -166,7 +166,7 @@ npm run start
 
 Mainly there are 3 components - Backend (Spring Boot), Frontend (React) and Database (MySQL).
 
-We have deployes our application on the virtual machine provided. For backend we had used docker and for frontend we are using nginx as deployment server.
+We have deployed our application on the virtual machine provided. For backend are using docker and for frontend we are using nginx as deployment server.
 
 ## Prerequisites
 
@@ -204,7 +204,7 @@ server {
 sudo systemctl start nginx
 ```
 
-- once you have done above configuration inside etc/nginx/sites-enabled folder, yoi will be able to access nginx index file.
+- once you have done above configuration inside etc/nginx/sites-enabled folder, you will be able to access nginx index file.
 
 - cd into frontend directory and run install command.
 
@@ -219,21 +219,21 @@ npm install
 npm build
 ```
 
-- Once build folder is created we will move build folder to Vm to : /var/www/html, following is command we have used in CI CD pipeline to copy our build folder
+- Once build folder is created we will move build the folder the Vm : /var/www/html, following is the command that we have used in our CI-CD pipeline to copy our build folder
 
 ```bash
 scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${SERVER_IP}:/var/www/html/
 ```
 
-- Once it copied all of the build files, it will serve index.html on port :80 by default
+- Once it has copied all of the build files, it will serve index.html on port :80 by default
 
 ### Backend deployment steps
 
 - Go to backend folder
 
-- run mvn package command to generate the war file in target folder
+- run mvn package command to generate the jar file in target folder
 
-- Build the docker container with provided dockerfile, you can use latest image
+- Build the docker container with the provided dockerfile, you can use the latest image
 
 ```bash
 docker build -t docker.io/tanuj3920 ecopick-backend:$CI_COMMIT_SHORT_SHA -f ./Dockerfile .
@@ -245,7 +245,7 @@ docker build -t docker.io/tanuj3920 ecopick-backend:$CI_COMMIT_SHORT_SHA -f ./Do
 docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
 ```
 
-- connect remote VM using SSH
+- connect to the remote VM using SSH
 
 - remove the docker container name : "ecopick-backend"
 
@@ -259,7 +259,7 @@ docker container rm -f ecopick-backend
 docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
 ```
 
-- Once the above command is run successfully, it will be accessible at 8080 port number.
+- Once the above command is run successfully, it will be accessible at port number 8080.
 
 # Usage Scenario
 
@@ -267,7 +267,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 1. **Registration and Profile Setup:**
 
-- Consumers can sign up for an account by providing basic information such as First name, Last name and Email.
+- Consumers can sign up for an account by providing basic information such as First name, Last name and Email ID.
 
 2. **Exploring Farm and Farm-Products:**
 
@@ -281,7 +281,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 4. **Subscription Service:**
 
-- Customer interested in regular deliveries of their favorite products can subscribe to them.
+- Customer interested in receiving regular deliveries of their favorite products can subscribe to them.
 - They can customize subscription preferences such as delivery frequency (Weekdays, Weekends or Preferred days).
 - They can view and update their subscription information as needed.
 
@@ -289,28 +289,28 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Customer have access to a digital wallet service integrated into the platform.
 - They can deposit funds into their wallet and use the funds while purchasing the products.
-- They can also view thier wallet history containing list of transactions.
+- They can also view thier wallet history which contains the of transactions performed by the user.
 
 ### For Farmers:
 
 1. **Registration and Farm Setup:**
 
 - Consumers can sign up for an account by providing basic information such as First name, Last name and Email.
-- Upon successful registration, they can set up their farm profile, including Images and Location.
+- Upon successful registration, they can set up their farm profile by adding information such as name, descripton, images and Location.
 
 2. **Listing Farm Products:**
 
 - Farmers can add their farm products to the platform, providing detailed descriptions, images, pricing, and stock information.
 - They can manage their product inventory and update listings as needed.
-- They can view the list of subscribed products.
+- They can view the list of subscriptions made on their products.
 
 ### For Admin:
 
 1. **Admin Service**
 
-- Upon successful login with Admin credential, admin can view the Admin Dashboard.
+- Upon successful login with Admin credentials, the admin can view the Admin Dashboard.
 - On the Admin Dashboard page, they can review statistics, such as number of farms, number of products, total sales, etc.
-- They can also track the Order sales and Subscription sales.
+- They can also track the montly Order sales and Subscription sales.
 
 # Features
 
@@ -325,7 +325,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ---
 
-- After successful registration, verification mail is sent to the registered Email address
+- After successful registration, a verification mail is sent to the registered Email address
 
 <center>
 <img src="./assets/registrationMail.png" alt="" width="450 px" height="300 px">
@@ -333,7 +333,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Login Page
 
-- Register user can login to the website by entering the registered Email address and valid password on the Login page.
+- Registered user can login to the website by entering the registered Email address and password on the Login page.
 <center>
 <img src="./assets/LogIn.png" alt="Login Page">
 </center>
@@ -381,8 +381,8 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 ### Farm page for Farmer
 
 - Farmers can view their farms by clicking on 'My Farms' from the dropdown list.
-- Farmers can view their farm details by clicking on 'View Farm' button.
-- Farmers can add new farm by clicking on the 'Add Farm' button
+- Farmers can view specific farm details by clicking on 'View Farm' button.
+- Farmers can add a new farm by clicking on the 'Add Farm' button
 
 ---
 
@@ -440,7 +440,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Products section
 
-- On the Home page, In the Products section, latest 8 products are displayed.
+- On the Home page, In the Products section, the latest 8 products are displayed.
 - User can view the product details by clicking on the 'View Product' button.
 
 <center>
@@ -484,7 +484,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 **Editing Product details**
 
-- Once making changes to the product details, farmer can click on 'Update' button to update the product details.
+- To make changes to the product details, farmer can click on 'Update' button to update the product details.
 <center>
 <img src="./assets/editProduct.png" alt="Edit Product page" >
 </center>
@@ -504,7 +504,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Customer can select the quantity for the product they want to buy.
 - Customers can buy the product by clicking on the 'Buy Now' button.
-- Customers can subscribe the product for recurring delivery by clicking on the 'Subscribe' button.
+- Customers can subscribe to the product for recurring delivery by clicking on the 'Subscribe' button.
 
 <center>
 <img src="./assets/productPage.png" alt="Customer Product page" >
@@ -535,7 +535,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 **Customizing the Subscription**
 
-- Customers can customize the subscription as well.
+- Customers can customize their subscription as well.
 
 <center>
 <img src="./assets/customSubscription.png" alt="Product Subscription" >
@@ -551,7 +551,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Subscription Data for Customer
 
-- Customer can view the the list of the products they have subscribed for.
+- Customer can view the the list of the products that they have subscribed to.
 
 <center>
 <img src="./assets/subscriptionHistory.png" alt="Subscription History" >
@@ -580,10 +580,10 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Admin Dashboard
 
-- Upon successful login using admin credentials, admin is redirected to the Admin Dashboard page.
+- Upon successful login using admin credentials, the admin is redirected to the Admin Dashboard page.
 - On the Admin Dashboard page, admin can review statistics like, Total sales, Number of Users, Number of Products and Number of Farms.
 - Admin can also view graph data for Order sales and Subscription sales of last four months.
-- The CRON job will run automatically at 11:59 PM everyday. But if admin wants to place order for subscribed user for next day manually, they can do it by clicking on 'Run Schedule for subscription'.
+- The CRON job will run automatically at 11:59 PM everyday. But if admin wants to place orders for the subscribed users for the next day manually, they can do it by clicking on 'Run Schedule for subscription'.
 <center>
 <img src="./assets/adminDashboard.png" alt="Admin Dashboard" >
 </center>
@@ -606,8 +606,8 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 ## Wallet
 
 - Customers can add funds to their wallet.
-- Customers can use these funds while making the purchase.
-- If user has subscribed for a product, funds will be deducted from the wallet on the day before the delivery.
+- Customers can use these funds to make purchases.
+- If a user has subscribed to a product, funds for the subscription will be deducted from the wallet on the day before the delivery.
 
 <center>
 <img src="./assets/wallet.png" alt="Wallet Page" >
@@ -615,7 +615,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Wallet History
 
-- Customer can track their transactions on the by navigating to the 'Wallet History' page from the User dropdown menu.
+- Customer can track their transactions by navigating to the 'Wallet History' page from the User dropdown menu.
 
 <center>
 <img src="./assets/walletHistory.png" alt="Wallet History Page" >
@@ -683,7 +683,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Publish
 
-- In publish stage, we are publishing the Backend with Docker, by building Docker and pushing it to Docker.
+- In publish stage, we are publishing the Backend with Docker, by building a Docker image and pushing it to Docker.
 - Successful run of publish stage will result in available docker image in docker hub.
 
 <center>
@@ -694,8 +694,8 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - In Deploy stage we are deploying Frontend and Backend.
 
-1. **Job 1 (Backend) :** - Using SSH we are logging in to VM and pulling the docker image, after that running docker image on port number 8080
-2. **Job 2 (Frontend) :** - Using SSH we are transferring current artifacts files of build folder to /var/www/html in VM, resulting running frontend index file on default port : 80.
+1. **Job 1 (Backend) :** - Using SSH we are logging in to VM and pulling the docker image, the docker image is run on port number 8080
+2. **Job 2 (Frontend) :** - Using SSH we are transferring current artifact files of the build folder to /var/www/html in the VM, resulting frontend index file is run on default port : 80.
 
 <center>
 <img src="./assets/CICD5.jpg" alt="Test Stage" >
