@@ -61,27 +61,27 @@ mvn spring-boot:run
 The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
 ## Backend Dependencies
-
-| Dependency Group         | Description                                               | Artifact                       | Version  |
-|  |  |  | -- |
-| org.springframework.boot | Starter for using Spring Boot's Actuator endpoints        | spring-boot-starter-actuator   |          |
-| org.springframework.boot | Starter for using Spring Data JPA                         | spring-boot-starter-data-jpa   |          |
-| org.springframework.boot | Starter for building web, including RESTful, applications | spring-boot-starter-web        |          |
-| org.apache.commons       | Apache Commons Lang library                               | commons-lang3                  |          |
-| org.mockito              | Mocking framework for unit tests                          | mockito-core                   | 3.9.0    |
-| com.mysql                | MySQL JDBC driver                                         | mysql-connector-j              |          |
-| org.projectlombok        | Lombok library for reducing boilerplate code              | lombok                         |          |
-| org.springframework.boot | Starter for testing Spring Boot applications              | spring-boot-starter-test       |          |
-| org.springframework.boot | Starter for using Spring Boot's validation support        | spring-boot-starter-validation |          |
-| org.springframework.boot | Starter for using Spring Security                         | spring-boot-starter-security   |          |
-| io.jsonwebtoken          | Java JWT: JSON Web Token for Java                         | jjwt-api                       | 0.11.2   |
-| io.jsonwebtoken          | Implementation of Java JWT                                | jjwt-impl                      | 0.11.2   |
-| io.jsonwebtoken          | Jackson support for Java JWT                              | jjwt-jackson                   | 0.11.2   |
-| com.amazonaws            | AWS SDK for Amazon S3                                     | aws-java-sdk-s3                | 1.12.433 |
-| org.springframework.boot | Starter for using Spring Boot's email support             | spring-boot-starter-mail       |          |
-| org.modelmapper          | Object mapping library                                    | modelmapper                    | 3.1.1    |
-| com.stripe               | Stripe API for Java                                       | stripe-java                    | 22.7.0   |
-| junit                    | JUnit testing framework for Java                          | junit                          | 4.13.2   |
+                                                                |
+ | Dependency Group         | Description                                               | Artifact                       | Version  |
+ | -- | - | - | - |
+ | org.springframework.boot | Starter for using Spring Boot's Actuator endpoints        | spring-boot-starter-actuator   |          |
+ | org.springframework.boot | Starter for using Spring Data JPA                         | spring-boot-starter-data-jpa   |          |
+ | org.springframework.boot | Starter for building web, including RESTful, applications | spring-boot-starter-web        |          |
+ | org.apache.commons       | Apache Commons Lang library                               | commons-lang3                  |          |
+ | org.mockito              | Mocking framework for unit tests                          | mockito-core                   | 3.9.0    |
+ | com.mysql                | MySQL JDBC driver                                         | mysql-connector-j              |          |
+ | org.projectlombok        | Lombok library for reducing boilerplate code              | lombok                         |          |
+ | org.springframework.boot | Starter for testing Spring Boot applications              | spring-boot-starter-test       |          |
+ | org.springframework.boot | Starter for using Spring Boot's validation support        | spring-boot-starter-validation |          |
+ | org.springframework.boot | Starter for using Spring Security                         | spring-boot-starter-security   |          |
+ | io.jsonwebtoken          | Java JWT: JSON Web Token for Java                         | jjwt-api                       | 0.11.2   |
+ | io.jsonwebtoken          | Implementation of Java JWT                                | jjwt-impl                      | 0.11.2   |
+ | io.jsonwebtoken          | Jackson support for Java JWT                              | jjwt-jackson                   | 0.11.2   |
+ | com.amazonaws            | AWS SDK for Amazon S3                                     | aws-java-sdk-s3                | 1.12.433 |
+ | org.springframework.boot | Starter for using Spring Boot's email support             | spring-boot-starter-mail       |          |
+ | org.modelmapper          | Object mapping library                                    | modelmapper                    | 3.1.1    |
+ | com.stripe               | Stripe API for Java                                       | stripe-java                    | 22.7.0   |
+ | junit                    | JUnit testing framework for Java                          | junit                          | 4.13.2   |
 
 ## Prerequisites
 
@@ -667,7 +667,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Customers can view the list of products they have purchased by navigating to the 'Order History' page from the User dropdown menu.
 <table align="center"><tr><td align="center" width="9999">
 <img src="./assets/orderHistory.png" alt="Order History Page" >
-</center>
+</table>
 
 ## Credits
 
