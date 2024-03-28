@@ -2,20 +2,19 @@
 
 # ECOPICK
 
-</div>
-
 ## Summary
 
 Our website serves as a platform connecting farmers and consumers, facilitating seamless transactions of fresh farm products. With user-friendly registration processes for both farmers and consumers, individuals can easily join our community. Consumers gain access to a wide variety of farm-fresh products available for purchase, while also having the option to subscribe to their favorite items for regular delivery. Meanwhile, farmers can showcase their farms and products on the platform, expanding their reach and directly connecting with their customers. By fostering direct relationships between farmers and consumers, our website promotes transparency, supports local agriculture, and empowers individuals to make informed choices about their food purchases.
 
 ## Tools & Tech Stacks used : -
 
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.2-green)](https://spring.io/projects/spring-boot)
-[![React.js](https://img.shields.io/badge/React.js-16.x-purple)](https://reactjs.org/)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-4.x-red)](https://getbootstrap.com/)
-[![MySQL](https://img.shields.io/badge/MySQL-v8.0-yellow)](https://www.mysql.com/)
-[![stripe](https://img.shields.io/badge/Stripe-v22.7-blue)](https://stripe.com/en-ca)
-[![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://developers.google.com/maps)
+- [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.2-green)](https://spring.io/projects/spring-boot)
+- [![React.js](https://img.shields.io/badge/React.js-16.x-purple)](https://reactjs.org/)
+- [![Bootstrap](https://img.shields.io/badge/Bootstrap-4.x-red)](https://getbootstrap.com/)
+- [![MySQL](https://img.shields.io/badge/MySQL-v8.0-yellow)](https://www.mysql.com/)
+- [![gitlab](https://img.shields.io/badge/GitLab-v14.0-blue)](https://img.shields.io/badge/GitLab-v14.0-blue)
+- [![stripe](https://img.shields.io/badge/Stripe-v22.7-red)](https://img.shields.io/badge/Stripe-v22.7-red)
+- [![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://img.shields.io/badge/GoogleMap-v2.19.2-brown)
 
 # Ecopick backend Setup
 
@@ -64,7 +63,7 @@ The application will be accessible at [http://localhost:8080](http://localhost:8
 ## Backend Dependencies
 
 | Dependency Group         | Description                                               | Artifact                       | Version  |
-| ------------------------ | --------------------------------------------------------- | ------------------------------ | -------- |
+|  |  |  | -- |
 | org.springframework.boot | Starter for using Spring Boot's Actuator endpoints        | spring-boot-starter-actuator   |          |
 | org.springframework.boot | Starter for using Spring Data JPA                         | spring-boot-starter-data-jpa   |          |
 | org.springframework.boot | Starter for building web, including RESTful, applications | spring-boot-starter-web        |          |
@@ -83,6 +82,48 @@ The application will be accessible at [http://localhost:8080](http://localhost:8
 | org.modelmapper          | Object mapping library                                    | modelmapper                    | 3.1.1    |
 | com.stripe               | Stripe API for Java                                       | stripe-java                    | 22.7.0   |
 | junit                    | JUnit testing framework for Java                          | junit                          | 4.13.2   |
+
+## Prerequisites
+
+- Java `v17.0.2`
+- JDK `v17`
+- Maven `v3.9.6`
+
+## Getting Started
+
+Follow these steps to set up and run the project locally.
+
+### 1. Clone the Repository
+
+```bash
+ git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git
+ OR
+ git clone https://git.cs.dal.ca/courses/2024-winter/csci5308/Group09.git
+```
+
+### 2. Navigate to the project directory
+
+```bash
+cd Group09/backend
+```
+
+### 3. Build the project
+
+- Run the following command to install backend dependencies:
+
+```bash
+mvn clean install
+```
+
+### 5. Run the application
+
+- After installing dependencies, start the Spring Boot backend server by running:
+
+```bash
+mvn spring-boot:run
+```
+
+The application will be accessible at `http://localhost:8080`.
 
 # Ecopick frontend Setup
 
@@ -130,7 +171,7 @@ npm run start
 ## Frontend Dependencies
 
 | Dependency                          | Version | Description                                                                     | Installation Command                              |
-| ----------------------------------- | ------- | ------------------------------------------------------------------------------- | ------------------------------------------------- |
+| -- | - | - | - |
 | @fortawesome/fontawesome-svg-core   | ^6.5.1  | SVG icon library core for Font Awesome.                                         | `npm install @fortawesome/fontawesome-svg-core`   |
 | @fortawesome/free-brands-svg-icons  | ^6.5.1  | Free SVG icons for brands from Font Awesome.                                    | `npm install @fortawesome/free-brands-svg-icons`  |
 | @fortawesome/free-regular-svg-icons | ^6.5.1  | Free SVG icons in regular style from Font Awesome.                              | `npm install @fortawesome/free-regular-svg-icons` |
@@ -319,35 +360,33 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - A new user has to fill all the necessary details on the registration page.
 - Registered users can click on the 'Login' link to navigate to the Log in page.
 
-<center>
-<img src="./assets/SignUp.png" alt="Registration Page" width="600 px" height="550 px">
-</center>
+<table align="center"><tr><td align="center" width="9999">
+    <img src="./assets/SignUp.png" alt="Registration Page" width="600 px" height="550 px">
+</table>
 
----
+
 
 - After successful registration, a verification mail is sent to the registered Email address
 
-<center>
-<img src="./assets/registrationMail.png" alt="" width="450 px" height="300 px">
-</center>
+<table align="center"><tr><td align="center" width="9999">
+<img src="./assets/registrationMail.png" align="center" width="450" height="300 px" alt="Project icon">
+</table>
 
 ## Login Page
 
-- Registered user can login to the website by entering the registered Email address and password on the Login page.
-<center>
-<img src="./assets/LogIn.png" alt="Login Page">
-</center>
+- Register user can login to the website by entering the registered Email address and valid password on the Login page.
+<table align="center"><tr><td align="center" width="9999">
+<img src="./assets/LogIn.png" alt="Login Page" width="450 px" height="400 px">
+</table>
 
 ## Landing Page
 
 - After successful login, users are redirected to the Home Page.
 - Users can navigate directly to the Farms page by clicking on 'Farms' on the navigation bar.
 - Users can navigate directly to the Products page by clicking on 'Products' on the navigation bar.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/HomePage.png" alt="Landing Page">
-</center>
-
----
+</table>
 
 ## Banner Page
 
@@ -361,22 +400,20 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 **User Dropdown**
 
 - Users can navigate to different pages by clicking on the options provided in the User Dropdown menu.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/userDropdown.png" alt="User Dropdown menu">
-</center>
+</table>
 
----
+
 
 ## Farms section
 
 - On the Home page, In the Farms section, latest 8 farms are displayed.
 - User can view the farm details by clicking on the 'Visit the farm' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/farms.png" alt="Farms Section">
-</center>
-
----
+</table>
 
 ### Farm page for Farmer
 
@@ -384,70 +421,72 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Farmers can view specific farm details by clicking on 'View Farm' button.
 - Farmers can add a new farm by clicking on the 'Add Farm' button
 
----
 
-<center>
+
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/myFarms.png" alt="Farmer farm page" >
-</center>
+</table>
 
----
+
 
 **Adding Farm**
 
 - Once adding necessary details like Farm name, Farm description, Farm images and Farm address, farmer can click on 'Submit' button to add the farm
 .
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/addFarm.png" alt="Add Farm" >
-</center>
+</table>
 
----
+
 
 - Farmers can edit their farm details by clicking on the 'Edit Farm' button.
 - Farmers can delete their farm by clicking on the 'Delete Farm' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/farmerFarm.png" alt="Farmer farm page" >
-</center>
+</table>
 
----
+
 
 **Edit Farm details**
 
 - Once making changes to the farm details, farmer can click on 'Update' button to update the farm details.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/editFarm.png" alt="Edit Farm page" >
-</center>
+</table>
 
----
+
 
 **Delete Farm**
 
 - Farmer can delete the farm by clicking on 'Delete' button.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/deleteFarm.png" alt="Delete Farm page" >
-</center>
+</table>
 
----
+
 
 ### Farm page for Customer
 
 - Customers can view the farm details by navigating to the Farms page from the title bar.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/customerFarm.png" alt="Customer farm page" >
-</center>
+</table>
 
 ## Products section
 
 - On the Home page, In the Products section, the latest 8 products are displayed.
 - User can view the product details by clicking on the 'View Product' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/products.png" alt="Product Section" >
-</center>
+</table>
 
----
+
+
+
 
 ### Product page for Farmer
 
@@ -455,50 +494,50 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Farmers can view their farm details by clicking on 'View Product' button.
 - Farmers can add new farm by clicking on the 'Add Product' button
 
----
 
-<center>
+
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/myProducts.png" alt="Farmer farm page" >
-</center>
+</table>
 
----
+
 
 - Farmers can edit the product details by clicking on the 'Edit Product' button.
 - Farmers can delete the product by clicking on the 'Delete Product' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/farmerProduct.png" alt="Farmer Product page" >
-</center>
+</table>
 
----
+
 
 **Adding Product**
 
 - Once adding necessary details like Product name, Product category, Product price, etc. farmer can click on 'Submit' button to add the product
 .
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/addProduct.png" alt="Add Product" >
-</center>
+</table>
 
----
+
 
 **Editing Product details**
 
-- To make changes to the product details, farmer can click on 'Update' button to update the product details.
-<center>
+- Once making changes to the product details, farmer can click on 'Update' button to update the product details.
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/editProduct.png" alt="Edit Product page" >
-</center>
+</table>
 
----
+
 
 **Deleting Product**
 
 - Farmer can delete the product by clicking on 'Delete' button.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/deleteProduct.png" alt="Delete Product page" >
-</center>
+</table>
 
----
+
 
 ### Product page for Customer
 
@@ -506,40 +545,40 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Customers can buy the product by clicking on the 'Buy Now' button.
 - Customers can subscribe to the product for recurring delivery by clicking on the 'Subscribe' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/productPage.png" alt="Customer Product page" >
-</center>
+</table>
 
----
+
 
 **Buying Product**
 
 - Customers can buy the product by clicking on the 'Buy Now' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/buyProduct.png" alt="Product Buying" >
-</center>
+</table>
 
----
+
 
 **Subscribing Product**
 
 - From the given options, customer can choose their subscription plan.
 - Once chosen, they can confirm the subscription by clicking on the 'Confirm Subscription' button.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/subscription.png" alt="Product Subscription" >
-</center>
+</table>
 
----
+
 
 **Customizing the Subscription**
 
 - Customers can customize their subscription as well.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/customSubscription.png" alt="Product Subscription" >
-</center>
+</table>
 
 ## Subscription Data for Farmer
 
@@ -553,17 +592,19 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Customer can view the the list of the products that they have subscribed to.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/subscriptionHistory.png" alt="Subscription History" >
-</center>
+</table>
 
----
+
 
 - Customer can also check which days they have subscribed for.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/customSubscriptionData.png" alt="Subscription Data" >
-</center>
+</table>
+
+
 
 ## Banner section
 
@@ -574,9 +615,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Footer section
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/footer.png" alt="Footer Section" >
-</center>
+</table>
 
 ## Admin Dashboard
 
@@ -609,22 +650,22 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Customers can use these funds to make purchases.
 - If a user has subscribed to a product, funds for the subscription will be deducted from the wallet on the day before the delivery.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/wallet.png" alt="Wallet Page" >
-</center>
+</table>
 
 ## Wallet History
 
 - Customer can track their transactions by navigating to the 'Wallet History' page from the User dropdown menu.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/walletHistory.png" alt="Wallet History Page" >
-</center>
+</table>
 
 ## Order History
 
 - Customers can view the list of products they have purchased by navigating to the 'Order History' page from the User dropdown menu.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/orderHistory.png" alt="Order History Page" >
 </center>
 
