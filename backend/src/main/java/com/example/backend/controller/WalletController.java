@@ -42,7 +42,7 @@ public class WalletController {
             walletService.addMoney(request.getEmail(), request.getAmount());
             return new RedirectView(frontendEndpoint + "/wallet");
         } catch (Exception e) {
-            return new RedirectView(frontendEndpoint + "/payment/success");
+            return new RedirectView(frontendEndpoint + "/payment/error");
         }
     }
 

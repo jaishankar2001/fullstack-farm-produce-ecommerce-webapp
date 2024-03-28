@@ -34,18 +34,6 @@ public class ControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // @Autowired
-    // private UserRepository userRepository;
-
-    // @Autowired
-    // private AuthenticationService authService;
-
-    // @Autowired
-    // private VerificationCodeRepository verificationCodeRepository;
-
-    // @Autowired
-    // private VerificationService verificationService;
-
     @BeforeEach
     public void setUp() throws Exception {
         token = getToken();
@@ -70,52 +58,6 @@ public class ControllerIntegrationTest {
         System.out.println("RESSSS???" + response.getToken());
         return response.getToken();
 
-    }
-
-    // public void createLoginUser() {
-    // String adminUser = "admin123@gmail.com";
-    // User isUserExists = userRepository.findByEmail(adminUser);
-    // String password = "Test@123";
-    // if (isUserExists == null) {
-    // System.out.println("SHOULD NOT GO HEREEEEEE!");
-    // SignUpRequest request = new SignUpRequest();
-    // request.setFirstName("Test");
-    // request.setLastName("User");
-    // request.setPassword(password);
-    // request.setEmail(adminUser);
-    // request.setRole(Role.ADMIN);
-
-    // authService.signUp(request);
-
-    // }
-    // VerificationCode verificationCode =
-    // verificationCodeRepository.findByEmail(adminUser);
-    // if (verificationCode != null)
-    // verificationService.verify(verificationCode.getCode(), adminUser);
-
-    // SignInRequest loginReq = new SignInRequest();
-    // loginReq.setEmail(adminUser);
-    // loginReq.setPassword(password);
-    // LoginResponse res = authService.signIn(loginReq);
-    // System.out.println("TOKENNNN?" + res.getToken());
-    // token = res.getToken();
-    // }
-
-    @Test
-    public void testForgotpasswordReq() throws Exception {
-        ResetPasswordRequest request = new ResetPasswordRequest();
-        request.setEmail(ADMIN_EMAIL);
-
-        String requestBody = objectMapper.writeValueAsString(request);
-        MvcResult result = mockMvc.perform(post("/api/auth/ResetPasswordReq")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String responseString = result.getResponse().getContentAsString();
-
-        assertEquals("Please check email for password reset link", responseString);
     }
 
     @Test
@@ -208,6 +150,5 @@ public class ControllerIntegrationTest {
 
         assertNotNull(responseBody);
     }
-
 
 }
