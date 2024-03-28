@@ -14,5 +14,6 @@ public class GetSubscriptionResponse {
     private LocalDateTime subscriptionDate;
     private ProductSubscriptionResponse Product;
     private int productId;
+    private int userId;
     private String customerName;
 }
