@@ -12,9 +12,9 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 - [![React.js](https://img.shields.io/badge/React.js-16.x-purple)](https://reactjs.org/)
 - [![Bootstrap](https://img.shields.io/badge/Bootstrap-4.x-red)](https://getbootstrap.com/)
 - [![MySQL](https://img.shields.io/badge/MySQL-v8.0-yellow)](https://www.mysql.com/)
-- [![gitlab](https://img.shields.io/badge/GitLab-v14.0-blue)](https://img.shields.io/badge/GitLab-v14.0-blue)
-- [![stripe](https://img.shields.io/badge/Stripe-v22.7-red)](https://img.shields.io/badge/Stripe-v22.7-red)
-- [![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://img.shields.io/badge/GoogleMap-v2.19.2-brown)
+- [![gitlab](https://img.shields.io/badge/GitLab-v14.0-blue)](https://about.gitlab.com/)
+- [![stripe](https://img.shields.io/badge/Stripe-v22.7-red)](https://stripe.com/en-ca)
+- [![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://developers.google.com/maps)
 
 # Ecopick backend Setup
 
