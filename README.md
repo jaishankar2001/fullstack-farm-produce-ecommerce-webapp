@@ -346,11 +346,11 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 ## Banner Page
 
 - From the banner page user will be redirected to the products section.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/bannerPage.png" alt="Banner Page">
-</center>
+</table>
 
----
+
 
 **User Dropdown**
 
@@ -524,9 +524,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 ## Banner section
 
 - Customer can navigate to the Product section from the banner page.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/bannerPage.png" alt="Subscription History" >
-</center>
+</table>
 
 ## Footer section
 
@@ -540,24 +540,24 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - On the Admin Dashboard page, admin can review statistics like, Total sales, Number of Users, Number of Products and Number of Farms.
 - Admin can also view graph data for Order sales and Subscription sales of last four months.
 - The CRON job will run automatically at 11:59 PM everyday. But if admin wants to place orders for the subscribed users for the next day manually, they can do it by clicking on 'Run Schedule for subscription'.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/adminDashboard.png" alt="Admin Dashboard" >
-</center>
+</table>
 
----
+
 
 - Admin can also view tabular data for list of Users, Farms, Products and orders.
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/table1.png" alt="Tabular Data" >
-</center>
+</table>
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/table2.png" alt="Tabular Data" >
-</center>
+</table>
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/table3.png" alt="Tabular Data" >
-</center>
+</table>
 
 ## Wallet
 
@@ -606,7 +606,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 | RIDDHO BHADRA   | rd588330@dal.ca |
 | ABHISHEK KAPOOR | ab210637@dal.ca |
 
----
+
 
 # ✅CI/CD
 
@@ -614,17 +614,17 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - In our project, we also have implemented a similar approach for the build stage of our CI Pipeline. We have two distinct jobs:the frontend build job and the backend build job.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/CICD1.jpg" alt="Build Stage" >
-</center>
+</table>
 
 ## Test
 
 - To test our application, we have used JUnit, a popular open-source testing framework for Java. We have integrated JUnit tests into our CI pipeline by running the "mvn test" command, which invokes the Maven build tool to execute the tests.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/CICD2.jpg" alt="Test Stage" >
-</center>
+</table>
 
 ## Code Quality
 
@@ -633,18 +633,18 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 1. **Job1:** The frontend code quality is ensured by integrating prettier into the pipeline, which checks for proper formatting of the codebase.
 2. **Job2:** The backend code quality is evaluated by running designated code smell tools, which generate reports of potential issues in the code. These code smell reports are then saved in artifacts, which can be downloaded later to analyze the code in detail.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/CICD3.jpg" alt="Test Stage" >
-</center>
+</table>
 
 ## Publish
 
 - In publish stage, we are publishing the Backend with Docker, by building a Docker image and pushing it to Docker.
 - Successful run of publish stage will result in available docker image in docker hub.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/CICD4.jpg" alt="Test Stage" >
-</center>
+</table>
 
 ## Deploy
 
@@ -653,9 +653,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 1. **Job 1 (Backend) :** - Using SSH we are logging in to VM and pulling the docker image, the docker image is run on port number 8080
 2. **Job 2 (Frontend) :** - Using SSH we are transferring current artifact files of the build folder to /var/www/html in the VM, resulting frontend index file is run on default port : 80.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/CICD5.jpg" alt="Test Stage" >
-</center>
+</table>
 
 ## ✅Test
 
