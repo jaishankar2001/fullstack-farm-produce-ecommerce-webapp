@@ -138,14 +138,6 @@ function ProductListing() {
               <span className="text-dark">
                 {allProducts?.length} Items found
               </span>
-              <div className="btn-group" role="group">
-                <button className="btn btn-outline-dark">
-                  <FontAwesomeIcon icon={["fas", "sort-amount-up"]} />
-                </button>
-                <button className="btn btn-outline-dark">
-                  <FontAwesomeIcon icon={["fas", "th-list"]} />
-                </button>
-              </div>
             </div>
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
               {filteredProducts.map((product, index) => (
