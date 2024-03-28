@@ -22,6 +22,7 @@ public class OrderDto {
     private LocalDateTime orderDate;
     private double orderValue;
     private String orderPaymentMethod;
+    private String orderType;
     private List<ImageDto> images = new ArrayList<>();
 
     public void addImage(Images image) {

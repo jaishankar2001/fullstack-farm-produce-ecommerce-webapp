@@ -28,12 +28,12 @@ function FarmerProductDetail() {
   };
 
   const previousPath = location.state && location.state.previousPath;
-      
+
   const handleConfirmOrder = () => {
     onBuyProduct();
     setIsConfirmationModalOpen(false);
   };
-console.log(product);
+  console.log(product);
 
   useEffect(() => {
     api.products
@@ -77,31 +77,29 @@ console.log(product);
     closeModal();
   };
 
-
   const onSubscribeProduct = async (subscriptionData) => {
     try {
-      const response = await api.subscription.placeSubscription(subscriptionData);
-      toast.success("Subscription placed successfully!");
+      await api.subscription.placeSubscription(subscriptionData);
+      closeSubscriptionModal();
       navigate("/my-subscriptions");
     } catch (error) {
-  
+      console.log("what is error?" + error);
+      if (error.response.data.message) toast.error(error.response.data.message);
     }
-    closeSubscriptionModal();
   };
   const onBuyProduct = async () => {
-    try{
+    try {
       const response = await api.order.placeOrder({
         farm_id: product?.farm?.id,
         product_id: id,
         quantity: quantity,
-        orderPaymentMethod: "Wallet"
+        orderPaymentMethod: "Wallet",
       });
-      if(response){
+      if (response) {
         toast.success("Order confirmed successfully!");
-        navigate("/order-history")
+        navigate("/order-history");
       }
-    }
-   catch(error){
+    } catch (error) {
       if (
         error.response &&
         error.response.data &&
@@ -111,9 +109,8 @@ console.log(product);
       } else {
         toast.error("An error occurred. Please try again later.");
       }
-
     }
-  }
+  };
 
   return (
     <div className="vstack">
@@ -180,10 +177,11 @@ console.log(product);
                 </dl>
                 {previousPath === "products" && (
                   <div>
-                   <h6 className="fw-semibold">
-                  Select Quantity
-                </h6>
-                   <QuantitySelector quantity={quantity} handleQuantityChange={handleQuantityChange}/>
+                    <h6 className="fw-semibold">Select Quantity</h6>
+                    <QuantitySelector
+                      quantity={quantity}
+                      handleQuantityChange={handleQuantityChange}
+                    />
                   </div>
                 )}
                 <hr className="text-muted" />
@@ -214,12 +212,12 @@ console.log(product);
                         className="btn btn-primary px-md-4 col col-md-auto me-2"
                         onClick={() => {
                           if (localStorage.getItem("token")) {
-                              openOrderConfirmationModal();
+                            openOrderConfirmationModal();
                           } else {
-                              // Redirect to the login page
-                              window.location.href = '/login';
+                            // Redirect to the login page
+                            window.location.href = "/login";
                           }
-                      }}
+                        }}
                       >
                         Buy now
                       </button>
@@ -228,12 +226,12 @@ console.log(product);
                         className="btn btn-outline-primary col col-md-auto"
                         onClick={() => {
                           if (localStorage.getItem("token")) {
-                              setIsSubscriptionModalOpen(true);
+                            setIsSubscriptionModalOpen(true);
                           } else {
-                              // Redirect to the login page
-                              window.location.href = '/login';
+                            // Redirect to the login page
+                            window.location.href = "/login";
                           }
-                      }}
+                        }}
                       >
                         &nbsp;Subscribe
                       </button>
@@ -271,13 +269,13 @@ console.log(product);
         product={product}
         quantity={quantity}
       />
-      <SubscriptionModal 
-         isOpen={isSubscriptionModalOpen}
-         onClose={closeSubscriptionModal}
-         onConfirm={onSubscribeProduct}
-         product={product}
-         productId={parseInt(id)}
-         />
+      <SubscriptionModal
+        isOpen={isSubscriptionModalOpen}
+        onClose={closeSubscriptionModal}
+        onConfirm={onSubscribeProduct}
+        product={product}
+        productId={parseInt(id)}
+      />
     </div>
   );
 }

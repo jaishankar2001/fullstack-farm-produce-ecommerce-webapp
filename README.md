@@ -14,10 +14,8 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 [![React.js](https://img.shields.io/badge/React.js-16.x-purple)](https://reactjs.org/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-4.x-red)](https://getbootstrap.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-v8.0-yellow)](https://www.mysql.com/)
-[![gitlab](https://img.shields.io/badge/GitLab-v14.0-blue)](https://img.shields.io/badge/GitLab-v14.0-blue)
-[![stripe](https://img.shields.io/badge/Stripe-v22.7-red)](https://img.shields.io/badge/Stripe-v22.7-red)
+[![stripe](https://img.shields.io/badge/Stripe-v22.7-blue)](https://img.shields.io/badge/Stripe-v22.7-red)
 [![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://img.shields.io/badge/GoogleMap-v2.19.2-brown)
-
 
 # Ecopick backend Setup
 
@@ -44,37 +42,42 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 | com.stripe               | Stripe API for Java                                       | stripe-java                    | 22.7.0   |
 | junit                    | JUnit testing framework for Java                          | junit                          | 4.13.2   |
 
-
 ## Prerequisites
 
 - Java `v17.0.2`
 - JDK `v17`
 - Maven `v3.9.6`
-  
+
 ## Getting Started
 
 Follow these steps to set up and run the project locally.
 
 ### 1. Clone the Repository
+
 ```bash
- git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git 
+ git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git
  OR
  git clone https://git.cs.dal.ca/courses/2024-winter/csci5308/Group09.git
 ```
 
 ### 2. Navigate to the project directory
+
 ```bash
 cd Group09/backend
 ```
 
 ### 3. Build the project
+
 - Run the following command to install backend dependencies:
+
 ```bash
 mvn clean install
 ```
 
 ### 5. Run the application
+
 - After installing dependencies, start the Spring Boot backend server by running:
+
 ```bash
 mvn spring-boot:run
 ```
@@ -89,28 +92,35 @@ The application will be accessible at `http://localhost:8080`.
 - [npm](https://www.npmjs.com/) `v6.x`
 
 ## Getting Started
+
 Follow these steps to set up and run the project locally.
 
 ### 1. Clone the Repository
+
 ```bash
- git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git 
+ git clone git@git.cs.dal.ca:courses/2024-winter/csci5308/Group09.git
  OR
  git clone https://git.cs.dal.ca/courses/2024-winter/csci5308/Group09.git
 ```
 
 ### 2. Navigate to the project directory
+
 ```bash
 cd Group09/frontend
 ```
 
 ### 3. Install dependencies
+
 - Run the following command to install frontend dependencies:
+
 ```bash
 npm install
 ```
 
 ### 4. start the development
+
 - After installing dependencies, start the React.js development server by running:
+
 ```bash
 npm run start
 ```
@@ -150,7 +160,6 @@ npm run start
 | sass                                | ^1.70.0 | CSS preprocessor extension for writing structured stylesheets.                  | `npm install sass`                                |
 | web-vitals                          | ^2.1.4  | Library for measuring web vital metrics in web pages.                           | `npm install web-vitals`                          |
 
-
 # Deploy in VM
 
 ## Overview
@@ -173,8 +182,7 @@ We have deployes our application on the virtual machine provided. For backend we
 
 ### Frontend deployment steps
 
-
-- Following is the nginx configuration in VM : - 
+- Following is the nginx configuration in VM : -
 
 ```
 server {
@@ -198,7 +206,6 @@ sudo systemctl start nginx
 
 - once you have done above configuration inside etc/nginx/sites-enabled folder, yoi will be able to access nginx index file.
 
-
 - cd into frontend directory and run install command.
 
 ```bash
@@ -206,12 +213,11 @@ cd frontend
 npm install
 ```
 
-- We will run npm build command to get build package of react 
+- We will run npm build command to get build package of react
 
 ```bash
 npm build
 ```
-
 
 - Once build folder is created we will move build folder to Vm to : /var/www/html, following is command we have used in CI CD pipeline to copy our build folder
 
@@ -221,13 +227,9 @@ scp -r -o StrictHostKeyChecking=no -i $ID_RSA frontend/build/* ${SERVER_USER}@${
 
 - Once it copied all of the build files, it will serve index.html on port :80 by default
 
-
-
-
-
 ### Backend deployment steps
 
-- Go to backend folder 
+- Go to backend folder
 
 - run mvn package command to generate the war file in target folder
 
@@ -251,13 +253,13 @@ docker push docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
 docker container rm -f ecopick-backend
 ```
 
-- Run the docker container in VM : - 
+- Run the docker container in VM : -
 
 ```bash
 docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-backend:$CI_COMMIT_SHORT_SHA
 ```
 
-- Once the above command is run successfully, it will be accessible at 8080 port number. 
+- Once the above command is run successfully, it will be accessible at 8080 port number.
 
 # Usage Scenario
 
@@ -310,7 +312,6 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - On the Admin Dashboard page, they can review statistics, such as number of farms, number of products, total sales, etc.
 - They can also track the Order sales and Subscription sales.
 
-
 # Features
 
 ## Registration Page
@@ -334,7 +335,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Register user can login to the website by entering the registered Email address and valid password on the Login page.
 <center>
-<img src="./assets/LogIn.png" alt="Login Page" width="450 px" height="400 px">
+<img src="./assets/LogIn.png" alt="Login Page">
 </center>
 
 ## Landing Page
@@ -344,6 +345,15 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Users can navigate directly to the Products page by clicking on 'Products' on the navigation bar.
 <center>
 <img src="./assets/HomePage.png" alt="Landing Page">
+</center>
+
+---
+
+## Banner Page
+
+- From the banner page user will be redirected to the products section.
+<center>
+<img src="./assets/bannerPage.png" alt="Banner Page">
 </center>
 
 ---
@@ -439,8 +449,6 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ---
 
----
-
 ### Product page for Farmer
 
 - Farmers can view their farms by clicking on 'My Products' from the dropdown list.
@@ -533,9 +541,17 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/customSubscription.png" alt="Product Subscription" >
 </center>
 
-## Subscription History
+## Subscription Data for Farmer
 
-- Customers can view the the list of the products they have subscribed for.
+- Farmers can view the list of products which are subscribed by customers.
+
+<center>
+<img src="./assets/subscriptionFarmer.png" alt="Subscription Data for Farmer">
+</center>
+
+## Subscription Data for Customer
+
+- Customer can view the the list of the products they have subscribed for.
 
 <center>
 <img src="./assets/subscriptionHistory.png" alt="Subscription History" >
@@ -549,9 +565,12 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/customSubscriptionData.png" alt="Subscription Data" >
 </center>
 
----
-
 ## Banner section
+
+- Customer can navigate to the Product section from the banner page.
+<center>
+<img src="./assets/bannerPage.png" alt="Subscription History" >
+</center>
 
 ## Footer section
 
@@ -561,11 +580,34 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Admin Dashboard
 
+- Upon successful login using admin credentials, admin is redirected to the Admin Dashboard page.
+- On the Admin Dashboard page, admin can review statistics like, Total sales, Number of Users, Number of Products and Number of Farms.
+- Admin can also view graph data for Order sales and Subscription sales of last four months.
+- The CRON job will run automatically at 11:59 PM everyday. But if admin wants to place order for subscribed user for next day manually, they can do it by clicking on 'Run Schedule for subscription'.
+<center>
+<img src="./assets/adminDashboard.png" alt="Admin Dashboard" >
+</center>
+
+---
+
+- Admin can also view tabular data for list of Users, Farms, Products and orders.
+<center>
+<img src="./assets/table1.png" alt="Tabular Data" >
+</center>
+
+<center>
+<img src="./assets/table2.png" alt="Tabular Data" >
+</center>
+
+<center>
+<img src="./assets/table3.png" alt="Tabular Data" >
+</center>
+
 ## Wallet
 
 - Customers can add funds to their wallet.
 - Customers can use these funds while making the purchase.
-- If ht user has subscribed for a product, funds will be deducted from the wallet on the day before the delivery.
+- If user has subscribed for a product, funds will be deducted from the wallet on the day before the delivery.
 
 <center>
 <img src="./assets/wallet.png" alt="Wallet Page" >
@@ -585,3 +627,27 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <center>
 <img src="./assets/orderHistory.png" alt="Order History Page" >
 </center>
+
+## Credits
+
+### Developer Team
+
+| Name                     | Email              |
+| ------------------------ | ------------------ |
+| TANUJ VIPULKUMAR DOSHI   | tanuj.doshi@dal.ca |
+| NIKITA DAVIES            | nk548914@dal.ca    |
+| DRASHTI VIJAYKUMAR PATEL | dr954742@dal.ca    |
+| KUNJ HITESHKUMAR PATHAK  | kn743706@dal.ca    |
+| JAISHANKAR MOHANRAJ      | js830845@dal.ca    |
+
+### Client Team
+
+| Name            | Email           |
+| --------------- | --------------- |
+| KHUSH PATEL     | kh472243@dal.ca |
+| VYANSI DIYORA   | vy744910@dal.ca |
+| PIYUSH JOSHI    | py287300@dal.ca |
+| RIDDHO BHADRA   | rd588330@dal.ca |
+| ABHISHEK KAPOOR | ab210637@dal.ca |
+
+---
