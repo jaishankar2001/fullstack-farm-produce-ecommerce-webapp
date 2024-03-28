@@ -262,20 +262,34 @@ public class SubscriptionServiceImplTest {
                 mockProduct2.setImages(imgArr);
                 // Set other product properties
 
+                User mockUser1 = new User();
+                mockUser1.setId(1);
+                mockUser1.setFirstname("Tanuj");
+                mockUser1.setLastname("Doshi");
+
+                User mockUser2 = new User();
+                mockUser2.setId(2);
+                mockUser2.setFirstname("Tanuj");
+                mockUser2.setLastname("Doshi");
+
                 Subscription mockSubscription1 = new Subscription();
                 mockSubscription1.setName(SubscriptionName.CUSTOM);
                 mockSubscription1.setDays(Days.MONDAY);
                 mockSubscription1.setProduct(mockProduct1);
+                mockSubscription1.setUser(mockUser1);
+
 
                 Subscription mockSubscription2 = new Subscription();
                 mockSubscription2.setName(SubscriptionName.CUSTOM);
                 mockSubscription2.setDays(Days.MONDAY);
                 mockSubscription2.setProduct(mockProduct2);
+                mockSubscription2.setUser(mockUser2);
 
                 Subscription mockSubscription3 = new Subscription();
                 mockSubscription3.setName(SubscriptionName.CUSTOM);
                 mockSubscription3.setDays(Days.TUESDAY);
                 mockSubscription3.setProduct(mockProduct2);
+                mockSubscription3.setUser(mockUser2);
 
                 List<Subscription> mockSubscriptions = new ArrayList<>();
                 mockSubscriptions.add(mockSubscription1);
