@@ -47,8 +47,10 @@ public class FarmerServiceImpl implements FarmerService {
     public List<FarmDto> addFarm(AddFarmRequest farmRequest, final MultipartFile[] multipartFiles,
             Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-        user.setRole(Role.valueOf("FARMER"));
-        userRepository.save(user);
+        if(user.getRole()==Role.valueOf("CUSTOMER")) {
+            user.setRole(Role.valueOf("FARMER"));
+            userRepository.save(user);
+        }
         Farms farm = modelMapper.map(farmRequest, Farms.class);
         System.out.println(farm);
         farm.setUser(user);
