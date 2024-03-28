@@ -63,11 +63,11 @@ public class FarmerController {
     }
 
     /**
-     * 
-     * @param farmRequest
-     * @param files
-     * @param principal
-     * @return
+     * Endpoint to edit farms
+     * @param farmRequest request containing farm information that needs to be changed
+     * @param files new images for the farm
+     * @param principal user token
+     * @return String response indicating success or failure
      */
     @PostMapping("/editfarm")
     public ResponseEntity<Map> editFarm(@ModelAttribute EditFarmRequest farmRequest,
@@ -79,6 +79,11 @@ public class FarmerController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /**
+     * Endpoint to delete the farm
+     * @param id farm id used to identify the farm
+     * @return String response indicating success or failure
+     */
     @DeleteMapping("/farms/{id}")
     public ResponseEntity<ApiResponse> deleteFarm(@PathVariable int id) {
         farmerService.deleteFarm(id);
@@ -87,6 +92,11 @@ public class FarmerController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Endpoint to find a specific farm by its id
+     * @param farmId farm id used to identify farm
+     * @return the farm information
+     */
     @GetMapping("/getFarm/{farmId}")
     public ResponseEntity<GetFarmByIdResponse> getFarmById(@PathVariable int farmId) {
         GetFarmByIdResponse response = farmerService.getFarmById(farmId);
