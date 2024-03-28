@@ -21,12 +21,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class OrderController {
     private final OrderService orderService;
 
+    /**
+     * Endpoint to place order
+     * @param orderRequest information needed for the order
+     * @param principal user token
+     * @return String indicating success or failure
+     */
     @PostMapping("/place-order")
     public ResponseEntity<String> placeOrder(@RequestBody @Valid OrderRequest orderRequest, Principal principal) {
         orderService.placeOrder(orderRequest, principal);
         return ResponseEntity.ok("Order placed successfully");
     }
 
+    /**
+     * Endpoint to retrieve order history
+     * @param principal user token
+     * @return order history of the user
+     */
     @GetMapping("/orderHistory")
     public ResponseEntity<List<OrderDto>> orderHistory(Principal principal) {
         List<OrderDto>orderHistory = orderService.orderHistory(principal);

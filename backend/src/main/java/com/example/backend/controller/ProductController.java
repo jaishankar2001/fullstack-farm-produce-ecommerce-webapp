@@ -34,12 +34,22 @@ import java.security.Principal;
 public class ProductController {
     private final ProductService productService;
 
+    /**
+     * Endpoint to get the products of a farmer
+     * @param principal user token
+     * @return returns the products of a farmer
+     */
     @GetMapping("/farmer-products")
     public ResponseEntity<List<ProductDto>> getFarmerProducts(Principal principal) {
         List<ProductDto> userProducts = productService.getFarmerProducts(principal);
         return ResponseEntity.ok(userProducts);
     }
 
+    /**
+     * end point to get all products that match an infix
+     * @param searchTerm infix to filter search
+     * @return all products that match the infix
+     */
     @GetMapping("/all-products")
     public ResponseEntity<List<ProductDto>> getAllProducts(@RequestParam(name = "searchTerm", required = false) String searchTerm
             ) {
@@ -47,6 +57,13 @@ public class ProductController {
         return ResponseEntity.ok(allProducts);
     }
 
+    /**
+     * Endpoint to `add new products
+     * @param product all information regarding a product
+     * @param files images of the product
+     * @param principal user token
+     * @return the product info after it is inserted into the database
+     */
     @PostMapping("/addproduct")
     public ResponseEntity<Map> addProduct(@ModelAttribute @Valid AddProductRequest product,
             @RequestPart(value = "files") MultipartFile[] files, Principal principal) {
@@ -59,6 +76,13 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /**
+     * Endpoint to edit product information
+     * @param product product information.
+     * @param files new images for the product
+     * @param principal user token
+     * @return Edited product
+     */
     @PostMapping("/editproduct")
     public ResponseEntity<Product> editProduct(@ModelAttribute @Valid EditProductRequest product,
             @RequestPart(value = "files") MultipartFile[] files, Principal principal) {
@@ -66,6 +90,11 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /**
+     * Endpoint to delete a product
+     * @param id product id
+     * @return String indicating success or failure
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteProduct(@PathVariable int id) {
         productService.deleteProduct(id);
@@ -74,6 +103,11 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Endpoint to Retrieve product by its ID
+     * @param productId id of the product
+     * @return Product object
+     */
     @GetMapping("/getProduct/{productId}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable int productId) {
         ProductDto response = productService.getProductById(productId);

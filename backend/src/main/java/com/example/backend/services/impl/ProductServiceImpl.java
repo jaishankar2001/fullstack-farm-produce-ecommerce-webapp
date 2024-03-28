@@ -31,6 +31,13 @@ public class ProductServiceImpl implements ProductService {
     private final Awsutils awsutils;
     private final ImagesRepository imagesRepository;
 
+    /**
+     * adds new product to the database
+     * @param AddProductRequest DTO containing the product information
+     * @param multipartFiles images of the product
+     * @param principal user token
+     * @return list of user products
+     */
     @Override
     public List<ProductDto> addProduct(AddProductRequest AddProductRequest, final MultipartFile[] multipartFiles,
             Principal principal) {
@@ -67,6 +74,10 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * removes product from the database
+     * @param id product id
+     */
     @Override
     public void deleteProduct(int id) {
         Product product = productRepository.findById(id);
@@ -82,6 +93,13 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    /**
+     * edit the details of the product
+     * @param editProductRequest DTO containing the details that need to be changed
+     * @param files new images of the product
+     * @param principal user token
+     * @return returns the edited product
+     */
     @Override
     public Product editProduct(EditProductRequest editProductRequest, MultipartFile[] files, Principal principal) {
 
@@ -126,6 +144,11 @@ public class ProductServiceImpl implements ProductService {
         
     }
 
+    /**
+     * retrieves the product based on the ID
+     * @param id product id
+     * @return the product information
+     */
     @Override
     public ProductDto getProductById(int id) {
         Product product = productRepository.findById(id);
@@ -150,6 +173,11 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * gets the all products of the farmer
+     * @param principal user token
+     * @return list of all products of the farmer
+     */
     @Override
     public List<ProductDto> getFarmerProducts(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
@@ -166,6 +194,11 @@ public class ProductServiceImpl implements ProductService {
         return allProducts.stream().map(ResponseUtils::convertProductResponse).collect(Collectors.toList());
     }
 
+    /**
+     * retrieves all products from the database that match the given infix
+     * @param searchTerm infix to be used for searching
+     * @return list of products that contain the infix
+     */
     @Override
     public List<ProductDto> getAllProducts(String searchTerm) {
         List<Product> allProducts = new ArrayList<>();

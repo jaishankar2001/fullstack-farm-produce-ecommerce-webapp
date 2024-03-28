@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import api from "../../api/index";
-import { Modal } from "react-bootstrap";
 
 function FarmerSubscriptionHistory() {
   const [subscription, setSubscription] = useState([]);
@@ -35,6 +35,7 @@ function FarmerSubscriptionHistory() {
           <thead>
             <tr>
               <th scope="col">Subscription Date</th>
+              <th scope="col">Customer Name</th>
               <th scope="col">Products</th>
               <th scope="col">Name</th>
               <th scope="col">Price</th>
@@ -51,6 +52,11 @@ function FarmerSubscriptionHistory() {
                         <p class="mb-0 mt-4 d-flex text-center">
                           {" "}
                           {moment(item.orderDate).format("MM/DD/YYYY")}
+                        </p>
+                      </td>
+                      <td>
+                        <p class="mb-0 mt-4 d-flex align-items-center">
+                          {item.customerName}
                         </p>
                       </td>
                       <th scope="row">

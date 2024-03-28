@@ -49,6 +49,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final OrderRepository orderRepository;
 
+    /**
+     * Subscribes to a product
+     * @param request contains the information for subscribing
+     * @param principal user token
+     */
     @Override
     public void subscribeProduct(ProductSubscribeRequest request, Principal principal) {
 
@@ -62,7 +67,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if (farm == null) {
             throw new ApiRequestException("Farm not found");
         }
-        System.out.println("HERE?");
         User user = userRepository.findByEmail(principal.getName());
         List<Subscription> s = subscriptionRepository.findAllByUserIdAndProductId(user.getId(),
                 product.getId());
@@ -93,10 +97,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
+    /**
+     * runs the CRON job, available on admin dashboard
+     */
     public void runCron() {
         CronForMakeOrder();
     }
 
+    /**
+     * Gets the subscriptions made by a user
+     * @param principal user token
+     * @return returns the list of all subscriptions made by the user
+     */
     @Override
     public List<GetSubscriptionResponse> getOwnSubscription(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
@@ -142,24 +154,30 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return responses;
     }
 
+    /**
+     * Gets the products of a farmer that have been subscribed to
+     * @param principal user token
+     * @return list of all products that belong to a farmer that have at least one active subscription
+     */
     @Override
     public List<GetSubscriptionResponse> getMySubscribedProduct(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
         List<Farms> userFarms = user.getFarms();
-        System.out.println("userFarmsuserFarms" + userFarms);
 
         List<Subscription> subscriptions = new ArrayList<Subscription>();
         for (Farms f : userFarms) {
             List<Subscription> farmSubscription = f.getSubscriptions();
             subscriptions.addAll(farmSubscription);
         }
+
         List<GetSubscriptionResponse> responses = new ArrayList<>();
         for (Subscription subscription : subscriptions) {
             Product product = subscription.getProduct();
+            User currentUser = subscription.getUser();
 
             boolean productAlreadyExists = false;
             for (GetSubscriptionResponse response : responses) {
-                if (response.getProductId() == product.getId()) {
+                if (response.getProductId() == product.getId() && response.getUserId() == currentUser.getId()) {
                     ArrayList<String> days = response.getDays();
                     days.add(subscription.getDays().toString());
                     response.setDays(days);
@@ -188,13 +206,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 generatedResponse.setProductId(product.getId());
                 generatedResponse.setProduct(productResponse);
                 generatedResponse.setSubscriptionDate(subscription.getSubscriptionDate());
-                generatedResponse.setCustomerName(user.getFirstname() + " " + user.getLastname());
+                generatedResponse.setCustomerName(currentUser.getFirstname() + " " + currentUser.getLastname());
+                generatedResponse.setUserId(currentUser.getId());
                 responses.add(generatedResponse);
             }
         }
         return responses;
     }
 
+    /**
+     * Cron Job that runs everyday at 11:55 pm
+     */
     // @Scheduled(cron = "0 * * * * *") // running every minute
     // @Scheduled(cron = "* * * * * *") // every second
     @Scheduled(cron = "55 23 * * * *") // Runs everyday at 11:55 PM
@@ -232,6 +254,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
+    /**
+     * gets days of that are part of the subscription
+     * @param request DTO containing the subscription information
+     * @return a list of days
+     */
     public List<String> getSubScribedDays(ProductSubscribeRequest request) {
         List<String> subscribeDays = new ArrayList<>();
 
@@ -253,14 +280,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscribeDays;
     }
 
-    public String cancelSubscription(Principal principal, int productId){
+    public String cancelSubscription(Principal principal, int productId) {
         User user = userRepository.findByEmail(principal.getName());
         Product product = productRepository.findById(productId);
-        if(user==null) throw new ApiRequestException("user not present");
-        if(product == null) throw new ApiRequestException("product not found for this subscription");
+        if (user == null)
+            throw new ApiRequestException("user not present");
+        if (product == null)
+            throw new ApiRequestException("product not found for this subscription");
         List<Subscription> subscription = subscriptionRepository.findByUser(user);
-        if(subscription.isEmpty())throw new ApiRequestException("No Subscription found for you "+user.getFirstname());
-        subscriptionRepository.deleteByUserIdAndProductId(user.getId(),product.getId());
+        if (subscription.isEmpty())
+            throw new ApiRequestException("No Subscription found for you " + user.getFirstname());
+        subscriptionRepository.deleteByUserIdAndProductId(user.getId(), product.getId());
         return "UnSubscribed Successfully";
     }
 }

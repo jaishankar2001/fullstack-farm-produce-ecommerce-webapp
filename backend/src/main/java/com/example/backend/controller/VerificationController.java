@@ -20,6 +20,14 @@ import java.util.Objects;
 public class VerificationController {
     private final VerificationService verificationService;
 
+    /**
+     * Endpoint to verify the user email
+     * @param code verification code that was sent to the user
+     * @param email email id of the user
+     * @param type process the verification was initiated for
+     * @param newPassword the new password of the user
+     * @return String indicating success or failure
+     */
     @GetMapping("/verify")
     public ResponseEntity<String> verify(@RequestParam("code") String code, @RequestParam("email") String email,
             @RequestParam("type") String type,

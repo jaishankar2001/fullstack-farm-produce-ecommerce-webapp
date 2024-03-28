@@ -28,7 +28,7 @@ public class AdminControllerTest {
     ResponseEntity responseEntity;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         MockitoAnnotations.openMocks(this);
         responseEntity = adminController.getallinformation(principal);
         when(adminService.getAllInfo(principal)).thenReturn(mockResponse);

@@ -16,6 +16,11 @@ public class CustomerController {
 
     private final FarmerService farmerService;
 
+    /**
+     * Endpoint used to retrieve a list of farms
+     * @param farmName infix for matching farm name with
+     * @return returns list of farms that contain the infix
+     */
     @GetMapping("/listfarms")
     public ResponseEntity<List<FarmDto>> listFarms(@RequestParam("farmName") String farmName) {
         List<FarmDto> allFarms = farmerService.getAllFarms(farmName);
