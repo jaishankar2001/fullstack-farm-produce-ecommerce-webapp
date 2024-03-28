@@ -2,6 +2,7 @@ package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.AddProductRequest;
 import com.example.backend.dto.request.EditProductRequest;
+import com.example.backend.dto.response.FarmDto;
 import com.example.backend.dto.response.ProductDto;
 import com.example.backend.entities.*;
 import com.example.backend.exception.ApiRequestException;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -179,7 +181,7 @@ public class ProductServiceImpl implements ProductService {
      * @return list of all products of the farmer
      */
     @Override
-    public List<ProductDto> getFarmerProducts(Principal principal) {
+    public List<ProductDto> getFarmerProducts(Principal principal, String searchTerm) {
         User user = userRepository.findByEmail(principal.getName());
         if (user == null) {
             throw new ApiRequestException("User not found");
@@ -190,6 +192,20 @@ public class ProductServiceImpl implements ProductService {
         for (Farms farm : userFarms) {
             List<Product> products = productRepository.findByFarm(farm);
             allProducts.addAll(products);
+        }
+        if (searchTerm != null) {
+            System.out.println("Search term " + searchTerm);
+            String search = searchTerm.toLowerCase();
+            Stream<Product> filteredProducts = allProducts.stream()
+                    .filter(product -> product.getProductName().toLowerCase()
+                            .contains(search));
+
+            Stream<ProductDto> mappedResponses = filteredProducts
+                    .map(ResponseUtils::convertProductResponse);
+
+            List<ProductDto> resultList = mappedResponses
+                    .toList();
+            return resultList;
         }
         return allProducts.stream().map(ResponseUtils::convertProductResponse).collect(Collectors.toList());
     }

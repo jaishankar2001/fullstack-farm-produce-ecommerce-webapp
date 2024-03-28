@@ -173,7 +173,7 @@ public class ProductServiceImplTest {
         when(userRepository.findByEmail(anyString())).thenReturn(user);
         when(farmRepository.findByUser(any(User.class))).thenReturn(mockFarmArr);
         when(productRepository.findByFarm(any(Farms.class))).thenReturn(mockProductsArr);
-        List<ProductDto> testArr = productService.getFarmerProducts(mockPrincipal);
+        List<ProductDto> testArr = productService.getFarmerProducts(mockPrincipal, null);
         assertNotNull(testArr);
 
         verify(userRepository, times(1)).findByEmail(anyString());
@@ -186,7 +186,7 @@ public class ProductServiceImplTest {
     void testGetFarmerProductsWhenNull() {
         Principal mockPrincipal = () -> "testUser@ecopick.com";
         when(userRepository.findById(anyInt())).thenReturn(null);
-        assertThrows(ApiRequestException.class, () -> productService.getFarmerProducts(mockPrincipal));
+        assertThrows(ApiRequestException.class, () -> productService.getFarmerProducts(mockPrincipal, null));
     }
 
     @Test
