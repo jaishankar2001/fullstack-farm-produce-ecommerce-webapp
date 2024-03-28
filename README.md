@@ -503,9 +503,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Farmers can view the list of products which are subscribed by customers.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/subscriptionFarmer.png" alt="Subscription Data for Farmer">
-</center>
+</table>
 
 ## Subscription Data for Customer
 
