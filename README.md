@@ -327,6 +327,10 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - After successful registration, verification mail is sent to the registered Email address
 
+<table align="center"><tr><td align="center" width="9999">
+<img src="./assets/registrationMail.png" align="center" width="450" height="300 px" alt="Project icon">
+</table>
+
 <p align="center">
 <img src="./assets/registrationMail.png" alt="" width="450 px" height="300 px">
 </p>
