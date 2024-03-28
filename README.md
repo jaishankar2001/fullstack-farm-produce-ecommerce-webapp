@@ -342,9 +342,9 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - After successful login, users are redirected to the Home Page.
 - Users can navigate directly to the Farms page by clicking on 'Farms' on the navigation bar.
 - Users can navigate directly to the Products page by clicking on 'Products' on the navigation bar.
-<table align="center"><tr><td align="center" width="9999">
+<!-- <table align="center"><tr><td align="center" width="9999"> -->
 <img src="./assets/HomePage.png" alt="Landing Page">
-</table>
+<!-- </table> -->
 
 **User Dropdown**
 
