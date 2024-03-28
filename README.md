@@ -6,6 +6,78 @@
 
 Our website serves as a platform connecting farmers and consumers, facilitating seamless transactions of fresh farm products. With user-friendly registration processes for both farmers and consumers, individuals can easily join our community. Consumers gain access to a wide variety of farm-fresh products available for purchase, while also having the option to subscribe to their favorite items for regular delivery. Meanwhile, farmers can showcase their farms and products on the platform, expanding their reach and directly connecting with their customers. By fostering direct relationships between farmers and consumers, our website promotes transparency, supports local agriculture, and empowers individuals to make informed choices about their food purchases.
 
+- [ECOPICK](#ecopick)
+  - [Summary](#summary)
+  - [Tools \& Tech Stacks used : -](#tools--tech-stacks-used---)
+- [Ecopick backend Setup](#ecopick-backend-setup)
+  - [Prerequisites](#prerequisites)
+  - [Getting Started](#getting-started)
+    - [1. Clone the Repository](#1-clone-the-repository)
+    - [2. Navigate to the project directory](#2-navigate-to-the-project-directory)
+    - [3. Build the project](#3-build-the-project)
+    - [5. Run the application](#5-run-the-application)
+  - [Backend Dependencies](#backend-dependencies)
+- [Ecopick frontend Setup](#ecopick-frontend-setup)
+  - [Prerequisites](#prerequisites-1)
+  - [Getting Started](#getting-started-1)
+    - [1. Clone the Repository](#1-clone-the-repository-1)
+    - [2. Navigate to the project directory](#2-navigate-to-the-project-directory-1)
+    - [3. Install dependencies](#3-install-dependencies)
+    - [4. start React APP](#4-start-react-app)
+  - [Frontend Dependencies](#frontend-dependencies)
+- [Deploy in VM](#deploy-in-vm)
+  - [Overview](#overview)
+  - [Prerequisites](#prerequisites-2)
+    - [Environment](#environment)
+    - [Frontend deployment steps](#frontend-deployment-steps)
+    - [Backend deployment steps](#backend-deployment-steps)
+- [Usage Scenario](#usage-scenario)
+    - [For Customers:](#for-customers)
+    - [For Farmers:](#for-farmers)
+    - [For Admin:](#for-admin)
+- [Features](#features)
+  - [Registration Page](#registration-page)
+  - [Login Page](#login-page)
+  - [Landing Page](#landing-page)
+  - [Banner Page](#banner-page)
+  - [Farms section](#farms-section)
+    - [Farm page for Farmer](#farm-page-for-farmer)
+    - [Farm page for Customer](#farm-page-for-customer)
+  - [Products section](#products-section)
+    - [Product page for Farmer](#product-page-for-farmer)
+    - [Product page for Customer](#product-page-for-customer)
+  - [Subscription Data for Farmer](#subscription-data-for-farmer)
+  - [Subscription Data for Customer](#subscription-data-for-customer)
+  - [Banner section](#banner-section)
+  - [Footer section](#footer-section)
+  - [Admin Dashboard](#admin-dashboard)
+  - [Wallet](#wallet)
+  - [Wallet History](#wallet-history)
+  - [Order History](#order-history)
+- [✅CI/CD](#cicd)
+  - [Docker Setup](#docker-setup)
+  - [Build](#build)
+  - [Test](#test)
+  - [Code Quality](#code-quality)
+  - [Publish](#publish)
+  - [Deploy](#deploy)
+- [✅Test](#test-1)
+  - [Coverage](#coverage)
+  - [Integration tests](#integration-tests)
+  - [TDD adherence](#tdd-adherence)
+    - [Test best practices](#test-best-practices)
+- [Design Pattern](#design-pattern)
+  - [Single Responsibility Principle](#single-responsibility-principle)
+  - [Open/closed Principle](#openclosed-principle)
+  - [Liskov Substitution Principle (LSP)](#liskov-substitution-principle-lsp)
+  - [Interface Segregation Principle (ISP)](#interface-segregation-principle-isp)
+  - [Dependency Inversion Principle (DIP)](#dependency-inversion-principle-dip)
+- [Code smell analysis](#code-smell-analysis)
+
+
+
+
+
 ## Tools & Tech Stacks used : -
 
 - [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.2-green)](https://spring.io/projects/spring-boot)
@@ -116,7 +188,7 @@ cd Group09/frontend
 npm install
 ```
 
-### 4. start the development
+### 4. start React APP
 
 - After installing dependencies, start the React.js development server by running:
 
@@ -649,7 +721,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/CICD5.jpg" alt="Test Stage" >
 </table>
 
-## ✅Test
+# ✅Test
 
 - We have used Junit for unit test cases and mockito, following are depdencies we have used for that
 
