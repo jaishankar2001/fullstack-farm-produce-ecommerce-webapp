@@ -316,12 +316,11 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - A new user has to fill all the necessary details on the registration page.
 - Registered users can click on the 'Login' link to navigate to the Log in page.
 
-<center>
-<p align="center">
-    <img src="./assets/SignUp.png" alt="Registration Page" width="600 px" height="550 px">
-</p>
 
-</center>
+<table align="center"><tr><td align="center" width="9999">
+    <img src="./assets/SignUp.png" alt="Registration Page" width="600 px" height="550 px">
+</table>
+
 
 ---
 
@@ -331,16 +330,12 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/registrationMail.png" align="center" width="450" height="300 px" alt="Project icon">
 </table>
 
-<p align="center">
-<img src="./assets/registrationMail.png" alt="" width="450 px" height="300 px">
-</p>
-
 ## Login Page
 
 - Register user can login to the website by entering the registered Email address and valid password on the Login page.
-<p align="center">
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/LogIn.png" alt="Login Page" width="450 px" height="400 px">
-</p>
+</table>
 
 ## Landing Page
 
