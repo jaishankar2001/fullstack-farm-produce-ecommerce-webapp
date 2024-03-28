@@ -750,7 +750,7 @@ We have followed TDD adherence for some of the functionalities and APIs which in
 
 
 
-### ▪️ Test best practices
+### Test best practices
 
 We have followed Test best practice such as writing small test cases, testing one thing at a time and dividng the structure.
 
@@ -787,6 +787,38 @@ We have followed Test best practice such as writing small test cases, testing on
 - Following is the screenshot of our current folder structure : - 
 
 <center>
-<img src="./assets/Folder_structure.png" alt="Registration Page">
+<img src="./assets/Folder_structure.png" alt="Registration Page" width="60%">
 </center>
 
+
+## Open/closed Principle
+
+- A class should open for extension and closed for modification. We had make sure that, services and implementation will be able to extend without modifying other old implementation. 
+
+## Liskov Substitution Principle (LSP)
+
+- subtype should be able to replace base type without changing the correctness of the program. In abstract class or interface it will be able to replace with its parents.
+
+## Interface Segregation Principle (ISP)
+
+- The ISP tells us that larger interfacses should be splitted into smaller interfaces. To implement this we have created different interfacses for different services such as for senMail, authentication, wallet etc. Following is screenshot of Mail service which have only one method sendMail
+
+
+<center>
+<img src="./assets/Mail_service.png" alt="Registration Page">
+</center>
+
+
+## Dependency Inversion Principle (DIP)
+
+It states that high level modules should not depend on low level modules. We have implemented separate controllers and services as per Spring boot best practice to reduce the dependancy on individual classes. 
+
+
+
+# Code smell analysis 
+
+| Smells | Total number | Refactored | Justified | Link |
+|----------|----------|----------|----------|----------|
+| Architecture Smell | 18 | 2 | 16 | [Architecture Smell](./Smell_analysis_summary/Architecture_smells.xlsx) |
+| Design Smell | 73 | 16 | 57 | [Design Smell](./Smell_analysis_summary/Design_smells.xlsx) |
+| Implementation Smell | 56 | 27 | 29 | [implementation Smell](./Smell_analysis_summary/Implementation_smells.xlsx) |
