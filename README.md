@@ -21,9 +21,9 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 
 ## Prerequisites
 
-- Java `v17.0.2`
-- JDK `v17`
-- Maven `v3.9.6`
+- [Java](https://www.java.com/en/) `v17.0.2`
+- [JDK](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) `v17`
+- [Maven](https://maven.apache.org/) `v3.9.6`
 
 ## Getting Started
 
