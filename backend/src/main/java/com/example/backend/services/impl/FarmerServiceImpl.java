@@ -2,6 +2,7 @@ package com.example.backend.services.impl;
 
 import com.example.backend.dto.request.EditFarmRequest;
 
+import com.example.backend.entities.*;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Objects;
@@ -16,10 +17,6 @@ import java.security.Principal;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.FarmDto;
 import com.example.backend.dto.response.GetFarmByIdResponse;
-import com.example.backend.entities.Farms;
-import com.example.backend.entities.Images;
-import com.example.backend.entities.Product;
-import com.example.backend.entities.User;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.repository.FarmRepository;
 import com.example.backend.repository.ImagesRepository;
@@ -50,7 +47,8 @@ public class FarmerServiceImpl implements FarmerService {
     public List<FarmDto> addFarm(AddFarmRequest farmRequest, final MultipartFile[] multipartFiles,
             Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
-
+        user.setRole(Role.valueOf("FARMER"));
+        userRepository.save(user);
         Farms farm = modelMapper.map(farmRequest, Farms.class);
         System.out.println(farm);
         farm.setUser(user);
