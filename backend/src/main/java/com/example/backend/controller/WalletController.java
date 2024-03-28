@@ -24,6 +24,12 @@ public class WalletController {
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
 
+    /**
+     * Endpoint to create the payment session
+     * @param amount Money that the user wants to topup
+     * @param principal user token
+     * @return Stripe session to make the payment
+     */
     @PostMapping("/create-payment-intent")
     public ResponseEntity<Map> createPaymentIntent(@RequestParam("amount") String amount, Principal principal) {
         try {
@@ -36,6 +42,11 @@ public class WalletController {
         }
     }
 
+    /**
+     * Endpoint for the user to topup their wallets
+     * @param request information required for wallet topup
+     * @return redirect url to the frontend
+     */
     @GetMapping("/topup")
     public RedirectView topUp(@ModelAttribute WalletRequest request) {
         try {
@@ -46,6 +57,11 @@ public class WalletController {
         }
     }
 
+    /**
+     * Endpoint to get the wallet history of a user
+     * @param principal user token
+     * @return all Transactions performed by a user
+     */
     @GetMapping("/history")
     public ResponseEntity<List<Wallet>> walletHistory(Principal principal) {
         return ResponseEntity.ok(walletService.gethistory(principal));

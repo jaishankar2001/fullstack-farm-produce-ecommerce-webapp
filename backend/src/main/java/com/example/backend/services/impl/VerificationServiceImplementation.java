@@ -32,6 +32,14 @@ public class VerificationServiceImplementation implements VerificationService {
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
 
+    /**
+     * Verifies the code sent through the email and performs the necessary changes
+     * @param code verification code sent through email
+     * @param email email id to which it was sent
+     * @param newPassword new password to reset to
+     * @param type type of verification process
+     * @return Success confirmation
+     */
     @Override
     public String verifyAndUpdate(String code, String email, String newPassword, String type) {
         try {
@@ -51,6 +59,11 @@ public class VerificationServiceImplementation implements VerificationService {
         }
     }
 
+    /**
+     * sends verification email to the email giving by the user during signup
+     * @param code code that needs to be sent to the user
+     * @param email email ID of the user
+     */
     @Override
     public void verify(String code, String email) {
         // User user = userRepository.findByEmail(email).orElseThrow();
@@ -78,6 +91,12 @@ public class VerificationServiceImplementation implements VerificationService {
         verificationCodeRepository.delete(verificationCode);
     }
 
+    /**
+     * Function sends email to the emailID of the user for resetting password
+     * @param code Verification code
+     * @param email email ID of the user
+     * @param newPassword the new password
+     */
     @Override
     public void resetPassword(String code, String email, String newPassword) {
         User user = userRepository.findByEmail(email);
@@ -97,6 +116,11 @@ public class VerificationServiceImplementation implements VerificationService {
         verificationCodeRepository.delete(verificationCode);
     }
 
+    /**
+     * sends the verification email to the user
+     * @param user user
+     * @param type type of operation for which verification is required
+     */
     @Override
     public void sendVerificationEmail(User user, VerificationType type) {
         UserMeta userMeta = userMetaRepository.findByUser(user);
@@ -139,6 +163,11 @@ public class VerificationServiceImplementation implements VerificationService {
         }
     }
 
+    /**
+     * generates the URL that is sent in the email
+     * @param type type of operation
+     * @return returns the string url that is sent in the email
+     */
     public String generateUrl(VerificationType type) {
         String url = "";
         if (type == VerificationType.VerifyEmail) {

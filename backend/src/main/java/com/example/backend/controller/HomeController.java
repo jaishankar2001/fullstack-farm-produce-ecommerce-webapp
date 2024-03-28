@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     private final HomeService homeService;
 
+    /**
+     * Endpoint to get the information required for the home page
+     * @return home DTO containing top 8 farms and top 8 products
+     */
     @GetMapping("/")
     public ResponseEntity<HomeResponse> getHomeMeta() {
         HomeResponse homeMeta = homeService.getHomeMeta();

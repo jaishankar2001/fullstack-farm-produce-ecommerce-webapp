@@ -33,6 +33,11 @@ public class AdminServiceImpl implements AdminService {
     static final int TOTAL_MONTH = 12;
     static final int MONTH_STATISTICS = 4;
 
+    /**
+     * Gets information about all farms, products, users, orders and sales for the admin dashboard
+     * @param principal principal required to check user authority
+     * @return AdminResponseDTO
+     */
     @Override
     public AdminResponse getAllInfo(Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
@@ -61,6 +66,10 @@ public class AdminServiceImpl implements AdminService {
         return adminResponse;
     }
 
+    /**
+     * Gets the sales received for the last 4 months from orders and subscriptions
+     * @return SalesDTO(contains 2 hashmaps one for subscription one for order
+     */
     public SalesDTO getOrderByMonth() {
 
         LocalDate endDate = LocalDate.now(TimeZone.getTimeZone("AST").toZoneId());

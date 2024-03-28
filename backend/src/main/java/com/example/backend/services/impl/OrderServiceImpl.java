@@ -40,6 +40,11 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final WalletRepository walletRepository;
 
+    /**
+     * Place new order
+     * @param orderRequest Order Request, contains order details
+     * @param principal contain user details
+     */
     @Override
     public void placeOrder(OrderRequest orderRequest, Principal principal) {
         User user = userRepository.findByEmail(principal.getName());
@@ -89,6 +94,11 @@ public class OrderServiceImpl implements OrderService {
         productRepository.save(product);
     }
 
+    /**
+     * Retrieves the order history of a user
+     * @param principal user token
+     * @return list of orders placed by the user
+     */
     @Override
     public List<OrderDto> orderHistory(Principal principal) {
         // Order order = new Order();

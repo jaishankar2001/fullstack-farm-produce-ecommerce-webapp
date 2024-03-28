@@ -23,6 +23,12 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
+
+    /**
+     * End point to fetch all information for the admin
+     * @param principal user token
+     * @return ResponseEntity with the admin response
+     */
     @GetMapping("info-page")
     public ResponseEntity<AdminResponse> getallinformation(Principal principal) {
         AdminResponse response = adminService.getAllInfo(principal);
