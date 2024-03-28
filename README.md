@@ -61,6 +61,7 @@ mvn spring-boot:run
 The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
 ## Backend Dependencies
+
 | Dependency Group         | Description                                               | Artifact                       | Version  |
 | ------------------------ | --------------------------------------------------------- | ------------------------------ | -------- |
 | org.springframework.boot | Starter for using Spring Boot's Actuator endpoints        | spring-boot-starter-actuator   |          |
@@ -176,7 +177,16 @@ We have deployed our application on the virtual machine provided. For backend ar
 
 - fill the appropriate values in [application.properties](./backend/src/main/resources/application.properties)
 
-- fill the appropriate values in [.env](./frontend/.env)
+### Environment
+
+Create a `.env` file in the Frontend folder inside the root directory with the following variables:
+
+```
+REACT_APP_STRIPE_PUBLIC_KEY =
+REACT_APP_MAP_KEY =
+REACT_APP_BASE_URL =
+
+```
 
 ### Frontend deployment steps
 
@@ -349,8 +359,6 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <table align="center"><tr><td align="center" width="9999">
 <img src="./assets/bannerPage.png" alt="Banner Page">
 </table>
-
-
 
 **User Dropdown**
 
@@ -544,8 +552,6 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/adminDashboard.png" alt="Admin Dashboard" >
 </table>
 
-
-
 - Admin can also view tabular data for list of Users, Farms, Products and orders.
 <table align="center"><tr><td align="center" width="9999">
 <img src="./assets/table1.png" alt="Tabular Data" >
@@ -584,31 +590,17 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/orderHistory.png" alt="Order History Page" >
 </table>
 
-## Credits
-
-### Developer Team
-
-| Name                     | Email              |
-| ------------------------ | ------------------ |
-| TANUJ VIPULKUMAR DOSHI   | tanuj.doshi@dal.ca |
-| NIKITA DAVIES            | nk548914@dal.ca    |
-| DRASHTI VIJAYKUMAR PATEL | dr954742@dal.ca    |
-| KUNJ HITESHKUMAR PATHAK  | kn743706@dal.ca    |
-| JAISHANKAR MOHANRAJ      | js830845@dal.ca    |
-
-### Client Team
-
-| Name            | Email           |
-| --------------- | --------------- |
-| KHUSH PATEL     | kh472243@dal.ca |
-| VYANSI DIYORA   | vy744910@dal.ca |
-| PIYUSH JOSHI    | py287300@dal.ca |
-| RIDDHO BHADRA   | rd588330@dal.ca |
-| ABHISHEK KAPOOR | ab210637@dal.ca |
-
-
-
 # ✅CI/CD
+
+## Docker Setup
+
+- GitLab CI/CD allows automating the testing, building, and deployment processes for Node.js projects using a .gitlab-ci.yml file in the repository root. Here's an example configuration:
+
+- You can find the GitLab CI/CD configuration file for this project [here](./.gitlab-ci.yml).
+
+- Docker provides a method to publish and deploy the server code onto a virtual machine (VM).
+
+- You can find the `DockerFile` for the project [here](backend\Dockerfile).
 
 ## Build
 
@@ -679,32 +671,23 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 Our current class coverage is 92%, method coverage is 79% and line coverage is 82%.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/branch_coverage.png" alt="Coverage" width="600 px" height="550 px">
-</center>
-
-
+</table>
 
 ## Integration tests
 
-We have added integration test cases([Here](./backend/src/test/java/com/example/backend/IntegrationTests/ControllerIntegrationTest.java)) for following controllers : - 
-    - FarmerController
-    - SubscriptionController
-    - OrderController
-    - HomeController
-    - CategoryController
-
+We have added integration test cases([Here](./backend/src/test/java/com/example/backend/IntegrationTests/ControllerIntegrationTest.java)) for following controllers : - - FarmerController - SubscriptionController - OrderController - HomeController - CategoryController
 
 ## TDD adherence
 
-We have followed TDD adherence for some of the functionalities and APIs which includes Subscriptions, Orders, Home, and Admin. 
+We have followed TDD adherence for some of the functionalities and APIs which includes Subscriptions, Orders, Home, and Admin.
+
 - Following is the one screenshot supporting TDD adherance.
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/TDD.png" alt="TDD">
-</center>
-
-
+</table>
 
 ### Test best practices
 
@@ -725,31 +708,21 @@ We have followed Test best practice such as writing small test cases, testing on
 
 - We have resolved Test smells and currently there are only 8 test smells which are justified [here](./Smell_analysis_summary//Test_smells.xlsx)
 
-
-
-
-
-
-
-
-
 # Design Pattern
-
 
 ## Single Responsibility Principle
 
-- We have followed Single responsibility principle by separating the concern and facilating the modification, testing and reuse of the code. 
+- We have followed Single responsibility principle by separating the concern and facilating the modification, testing and reuse of the code.
 
-- Following is the screenshot of our current folder structure : - 
+- Following is the screenshot of our current folder structure : -
 
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/Folder_structure.png" alt="Registration Page" width="60%">
-</center>
-
+</table>
 
 ## Open/closed Principle
 
-- A class should open for extension and closed for modification. We had make sure that, services and implementation will be able to extend without modifying other old implementation. 
+- A class should open for extension and closed for modification. We had make sure that, services and implementation will be able to extend without modifying other old implementation.
 
 ## Liskov Substitution Principle (LSP)
 
@@ -759,22 +732,18 @@ We have followed Test best practice such as writing small test cases, testing on
 
 - The ISP tells us that larger interfacses should be splitted into smaller interfaces. To implement this we have created different interfacses for different services such as for senMail, authentication, wallet etc. Following is screenshot of Mail service which have only one method sendMail
 
-
-<center>
+<table align="center"><tr><td align="center" width="9999">
 <img src="./assets/Mail_service.png" alt="Registration Page">
-</center>
-
+</table>
 
 ## Dependency Inversion Principle (DIP)
 
-It states that high level modules should not depend on low level modules. We have implemented separate controllers and services as per Spring boot best practice to reduce the dependancy on individual classes. 
+It states that high level modules should not depend on low level modules. We have implemented separate controllers and services as per Spring boot best practice to reduce the dependancy on individual classes.
 
-
-
-# Code smell analysis 
+# Code smell analysis
 
 | Smells | Total number | Refactored | Justified | Link |
-|----------|----------|----------|----------|----------|
-| Architecture Smell | 18 | 2 | 16 | [Architecture Smell](./Smell_analysis_summary/Architecture_smells.xlsx) |
-| Design Smell | 73 | 16 | 57 | [Design Smell](./Smell_analysis_summary/Design_smells.xlsx) |
-| Implementation Smell | 56 | 27 | 29 | [implementation Smell](./Smell_analysis_summary/Implementation_smells.xlsx) |
+|----------|--------------|----------|-----------|----------|
+| Architecture Smell | 17           | 2 | 15        | [Architecture Smell](./Smell_analysis_summary/Architecture_smells.xlsx) |
+| Design Smell | 74           | 16 | 58        | [Design Smell](./Smell_analysis_summary/Design_smells.xlsx) |
+| Implementation Smell | 55           | 27 | 28        | [implementation Smell](./Smell_analysis_summary/Implementation_smells.xlsx) |
