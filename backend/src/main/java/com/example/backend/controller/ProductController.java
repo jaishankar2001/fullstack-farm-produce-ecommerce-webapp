@@ -40,8 +40,8 @@ public class ProductController {
      * @return returns the products of a farmer
      */
     @GetMapping("/farmer-products")
-    public ResponseEntity<List<ProductDto>> getFarmerProducts(Principal principal) {
-        List<ProductDto> userProducts = productService.getFarmerProducts(principal);
+    public ResponseEntity<List<ProductDto>> getFarmerProducts(@RequestParam(name = "searchTerm", required = false) String searchTerm, Principal principal) {
+        List<ProductDto> userProducts = productService.getFarmerProducts(principal, searchTerm);
         return ResponseEntity.ok(userProducts);
     }
 

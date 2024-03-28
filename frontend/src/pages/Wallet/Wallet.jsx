@@ -10,7 +10,13 @@ function Wallet() {
   const [amount, setAmount] = React.useState();
   const [history, sethistory] = React.useState([]);
 
-  console.log(history.length);
+  const userMeta = localStorage?.getItem("userMeta");
+    // Parse the JSON string back to an object
+    const userMetaData = JSON.parse(userMeta);
+
+    const balance = userMetaData?.balance;
+
+
   useEffect(() => {
     const fetchHistory = async () => {
       try {
@@ -44,7 +50,6 @@ function Wallet() {
       window.location = data.url;
     }
   };
-
   const getQtyInput = () => {
     return (
       <div className="input-group input-group-sm" style={{ width: 100 }}>
@@ -70,9 +75,16 @@ function Wallet() {
       <div className="container py-4">
         <div className="row g-3">
           <div className="col-lg-8">
+          <div className="card mb-3 border-0 shadow-sm my-b -2">
+            <div className="card-body">
+    <form className="row g-2">
+        <strong>Current Wallet Balance: ${balance} </strong>
+    </form>
+</div>
+            </div>
             <div className="card border-0 shadow-sm">
               <div className="card-header bg-white">
-                <h5 className="my-2">Wallet History</h5>
+                <h5 className="my-2"><strong>Wallet History</strong></h5>
               </div>
               <div className="card-body p-2">
                 <div className="table-responsive">
@@ -92,11 +104,11 @@ function Wallet() {
                               <td scope="row">
                                 <div className="hstack">
                                   <div className="ms-3">
-                                    <span className="h5">
-                                      {moment(wallet.createdAt).format(
+                                    <h6 className="mb-0">
+                                    {moment(wallet.createdAt).format(
                                         "MM/DD/YYYY"
                                       )}
-                                    </span>
+                                </h6>
                                   </div>
                                 </div>
                               </td>

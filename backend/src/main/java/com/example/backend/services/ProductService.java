@@ -14,6 +14,6 @@ public interface ProductService {
     void deleteProduct(int id);
     ProductDto getProductById(int id);
 
-    List<ProductDto> getFarmerProducts(Principal principal);
+    List<ProductDto> getFarmerProducts(Principal principal, String searchTerm);
     List<ProductDto> getAllProducts(String searchTerm);
 }

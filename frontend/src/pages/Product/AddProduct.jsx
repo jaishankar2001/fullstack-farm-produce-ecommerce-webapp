@@ -11,6 +11,7 @@ function AddProduct() {
   const [productName, setProductName] = useState("");
   const [categoryID, setCategoryID]= useState("");
   const [farmID, setFarmID]= useState("");
+  const [farmName, setFarmName]= useState("");
   const [price, setPrice]= useState("");
   const [stock, setStock]= useState("");
   const [categories, setCategories] = useState([]);
@@ -101,6 +102,7 @@ function AddProduct() {
   const handleFarmSelect = (selectedFarm) => {
     const farm = allFarms.find(farm => farm.name === selectedFarm);
     setFarmID(farm.id);
+    setFarmName(farm.name);
   };
 
 
@@ -139,7 +141,7 @@ function AddProduct() {
                   <Dropdown
                     options={allFarms}
                     onSelect={handleFarmSelect}
-                    selectedValue={farmID}
+                    selectedValue={farmName}
                   />
                 </div>
                 <div className="col-md-4 fw-semibold mt-4">
