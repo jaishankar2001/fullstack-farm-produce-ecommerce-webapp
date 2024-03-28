@@ -14,8 +14,7 @@ Our website serves as a platform connecting farmers and consumers, facilitating 
 [![React.js](https://img.shields.io/badge/React.js-16.x-purple)](https://reactjs.org/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-4.x-red)](https://getbootstrap.com/)
 [![MySQL](https://img.shields.io/badge/MySQL-v8.0-yellow)](https://www.mysql.com/)
-[![gitlab](https://img.shields.io/badge/GitLab-v14.0-blue)](https://img.shields.io/badge/GitLab-v14.0-blue)
-[![stripe](https://img.shields.io/badge/Stripe-v22.7-red)](https://img.shields.io/badge/Stripe-v22.7-red)
+[![stripe](https://img.shields.io/badge/Stripe-v22.7-blue)](https://img.shields.io/badge/Stripe-v22.7-red)
 [![map](https://img.shields.io/badge/GoogleMaps-v2.19.2-brown)](https://img.shields.io/badge/GoogleMap-v2.19.2-brown)
 
 # Ecopick backend Setup
@@ -336,7 +335,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Register user can login to the website by entering the registered Email address and valid password on the Login page.
 <center>
-<img src="./assets/LogIn.png" alt="Login Page" width="450 px" height="400 px">
+<img src="./assets/LogIn.png" alt="Login Page">
 </center>
 
 ## Landing Page
@@ -450,8 +449,6 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ---
 
----
-
 ### Product page for Farmer
 
 - Farmers can view their farms by clicking on 'My Products' from the dropdown list.
@@ -544,9 +541,17 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/customSubscription.png" alt="Product Subscription" >
 </center>
 
-## Subscription History
+## Subscription Data for Farmer
 
-- Customers can view the the list of the products they have subscribed for.
+- Farmers can view the list of products which are subscribed by customers.
+
+<center>
+<img src="./assets/subscriptionFarmer.png" alt="Subscription Data for Farmer">
+</center>
+
+## Subscription Data for Customer
+
+- Customer can view the the list of the products they have subscribed for.
 
 <center>
 <img src="./assets/subscriptionHistory.png" alt="Subscription History" >
@@ -560,9 +565,12 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <img src="./assets/customSubscriptionData.png" alt="Subscription Data" >
 </center>
 
----
-
 ## Banner section
+
+- Customer can navigate to the Product section from the banner page.
+<center>
+<img src="./assets/bannerPage.png" alt="Subscription History" >
+</center>
 
 ## Footer section
 
@@ -572,11 +580,34 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## Admin Dashboard
 
+- Upon successful login using admin credentials, admin is redirected to the Admin Dashboard page.
+- On the Admin Dashboard page, admin can review statistics like, Total sales, Number of Users, Number of Products and Number of Farms.
+- Admin can also view graph data for Order sales and Subscription sales of last four months.
+- The CRON job will run automatically at 11:59 PM everyday. But if admin wants to place order for subscribed user for next day manually, they can do it by clicking on 'Run Schedule for subscription'.
+<center>
+<img src="./assets/adminDashboard.png" alt="Admin Dashboard" >
+</center>
+
+---
+
+- Admin can also view tabular data for list of Users, Farms, Products and orders.
+<center>
+<img src="./assets/table1.png" alt="Tabular Data" >
+</center>
+
+<center>
+<img src="./assets/table2.png" alt="Tabular Data" >
+</center>
+
+<center>
+<img src="./assets/table3.png" alt="Tabular Data" >
+</center>
+
 ## Wallet
 
 - Customers can add funds to their wallet.
 - Customers can use these funds while making the purchase.
-- If ht user has subscribed for a product, funds will be deducted from the wallet on the day before the delivery.
+- If user has subscribed for a product, funds will be deducted from the wallet on the day before the delivery.
 
 <center>
 <img src="./assets/wallet.png" alt="Wallet Page" >
@@ -596,3 +627,27 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 <center>
 <img src="./assets/orderHistory.png" alt="Order History Page" >
 </center>
+
+## Credits
+
+### Developer Team
+
+| Name                     | Email              |
+| ------------------------ | ------------------ |
+| TANUJ VIPULKUMAR DOSHI   | tanuj.doshi@dal.ca |
+| NIKITA DAVIES            | nk548914@dal.ca    |
+| DRASHTI VIJAYKUMAR PATEL | dr954742@dal.ca    |
+| KUNJ HITESHKUMAR PATHAK  | kn743706@dal.ca    |
+| JAISHANKAR MOHANRAJ      | js830845@dal.ca    |
+
+### Client Team
+
+| Name            | Email           |
+| --------------- | --------------- |
+| KHUSH PATEL     | kh472243@dal.ca |
+| VYANSI DIYORA   | vy744910@dal.ca |
+| PIYUSH JOSHI    | py287300@dal.ca |
+| RIDDHO BHADRA   | rd588330@dal.ca |
+| ABHISHEK KAPOOR | ab210637@dal.ca |
+
+---
