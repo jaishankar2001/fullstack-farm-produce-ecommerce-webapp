@@ -703,14 +703,90 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 ## ✅Test
 
-### ▪️ Coverage
+- We have used Junit for unit test cases and mockito, following are depdencies we have used for that
 
-Jacoco is used to show code coverage of the test cases. The project's service layer has 75% Line Coverage.
+```
+<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+</dependency>
+<dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>3.9.0</version>
+</dependency>
+```
 
-### ️▪️ Integration tests
+## Coverage
 
-We have followed best practices for mocking the dependent classes. System under test is beign tested in isolation.
+Our current class coverage is 92%, method coverage is 79% and line coverage is 82%.
 
-### ▪️ TDD adherence
+<center>
+<img src="./assets/branch_coverage.png" alt="Coverage" width="600 px" height="550 px">
+</center>
 
-Some of our APIs are developed by following Test Driven Developement approach.
+
+
+## Integration tests
+
+We have added integration test cases([Here](./backend/src/test/java/com/example/backend/IntegrationTests/ControllerIntegrationTest.java)) for following controllers : - 
+    - FarmerController
+    - SubscriptionController
+    - OrderController
+    - HomeController
+    - CategoryController
+
+
+## TDD adherence
+
+We have followed TDD adherence for some of the functionalities and APIs which includes Subscriptions, Orders, Home, and Admin. 
+- Following is the one screenshot supporting TDD adherance.
+
+<center>
+<img src="./assets/TDD.png" alt="TDD">
+</center>
+
+
+
+### ▪️ Test best practices
+
+We have followed Test best practice such as writing small test cases, testing one thing at a time and dividng the structure.
+
+- our Test folder structure
+
+```
+    ├── test                    # Test root folder
+    │   ├── ControllerTests     # All the controller unit tests
+    │   ├── entities            # All the Entities unit tests
+    │   └── ExceptionTests      # All the Expception unit tests
+    │   └── Services            # All the Services with implementation unit tests
+    │   └── Utils               # All the Utils unit tests
+    │   └── Integrations        # Integration Test cases
+    └── BackendApplicationTest
+```
+
+- We have resolved Test smells and currently there are only 8 test smells which are justified [here](./Smell_analysis_summary//Test_smells.xlsx)
+
+
+
+
+
+
+
+
+
+# Design Pattern
+
+
+## Single Responsibility Principle
+
+- We have followed Single responsibility principle by separating the concern and facilating the modification, testing and reuse of the code. 
+
+- Following is the screenshot of our current folder structure : - 
+
+<center>
+<img src="./assets/Folder_structure.png" alt="Registration Page">
+</center>
+
