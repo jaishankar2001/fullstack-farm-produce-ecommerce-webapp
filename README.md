@@ -2,8 +2,6 @@
 
 # ECOPICK
 
-</div>
-
 ## Summary
 
 Our website serves as a platform connecting farmers and consumers, facilitating seamless transactions of fresh farm products. With user-friendly registration processes for both farmers and consumers, individuals can easily join our community. Consumers gain access to a wide variety of farm-fresh products available for purchase, while also having the option to subscribe to their favorite items for regular delivery. Meanwhile, farmers can showcase their farms and products on the platform, expanding their reach and directly connecting with their customers. By fostering direct relationships between farmers and consumers, our website promotes transparency, supports local agriculture, and empowers individuals to make informed choices about their food purchases.
@@ -319,7 +317,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 - Registered users can click on the 'Login' link to navigate to the Log in page.
 
 <center>
-<img src="./assets/SignUp.png" alt="Registration Page" width="600 px" height="550 px">
+<img src="./assets/SignUp.png" alt="Registration Page" width="" height="">
 </center>
 
 ---
@@ -334,7 +332,7 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 
 - Register user can login to the website by entering the registered Email address and valid password on the Login page.
 <center>
-<img src="./assets/LogIn.png" alt="Login Page" width="450 px" height="400 px">
+<img src="./assets/LogIn.png" alt="Login Page" width="" height="">
 </center>
 
 ## Landing Page
