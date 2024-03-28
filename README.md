@@ -742,30 +742,8 @@ It states that high level modules should not depend on low level modules. We hav
 
 # Code smell analysis
 
-| Smells               | Total number | Refactored | Justified | Link                                                                        |
-| -------------------- | ------------ | ---------- | --------- | --------------------------------------------------------------------------- |
-| Architecture Smell   | 18           | 2          | 16        | [Architecture Smell](./Smell_analysis_summary/Architecture_smells.xlsx)     |
-| Design Smell         | 73           | 16         | 57        | [Design Smell](./Smell_analysis_summary/Design_smells.xlsx)                 |
-| Implementation Smell | 55           | 27         | 28        | [implementation Smell](./Smell_analysis_summary/Implementation_smells.xlsx) |
-
-## Credits
-
-### Developer Team
-
-| Name                     | Email              |
-| ------------------------ | ------------------ |
-| TANUJ VIPULKUMAR DOSHI   | tanuj.doshi@dal.ca |
-| NIKITA DAVIES            | nk548914@dal.ca    |
-| DRASHTI VIJAYKUMAR PATEL | dr954742@dal.ca    |
-| KUNJ HITESHKUMAR PATHAK  | kn743706@dal.ca    |
-| JAISHANKAR MOHANRAJ      | js830845@dal.ca    |
-
-### Client Team
-
-| Name            | Email           |
-| --------------- | --------------- |
-| KHUSH PATEL     | kh472243@dal.ca |
-| VYANSI DIYORA   | vy744910@dal.ca |
-| PIYUSH JOSHI    | py287300@dal.ca |
-| RIDDHO BHADRA   | rd588330@dal.ca |
-| ABHISHEK KAPOOR | ab210637@dal.ca |
+| Smells | Total number | Refactored | Justified | Link |
+|----------|--------------|----------|-----------|----------|
+| Architecture Smell | 17           | 2 | 15        | [Architecture Smell](./Smell_analysis_summary/Architecture_smells.xlsx) |
+| Design Smell | 74           | 16 | 58        | [Design Smell](./Smell_analysis_summary/Design_smells.xlsx) |
+| Implementation Smell | 55           | 27 | 28        | [implementation Smell](./Smell_analysis_summary/Implementation_smells.xlsx) |
