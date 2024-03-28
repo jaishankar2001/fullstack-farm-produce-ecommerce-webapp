@@ -651,3 +651,66 @@ docker run -d -p 8080:8080 --name ecopick-backend docker.io/tanuj3920/ecopick-ba
 | ABHISHEK KAPOOR | ab210637@dal.ca |
 
 ---
+
+# ✅CI/CD
+
+## Build
+
+- In our project, we also have implemented a similar approach for the build stage of our CI Pipeline. We have two distinct jobs:the frontend build job and the backend build job.
+
+<center>
+<img src="./assets/CICD1.jpg" alt="Build Stage" >
+</center>
+
+## Test
+
+- To test our application, we have used JUnit, a popular open-source testing framework for Java. We have integrated JUnit tests into our CI pipeline by running the "mvn test" command, which invokes the Maven build tool to execute the tests.
+
+<center>
+<img src="./assets/CICD2.jpg" alt="Test Stage" >
+</center>
+
+## Code Quality
+
+- The Continuous Integration (CI) Pipeline of the application includes a stage for code quality assurance, which covers both the Frontend and Backend code.
+
+1. **Job1:** The frontend code quality is ensured by integrating prettier into the pipeline, which checks for proper formatting of the codebase.
+2. **Job2:** The backend code quality is evaluated by running designated code smell tools, which generate reports of potential issues in the code. These code smell reports are then saved in artifacts, which can be downloaded later to analyze the code in detail.
+
+<center>
+<img src="./assets/CICD3.jpg" alt="Test Stage" >
+</center>
+
+## Publish
+
+- In publish stage, we are publishing the Backend with Docker, by building Docker and pushing it to Docker.
+- Successful run of publish stage will result in available docker image in docker hub.
+
+<center>
+<img src="./assets/CICD4.jpg" alt="Test Stage" >
+</center>
+
+## Deploy
+
+- In Deploy stage we are deploying Frontend and Backend.
+
+1. **Job 1 (Backend) :** - Using SSH we are logging in to VM and pulling the docker image, after that running docker image on port number 8080
+2. **Job 2 (Frontend) :** - Using SSH we are transferring current artifacts files of build folder to /var/www/html in VM, resulting running frontend index file on default port : 80.
+
+<center>
+<img src="./assets/CICD5.jpg" alt="Test Stage" >
+</center>
+
+## ✅Test
+
+### ▪️ Coverage
+
+Jacoco is used to show code coverage of the test cases. The project's service layer has 75% Line Coverage.
+
+### ️▪️ Integration tests
+
+We have followed best practices for mocking the dependent classes. System under test is beign tested in isolation.
+
+### ▪️ TDD adherence
+
+Some of our APIs are developed by following Test Driven Developement approach.
