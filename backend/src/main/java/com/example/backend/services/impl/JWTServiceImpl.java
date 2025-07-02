@@ -7,7 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,28 +17,48 @@ import java.util.*;
 import java.util.function.Function;
 
 @Service
-public class JWTServiceImpl implements JWTService{
+public class JWTServiceImpl implements JWTService {
+
+    @Value("${jwt.expiration}")
+    private int expirationTimeInMiliSecond;
+
+    /**
+     * Generates a JWT token
+     * @param userDetails the details of the user
+     * @return returns the token
+     */
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 24 * 24)))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMiliSecond))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateRefreshToken(Map<String, Object> extraClaims,UserDetails userDetails) {
-        
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername()).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+    /**
+     * Generates the refresh token
+     * @param extraClaims
+     * @param userDetails details of the user
+     * @return generated refresh token
+     */
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMiliSecond))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    /**
+     *
+     * @return
+     */
     private Key getSignInKey() {
         byte[] key = Decoders.BASE64.decode("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz");
         return Keys.hmacShaKeyFor(key);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claim = extractAllClaims(token);
         return claimsResolver.apply(claim);
     }
@@ -51,7 +71,13 @@ public class JWTServiceImpl implements JWTService{
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails){
+    /**
+     * checks if the token has expired or not
+     * @param token JWT token
+     * @param userDetails details of the user
+     * @return returns if the token is expired or not
+     */
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUserName(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }

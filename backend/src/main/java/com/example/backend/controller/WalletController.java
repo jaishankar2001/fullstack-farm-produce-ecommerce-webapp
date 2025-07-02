@@ -11,7 +11,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import com.example.backend.dto.request.WalletRequest;
-import com.example.backend.dto.response.WalletResponse;
 import com.example.backend.entities.Wallet;
 import com.example.backend.exception.ApiRequestException;
 import com.example.backend.services.WalletService;
@@ -25,6 +24,12 @@ public class WalletController {
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
 
+    /**
+     * Endpoint to create the payment session
+     * @param amount Money that the user wants to topup
+     * @param principal user token
+     * @return Stripe session to make the payment
+     */
     @PostMapping("/create-payment-intent")
     public ResponseEntity<Map> createPaymentIntent(@RequestParam("amount") String amount, Principal principal) {
         try {
@@ -37,24 +42,26 @@ public class WalletController {
         }
     }
 
-    @GetMapping("/balance/{userId}")
-    public WalletResponse checkBalance(@PathVariable int userId) {
-        double balance = walletService.checkBalance(userId);
-        WalletResponse response = new WalletResponse();
-        response.setBalance(balance);
-        return response;
-    }
-
+    /**
+     * Endpoint for the user to topup their wallets
+     * @param request information required for wallet topup
+     * @return redirect url to the frontend
+     */
     @GetMapping("/topup")
     public RedirectView topUp(@ModelAttribute WalletRequest request) {
         try {
             walletService.addMoney(request.getEmail(), request.getAmount());
             return new RedirectView(frontendEndpoint + "/wallet");
         } catch (Exception e) {
-            return new RedirectView(frontendEndpoint + "/payment/success");
+            return new RedirectView(frontendEndpoint + "/payment/error");
         }
     }
 
+    /**
+     * Endpoint to get the wallet history of a user
+     * @param principal user token
+     * @return all Transactions performed by a user
+     */
     @GetMapping("/history")
     public ResponseEntity<List<Wallet>> walletHistory(Principal principal) {
         return ResponseEntity.ok(walletService.gethistory(principal));

@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CategoryController {
     private final CategoryService categoryService;
 
+    /**
+     * Endpoint to get all categories
+     * @return returns a list of categories
+     */
     @GetMapping("/list")
     public ResponseEntity<List<Category>> getCategories() {
         return ResponseEntity.ok(categoryService.listcategories());

@@ -14,6 +14,12 @@ import lombok.RequiredArgsConstructor;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
+    /**
+     * Loads the user based on the username
+     * @param username username
+     * @return userDetails retrieved from the username
+     * @throws UsernameNotFoundException if the user does not exist the method will throw an error
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -27,13 +33,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getEmail(),
                 user.getPassword(),
                 user.getAuthorities());
-
-        // User user = userRepository.findByEmail(username).orElseThrow(() -> new
-        // UsernameNotFoundException("No User"));
-        // return new
-        // org.springframework.security.core.userdetails.User(user.getEmail(),
-        // user.getPassword(), null);
-
     }
 
 }

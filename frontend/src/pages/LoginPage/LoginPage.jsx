@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link, useNavigate } from "react-router-dom";
-import Layout from "../../common/Layout/Layout";
 import api from "../../api/index";
+import Layout from "../../common/Layout/Layout";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,7 +14,6 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log("LOFNBDDNDKDKNKDKBDJJFBF F BJF MDFJBF  M");
       setIsLoading(true);
       const response = await api.auth.login({ email, password });
 
@@ -23,7 +22,19 @@ function Login() {
         // Store tokens in local storage
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
+        const userMeta = {
+          name: response.firstname,
+          email: response.email,
+          balance: response.wallet_balance,
+          role: response.role
+        };
+        localStorage.setItem("userMeta", JSON.stringify(userMeta));
+        if(userMeta.email === "admin123@gmail.com"){
+          window.location.replace("/Admin-dashboard");
+        }
+        else{
         window.location.replace("/");
+        }
       }
     } catch (error) {
       setIsLoading(false);
@@ -44,9 +55,9 @@ function Login() {
       <ToastContainer />
       <div className="row my-4">
         <div className="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
-          <div className="card border-0 shadow-sm">
+          <div className="card border-0 shadow-lg">
             <div className="card-body px-4">
-              <h4 className="card-title fw-bold mt-2 mb-4">Sign In</h4>
+              <h4 className="card-title fw-bold mt-2 mb-4">Log In</h4>
               <form className="row g-2" onSubmit={handleSubmit}>
                 <div className="col-md-12">
                   <label className="form-label">Email</label>

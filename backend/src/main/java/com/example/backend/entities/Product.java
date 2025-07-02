@@ -1,7 +1,5 @@
 package com.example.backend.entities;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
@@ -31,7 +29,7 @@ public class Product {
 
     private String productDescription;
 
-    private BigDecimal price;
+    private double price;
 
     private int stock;
 
@@ -51,9 +49,20 @@ public class Product {
     @JsonManagedReference
     private List<Images> images;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Subscription> subscriptions;
+
     @ManyToOne
     @JoinColumn(name = "farm_id")
     @ToString.Exclude
     @JsonBackReference
     private Farms farm;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Order> orders;
+
 }

@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.request.EditFarmRequest;
-import com.example.backend.dto.request.FarmerOwnFarmRequest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,16 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.backend.dto.request.AddFarmRequest;
 import com.example.backend.dto.response.ApiResponse;
 import com.example.backend.dto.response.FarmDto;
-import com.example.backend.entities.Farms;
+import com.example.backend.dto.response.GetFarmByIdResponse;
 import com.example.backend.services.FarmerService;
-
-import jakarta.validation.Valid;
-
-// import com.example.Auth.entities.Farms;
-// import com.example.Auth.services.FarmerService;
-
 import java.util.*;
-import java.util.stream.Collectors;
 import java.security.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,18 +31,26 @@ public class FarmerController {
 
     private final FarmerService farmerService;
 
-    @GetMapping
-    public ResponseEntity<String> farmerHome() {
-        return ResponseEntity.ok("Hi Farmer");
-    }
-
-    @PostMapping("/own-farms")
-    public ResponseEntity<List<FarmDto>> getFarms(@RequestBody FarmerOwnFarmRequest farmerOwnFarmRequest,
+    /**
+     * Endpoint to get the farms of a particular user
+     * @param searchTerm infix used to filter the search
+     * @param principal user token
+     * @return returns a list of farms
+     */
+    @GetMapping("/own-farms")
+    public ResponseEntity<List<FarmDto>> getFarms(@RequestParam(name = "searchTerm", required = false) String searchTerm,
             Principal principal) {
-        List<FarmDto> userFarms = farmerService.getFarms(farmerOwnFarmRequest, principal);
+        List<FarmDto> userFarms = farmerService.getFarms(searchTerm, principal);
         return ResponseEntity.ok(userFarms);
     }
 
+    /**
+     * Endpoint to add farms
+     * @param farmRequest request containing new farm information
+     * @param files images of the farms
+     * @param principal user token
+     * @return all farms of the farmer
+     */
     @PostMapping("/addfarm")
     public ResponseEntity<Map> addFarm(@ModelAttribute AddFarmRequest farmRequest,
             @RequestParam(value = "files") MultipartFile[] files, Principal principal) {
@@ -58,10 +58,17 @@ public class FarmerController {
         List<FarmDto> AllFarmerFarms = farmerService.addFarm(farmRequest, files,
                 principal);
         Map<String, Object> response = new HashMap<>();
-        response.put("Farmsss", AllFarmerFarms);
+        response.put("AllFarm", AllFarmerFarms);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /**
+     * Endpoint to edit farms
+     * @param farmRequest request containing farm information that needs to be changed
+     * @param files new images for the farm
+     * @param principal user token
+     * @return String response indicating success or failure
+     */
     @PostMapping("/editfarm")
     public ResponseEntity<Map> editFarm(@ModelAttribute EditFarmRequest farmRequest,
             @RequestPart(value = "files", required = false) MultipartFile[] files, Principal principal) {
@@ -72,11 +79,27 @@ public class FarmerController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    /**
+     * Endpoint to delete the farm
+     * @param id farm id used to identify the farm
+     * @return String response indicating success or failure
+     */
     @DeleteMapping("/farms/{id}")
     public ResponseEntity<ApiResponse> deleteFarm(@PathVariable int id) {
         farmerService.deleteFarm(id);
         ApiResponse response = new ApiResponse();
         response.setMessage("Farm deleted successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Endpoint to find a specific farm by its id
+     * @param farmId farm id used to identify farm
+     * @return the farm information
+     */
+    @GetMapping("/getFarm/{farmId}")
+    public ResponseEntity<GetFarmByIdResponse> getFarmById(@PathVariable int farmId) {
+        GetFarmByIdResponse response = farmerService.getFarmById(farmId);
         return ResponseEntity.ok(response);
     }
 

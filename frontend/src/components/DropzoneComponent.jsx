@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const baseStyle = {
@@ -67,21 +67,25 @@ function DropzoneComponent({ onFilesSelected }) {
   );
 
   const thumbs = files.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes{" "}
-      <button
-        className="btn btn-sm btn-danger"
-        type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          const newFiles = [...files];
-          newFiles.splice(newFiles.indexOf(file), 1);
-          setFiles(newFiles);
-        }}
-      >
-        <FontAwesomeIcon icon={["fas", "trash-alt"]} />
-      </button>
-    </li>
+    <div className="row">
+      <div className="col-md-10">
+        {file.path} - {file.size} bytes{" "}
+      </div>
+      <div className="col-md-2">
+        <button
+          className="btn btn-sm btn-danger"
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            const newFiles = [...files];
+            newFiles.splice(newFiles.indexOf(file), 1);
+            setFiles(newFiles);
+          }}
+        >
+          <FontAwesomeIcon icon={["fas", "trash-alt"]} />
+        </button>
+      </div>
+    </div>
   ));
 
   return (

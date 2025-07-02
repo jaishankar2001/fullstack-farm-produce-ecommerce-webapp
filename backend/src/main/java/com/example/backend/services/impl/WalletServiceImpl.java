@@ -3,7 +3,6 @@ package com.example.backend.services.impl;
 import com.example.backend.repository.WalletRepository;
 import com.example.backend.services.WalletService;
 import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 
@@ -27,6 +26,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class WalletServiceImpl implements WalletService {
 
+    static final int PARSE_AMOUNT = 100;
     private final WalletRepository walletRepository;
     private final UserMetaRepository userMeta;
     private final UserRepository userRepository;
@@ -39,15 +39,11 @@ public class WalletServiceImpl implements WalletService {
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
 
-    public double checkBalance(int userId) {
-        UserMeta walletBalanceById = userMeta.findById(userId);
-        double myBalance = 0.0;
-        if (walletBalanceById != null) {
-            myBalance = walletBalanceById.getWallet_balance();
-        }
-        return myBalance;
-    }
-
+    /**
+     * Adds money to the wallet of the user
+     * @param email email id of the user
+     * @param amount amount that needs to be added
+     */
     public void addMoney(String email, double amount) {
         // Retrieving the user's wallet info.
         User user = userRepository.findByEmail(email);
@@ -57,21 +53,25 @@ public class WalletServiceImpl implements WalletService {
         if (userInfo != null) {
             double updatedBalance = userInfo.getWallet_balance() + amount;
             userInfo.setWallet_balance(updatedBalance);
-            amountInfo.setAmount_Added(amount);
+            amountInfo.setAmount(amount);
             amountInfo.setUser(user);
             amountInfo.setPaymnent_Method_Reference("Stripe");
             userMeta.save(userInfo);
             walletRepository.save(amountInfo);
         } else {
-            System.out.println("OOPS: Wallet Info not found for the pertaining user: " + email);
+            throw new ApiRequestException("OOPS: Wallet Info not found for the pertaining user: " + email);
         }
     }
 
+    /**
+     * Creates the Stripe session for adding money to the wallet
+     * @param amount amount to be added
+     * @param principal user token
+     * @return wallet balance
+     */
     public String createPaymentIntent(String amount, Principal principal) {
         try {
 
-            System.out.println("GERR?");
-            System.out.println(principal.getName());
             String successURL = APIendpoint + "/wallet/topup?amount=" + Double.parseDouble(amount)
                     + "&email="
                     + principal.getName();
@@ -90,7 +90,7 @@ public class WalletServiceImpl implements WalletService {
                             .setPriceData(
                                     SessionCreateParams.LineItem.PriceData.builder()
                                             .setCurrency("cad")
-                                            .setUnitAmount((long) Integer.parseInt(amount) * 100)
+                                            .setUnitAmount((long) Integer.parseInt(amount) * PARSE_AMOUNT)
                                             .setProductData(
                                                     SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                             .setName("Ecopick Wallet")
@@ -106,9 +106,15 @@ public class WalletServiceImpl implements WalletService {
         }
     }
 
+    /**
+     * gets the wallet history for a user
+     * @param principal user token
+     * @return returns the list of transaction that happened on the wallet
+     */
     public List<Wallet> gethistory(Principal principal) {
         try {
             User user = userRepository.findByEmail(principal.getName());
+            System.out.println("Heree" + user);
             List<Wallet> wallet = walletRepository.findAllByUserId(user.getId(),
                     Sort.by(Sort.Direction.DESC, "createdAt"));
             return wallet;

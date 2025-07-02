@@ -37,6 +37,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserMetaRepository userMetaRepository;
     private final VerificationService verificationService;
 
+    /**
+     * Registers new user and saves the details into the database
+     * Sends verification mail to new users
+     * @param signUpRequest DTO carrying all information required for signUP
+     * @return new user object
+     */
     @Override
     public User signUp(SignUpRequest signUpRequest) {
 
@@ -61,6 +67,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
+    /**
+     * sends reset password email to user on the registered email
+     * @param resetPasswordRequest DTO with user emailID
+     * @return
+     */
     public String forgotPassword(ResetPasswordRequest resetPasswordRequest) {
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail());
         if (user == null) {
@@ -71,6 +82,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return "Please check email for password reset link";
     }
 
+    /**
+     * Authenticates user and creates a new JWT token and refresh token
+     * @param signInRequest User authentication details
+     * @return returns the JWT tokens and user details
+     */
     public LoginResponse signIn(SignInRequest signInRequest) {
 
         UserMeta userMeta;
@@ -83,7 +99,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             if (password) {
                 userMeta = userMetaRepository.findByUser(tempUser);
-
                 if (userMeta.isVerified() == true) {
                     var jwt = jwtService.generateToken(tempUser);
                     var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), tempUser);
@@ -108,6 +123,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    /**
+     * Refreshes user token in case of expiry
+     * @param refreshTokenRequest contains the refresh token
+     * @return generated token
+     */
     public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         String userEmail = jwtService.extractUserName(refreshTokenRequest.getToken());
 
@@ -115,9 +135,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (jwtService.isTokenValid(refreshTokenRequest.getToken(), userDetails)) {
             var jwt = jwtService.generateToken(userDetails);
-
-            System.out.println("TOKEN JWTT : " + jwt);
-
             JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
             jwtAuthenticationResponse.setToken(jwt);
             jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());

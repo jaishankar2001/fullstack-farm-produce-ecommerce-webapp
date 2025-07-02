@@ -2,6 +2,7 @@ package com.example.backend.services.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -21,22 +22,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeServiceImpl implements HomeService {
 
-    private final FarmRepository farmRepository;
-    private final ProductRepository productRepository;
+        private final FarmRepository farmRepository;
+        private final ProductRepository productRepository;
 
-    @Override
-    public HomeResponse getHomeMeta() {
-        List<Farms> topFarms = farmRepository.findTop8ByOrderByIdDesc();
-        List<FarmDto> farms = topFarms.stream().map(ResponseUtils::convertFarmResponse).collect(Collectors.toList());
+        /**
+         * Gets information required for the HOMEPAGE
+         * @return returns the top 8 farms and top 8 products to be displayed on the home page
+         */
+        @Override
+        public HomeResponse getHomeMeta() {
+                List<Farms> topFarms = farmRepository.findTop8ByOrderByIdDesc();
+                List<FarmDto> farms = topFarms.stream().map(ResponseUtils::convertFarmResponse)
+                                .collect(Collectors.toList());
 
-        List<Product> latestProducts = productRepository.findTop8ByOrderByIdDesc();
-        List<ProductDto> products = latestProducts.stream().map(ResponseUtils::convertProductResponse)
-                .collect(Collectors.toList());
+                List<Product> latestProducts = productRepository.findTop8ByOrderByIdDesc();
 
-        HomeResponse homeResponse = new HomeResponse();
-        homeResponse.setFarms(farms);
-        homeResponse.setProducts(products);
-        return homeResponse;
-    }
+                Stream<Product> productStream = latestProducts.stream();
+                Stream<ProductDto> productDtoStream = productStream.map(ResponseUtils::convertProductResponse);
+                List<ProductDto> products = productDtoStream.collect(Collectors.toList());
+
+                HomeResponse homeResponse = new HomeResponse();
+                homeResponse.setFarms(farms);
+                homeResponse.setProducts(products);
+                return homeResponse;
+        }
 
 }

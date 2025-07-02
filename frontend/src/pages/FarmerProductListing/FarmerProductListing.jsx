@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import Layout from "../../common/Layout/Layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ProductGridCard from "../../components/ProductGridCard";
 import api from "../../api/index";
+import Layout from "../../common/Layout/Layout";
+import ProductGridCard from "../../components/ProductGridCard";
 
 function FarmerProductListing() {
   const [selectedTab, setSelectedTab] = useState("allProducts");
@@ -24,8 +24,7 @@ function FarmerProductListing() {
 
 
   const getAllProducts = async() => {
-
-    const response = await api.products.getProducts({ productName: searchTerm });
+    const response = await api.products.getFarmerProducts(searchTerm);
     setAllProducts(response);
 
   }
@@ -58,12 +57,11 @@ function FarmerProductListing() {
 
     // Filter products based on selected categories
     return allProducts.filter((product) =>
-      selectedCategories.includes(product.category)
+      selectedCategories.includes(product?.category?.id)
     );
   };
 
   const filteredProducts = getFilteredProducts();
-
 
   return (
     <div className="vstack">
@@ -85,13 +83,6 @@ function FarmerProductListing() {
                 </button>
               </div>
             </div>
-              {/* <nav aria-label="breadcrumb">
-                <ol className="breadcrumb mb-1">
-                  <li className="breadcrumb-item">
-                    <a href="#">{selectedTab === "allProducts" ? "All Products" : "My Products"}</a>
-                  </li>
-                </ol>
-              </nav> */}
             </div>
           </div>
         </div>
@@ -118,12 +109,12 @@ function FarmerProductListing() {
                   <div className="accordion-body pt-2">
                     <div className="vstack gap-2">
                       {categories.map((category) => (
-                        <label className="form-check" key={category.id}>
+                        <label className="form-check" key={category?.id}>
                           <input
                             type="checkbox"
                             className="form-check-input"
-                            checked={selectedCategories.includes(category.id)}
-                            onChange={() => handleCategoryCheckboxChange(category.id)}
+                            checked={selectedCategories.includes(category?.id)}
+                            onChange={() => handleCategoryCheckboxChange(category?.id)}
                           />
                           {category.name}
                         </label>
@@ -138,21 +129,22 @@ function FarmerProductListing() {
           <div className="hstack justify-content-between mb-3">
             <span className="text-dark">{allProducts?.length} Items found</span>
             <div className="btn-group" role="group">
+              <Link to="/add-product">
             <button
             className="btn btn-primary px-md-4 col col-md-auto me-2"
           >
             Add Product
           </button>
+          </Link>
             </div>
           </div>
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-3">
             {filteredProducts.map((product, index) => (
        <div className="col">
-       <ProductGridCard product={product}/>
+        <ProductGridCard product={product} from="farmerProducts"/>
      </div>
       ))}
           </div>
-
           </div>
         </div>
       </div>

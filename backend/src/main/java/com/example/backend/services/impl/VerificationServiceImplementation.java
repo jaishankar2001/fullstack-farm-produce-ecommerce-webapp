@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class VerificationServiceImplementation implements VerificationService {
+    static final int ADD_MINUTES_EXPIRY = 30;
 
     // private final UserMeta userMeta;
     private final UserRepository userRepository;
@@ -31,6 +32,38 @@ public class VerificationServiceImplementation implements VerificationService {
     @Value("${frontend.endpoint}")
     private String frontendEndpoint;
 
+    /**
+     * Verifies the code sent through the email and performs the necessary changes
+     * @param code verification code sent through email
+     * @param email email id to which it was sent
+     * @param newPassword new password to reset to
+     * @param type type of verification process
+     * @return Success confirmation
+     */
+    @Override
+    public String verifyAndUpdate(String code, String email, String newPassword, String type) {
+        try {
+            VerificationType verificationType = VerificationType.valueOf(type);
+            switch (verificationType) {
+                case VerifyEmail:
+                    verify(code, email);
+                    return "User verified succesfully";
+                case ResetPassword:
+                    resetPassword(code, email, newPassword);
+                    return "Password reset succesfully";
+                default:
+                    throw new ApiRequestException("Invalid type");
+            }
+        } catch (Exception e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    /**
+     * sends verification email to the email giving by the user during signup
+     * @param code code that needs to be sent to the user
+     * @param email email ID of the user
+     */
     @Override
     public void verify(String code, String email) {
         // User user = userRepository.findByEmail(email).orElseThrow();
@@ -54,10 +87,16 @@ public class VerificationServiceImplementation implements VerificationService {
         }
 
         userMeta.setVerified(true);
-        userRepository.save(user);
+        userMetaRepository.save(userMeta);
         verificationCodeRepository.delete(verificationCode);
     }
 
+    /**
+     * Function sends email to the emailID of the user for resetting password
+     * @param code Verification code
+     * @param email email ID of the user
+     * @param newPassword the new password
+     */
     @Override
     public void resetPassword(String code, String email, String newPassword) {
         User user = userRepository.findByEmail(email);
@@ -77,6 +116,11 @@ public class VerificationServiceImplementation implements VerificationService {
         verificationCodeRepository.delete(verificationCode);
     }
 
+    /**
+     * sends the verification email to the user
+     * @param user user
+     * @param type type of operation for which verification is required
+     */
     @Override
     public void sendVerificationEmail(User user, VerificationType type) {
         UserMeta userMeta = userMetaRepository.findByUser(user);
@@ -84,7 +128,7 @@ public class VerificationServiceImplementation implements VerificationService {
             throw new ApiRequestException("User not found!");
         }
 
-        if (userMeta != null && userMeta.isVerified() && type != VerificationType.valueOf("ResetPassword")) {
+        if (userMeta.isVerified() && type != VerificationType.valueOf("ResetPassword")) {
             throw new ApiRequestException("User already verified");
         }
 
@@ -96,17 +140,12 @@ public class VerificationServiceImplementation implements VerificationService {
 
         if (verificationCode == null) {
             String code = UUID.randomUUID().toString();
-            LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(30);
+            LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(ADD_MINUTES_EXPIRY);
             verificationCode = new VerificationCode(code, user.getEmail(), expiryTime, type);
             verificationCodeRepository.save(verificationCode);
         }
 
-        String url = "";
-        if (type == VerificationType.VerifyEmail) {
-            url = frontendEndpoint + "/verify-email?email=%s&code=%s&type=%s";
-        } else if (type == VerificationType.ResetPassword) {
-            url = frontendEndpoint + "/reset-password?email=%s&code=%s&type=%s";
-        }
+        String url = generateUrl(type);
 
         String verificationUrl = String.format(
                 url,
@@ -122,5 +161,21 @@ public class VerificationServiceImplementation implements VerificationService {
             String body = "Please click on this link to reset your Password: " + verificationUrl;
             emailService.sendEmail(user.getEmail(), subject, body);
         }
+    }
+
+    /**
+     * generates the URL that is sent in the email
+     * @param type type of operation
+     * @return returns the string url that is sent in the email
+     */
+    public String generateUrl(VerificationType type) {
+        String url = "";
+        if (type == VerificationType.VerifyEmail) {
+            url = frontendEndpoint + "/verify-email?email=%s&code=%s&type=%s";
+        } else if (type == VerificationType.ResetPassword) {
+            url = frontendEndpoint + "/reset-password?email=%s&code=%s&type=%s";
+        }
+        System.out.println("HEREE?" + url);
+        return url;
     }
 }

@@ -41,6 +41,11 @@ public class User implements UserDetails {
     @JsonManagedReference
     private List<Farms> farms;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Subscription> subscription;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JoinColumn(name = "user_id")
@@ -50,6 +55,16 @@ public class User implements UserDetails {
     @ToString.Exclude
     @JsonManagedReference
     private List<Wallet> wallet;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Order> orders;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @JsonManagedReference
+    private List<Subscription> subscriptions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
